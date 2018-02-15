@@ -15,28 +15,32 @@
         <!--<link rel="stylesheet" href="main.css">-->
         <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
     </head>
-    <body>
+    <body ng-app="">
 
-        <div>
+
+
+        <div ng-include="'/templates/navbar.html'"></div>
+
+        
+        <!--<div>
             <nav class="navbar fixed-top navbar-dark"  style="background-color: #33A6FF ;">
                 <a class="navbar-brand" href="#">EcoPRT</a>
                 <form class="form-inline">
 
-                    <a class="nav-link" style="color:#FFFFFF" href="EcoPRT_Home_Page.html" >Home <span class="sr-only">(current)</span></a>
+                <a class="nav-link" style="color:#FFFFFF" href="#" >Home <span class="sr-only">(current)</span></a>
 
-                    <a class="nav-link" style="color:#FFFFFF" href="EcoPRT_SignUp_Page.html">Sign Up</a>
+                <a class="nav-link" style="color:#FFFFFF" href="#EcoPRT_SignUp_Page.html">Sign Up</a>
 
-                    <a class="nav-link" style="color:#FFFFFF" href="EcoPRT_LogIn_Page.html">Log In</a>
+<a class="nav-link" style="color:#FFFFFF" href="/#!/login">Log In</a>
 
                     <div class="nav-item dropdown hidden-md-down">
     
                         <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Menu
                         </button>
-                        <!-- <a class="nav-link dropdown-toggle" href="#" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Menu
-                        </a>-->
+
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu" style="right: 0; left: auto;">
                             <a class="dropdown-item" href="#overview">Overview</a>
                             <a class="dropdown-item" href="#aboutdevelopers">About the Developers</a>
@@ -45,12 +49,12 @@
                     </div>
                 </form>
             </nav>
-        </div>
+        </div>-->
         
         
         <div>
             <div>
-                <img width="100%" height="100%" src="img/ecoPRT_Hunt.jpg" class="slide" alt="" />
+                <img width="100%" src="images/ecoPRT_Hunt.jpg" class="slide" alt="" />
             </div>
                     
             <hr style="width: 100%; color: #33A6FF; height: 1px; background-color: #33A6FF;" />

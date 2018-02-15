@@ -11,7 +11,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">    -->
         <link rel="stylesheet" href="css/bootstrap.css">
-        <link rel="stylesheet" href="main.css">       
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
     </head>
     <body>
         <!-- Navigation -->
@@ -20,28 +23,27 @@
             <a href="EcoPRT_SignUp_Page.html" class="w3-button w3-bar-item">Sign Up</a>
             <a href="EcoPRT_LogIn_Page.html" class="w3-button w3-bar-item">Log In</a>
         </nav> -->
-        <nav class="navbar navbar-dark" style="background-color: #33A6FF  ;">
-            <span class="navbar-brand mb-0 h1">EcoPRT</span>
-            <form class="form-inline">
-                    <a class="nav-link" style="color:#FFFFFF" href="EcoPRT_Home_Page.html" >Home</a>
-                    <a class="nav-link" style="color:#FFFFFF" href="EcoPRT_SignUp_Page.html">Sign Up</a>
-                    <a class="nav-link" style="color:#FFFFFF" href="EcoPRT_LogIn_Page.html">Log In</a>
-            </form>
-        </nav>
-
-        <p></p>
-        <div class="form-group">
-                <label for="inputUsername">Username</label>
-                <input type="text" class="form-control" id="inputUsername" placeholder="Enter Username">
-            </div>
-
+        <div ng-include="'/templates/navbar.html'"></div>
+        
+        <div class="text-center">
+            <br/>
+            <br/>
+            <br/>
             <div class="form-group">
-              <label for="inputPassword">Password</label>
-              <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                <label for="email">Email address</label>
+                <input type="email" class="form-control" id="email" placeholder="Email" ng-model="form.email">
             </div>
-        <center>
-                <a class="btn btn-success" href="EcoPRT_Admin_Page.html" role="button">Admin Log In</a>
-        </center>
+            <br/>
+            <br/>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" placeholder="Password" ng-model="form.password">
+            </div>
+            <br/>
+            <br/>
+            <button type="button" class="btn btn-lg btn-danger" class="col-sm-3 btn-block" ng-click="home()">Back To Homepage</button>
+            <button type="button" class="btn btn-lg btn-primary" class="col-sm-3 btn-block" ng-click="signIn()" type="submit" >Sign In</button>
+        </div>
         
     </body>
 </html>

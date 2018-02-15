@@ -15,59 +15,48 @@
     </head>
     <body>
         <!-- Navigation -->
-        <!-- <nav class="w3-bar w3-blue">
-            <a href="EcoPRT_Home_Page.html" class="w3-button w3-bar-item">Home</a>
-            <a href="EcoPRT_SignUp_Page.html" class="w3-button w3-bar-item">Sign Up</a>
-            <a href="EcoPRT_LogIn_Page.html" class="w3-button w3-bar-item">Log In</a>
-        </nav> -->
-        <nav class="navbar navbar-dark" style="background-color: #33A6FF  ;">
-                <span class="navbar-brand mb-0 h1">EcoPRT</span>
-                <form class="form-inline">
-                        <a class="nav-link" style="color:#FFFFFF" href="EcoPRT_Home_Page.html" >Home</a>
-                        <a class="nav-link" style="color:#FFFFFF" href="EcoPRT_SignUp_Page.html">Sign Up</a>
-                        <a class="nav-link" style="color:#FFFFFF" href="EcoPRT_LogIn_Page.html">Log In</a>
-                </form>
-        </nav>
+        <div ng-include="'/templates/navbar.html'"></div>
 
         <!-- Input Fields for Sign Up -->
         <!-- <center> -->
                 <p></p>
 
             <form>
-                <div class="form-group">
-                    <label for="inputEmail">Email address</label>
-                    <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" placeholder="Enter email">
+                <div class="text-center">
+                    <br/>
+                    <br/>
+                    <br/>
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" class="form-control" id="username" placeholder="Username" ng-model="form.username">
+                    </div>
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" class="form-control" id="firstName" placeholder="Email" ng-model="form.firstName">
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" class="form-control" id="lastName" placeholder="Last Name" ng-model="form.lastName">
+                    </div>
+                    <div class="form-group">
+                        <label for="birthday">Birthday</label>
+                        <input type="date" class="form-control" id="birthday" placeholder="Birthday" ng-model="form.birthday">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+                        <input type="email" class="form-control" id="email" placeholder="Email" ng-model="form.email">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="Password" ng-model="form.password">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input type="password" class="form-control" id="confirmPassword" placeholder="Password" ng-model="form.confirmPassword">
+                    </div>
+                    <button type="button" class="btn btn-lg btn-danger" class="col-sm-3 btn-block" ng-click="home()">Back To Homepage</button>
+                    <button type="button" class="btn btn-lg btn-primary" class="col-sm-3 btn-block" ng-click="signUp()" type="submit" >Sign Up</button>
                 </div>
-
-                <div class="form-group">
-                    <label for="inputFirstName">First Name</label>
-                    <input type="text" class="form-control" id="inputFirstName" placeholder="Enter First Name">
-                </div>
-
-                <div class="form-group">
-                    <label for="inputLastName">Last Name</label>
-                    <input type="text" class="form-control" id="inputLastName" placeholder="Enter Last Name">
-                </div>
-
-                <div class="form-group">
-                    <label for="inputUsername">Username</label>
-                    <input type="text" class="form-control" id="inputUsername" placeholder="Enter Username">
-                </div>
-
-                <div class="form-group">
-                  <label for="inputPassword">Password</label>
-                  <input type="password" class="form-control" id="inputPassword" placeholder="Password">
-                </div>
-
-                <div class="form-group">
-                    <label for="confirmPassword">Confirm Password</label>
-                    <input type="password" class="form-control" id="confirmPassword" placeholder="Password">
-                  </div>
-                <center>
-                    <button type="submit" class="btn btn-primary" href="EcoPRT_Home_Page.html">Sign Up</button>
-                </center>
-              </form>
-        <!-- </center> -->
 
 
     </body>
