@@ -52,6 +52,28 @@ app.config(function($routeProvider) {
     });
 });
 
+app.controller('navbarCtrl', function($scope, $location) {
+	
+	$scope.signOut = function() {
+		localStorage["authToken"] = "";
+		$location.path('/');
+	}
+	
+	$scope.type = 0;
+	
+	if(window.location.hash == "#!/adminHome") {
+		$scope.type = 1;
+	}
+		
+	$scope.$on('$locationChangeSuccess', function(event) {
+		$scope.type = 0;
+	
+		if(window.location.hash == "#!/adminHome") {
+			$scope.type = 1;
+		}
+	});
+});
+
 app.controller('homeCtrl', function($scope, $location) {
 
 	if(localStorage["authToken"]) {

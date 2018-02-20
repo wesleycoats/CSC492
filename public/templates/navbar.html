@@ -1,4 +1,4 @@
-<nav class="navbar fixed-top navbar-dark"  style="background-color: #33A6FF ;">
+<nav class="navbar fixed-top navbar-dark"  style="background-color: #33A6FF ;" ng-show="type==0">
     <a class="navbar-brand" href="#">EcoPRT</a>
     <form class="form-inline">
         
@@ -23,4 +23,15 @@
             </div>
         </div>
     </form>
+</nav>
+
+<nav class="navbar navbar-dark bg-primary" style="z-index:100" ng-show="type==1">
+	<div class="container-fluid">
+	<div class="navbar-header">
+      <span class="navbar-brand">Welcome {{userInfo.username}}</span>
+    </div>
+	<ul class="nav navbar-nav navbar-right">
+      <li><a href="#" ng-click="signOut()" class="signOutLink"><span class="glyphicon glyphicon-log-out"></span> Sign Out</a></li>
+    </ul>
+	</div>
 </nav>
