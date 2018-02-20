@@ -1,0 +1,19 @@
+<html>
+	<head>
+		<script src="https://code.angularjs.org/1.6.8/angular.min.js"></script>
+		<script src="/js/app.js"></script>
+	</head>
+	<body ng-app="ecoprtApp" ng-controller="edgesCtrl">
+		<ul>
+			<li ng-repeat="edge in edges">
+				{{edge}}
+			</li>
+			
+			startingNode: <input type="text" ng-model="newEdge.startingNode"><br/>
+			endingNode: <input type="text" ng-model="newEdge.endingNode"><br/>
+			distance: <input type="number" ng-model="newEdge.distance"><br/>
+			
+			<button type="button" ng-click="addEdge()" type="submit" >Add Edge</button>
+		</ul>
+	</body>
+</html>
