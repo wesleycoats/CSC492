@@ -1,0 +1,25 @@
+<html>
+	<head>
+		<script src="https://code.angularjs.org/1.6.8/angular.min.js"></script>
+		<script src="/js/app.js"></script>
+	</head>
+	<body ng-app="ecoprtApp" ng-controller="ridesCtrl">
+		<ul>
+			<li ng-repeat="ride in rides">
+				{{ride}}
+			</li>
+			
+			numberOfPassengers: <input type="number" ng-model="newRide.numberOfPassengers"><br/>
+			passengerLocation Latitude: <input type="number" ng-model="newRide.passengerLocation[0]"><br/>
+			passengerLocation Longitude: <input type="number" ng-model="newRide.passengerLocation[1]"><br/>
+			distance: <input type="number" ng-model="newRide.distance"><br/>
+			vehicleID: <input type="text" ng-model="newRide.vehicleID"><br/>
+			userID: <input type="text" ng-model="newRide.userID"><br/>
+			startingNode: <input type="text" ng-model="newRide.startingNode"><br/>
+			endingNode: <input type="text" ng-model="newRide.endingNode"><br/>
+			currentTask: <input type="number" ng-model="newRide.currentTask"><br/>
+			
+			<button type="button" ng-click="addRide()" type="submit" >Add Ride</button>
+		</ul>
+	</body>
+</html>
