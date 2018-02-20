@@ -74,7 +74,7 @@ app.post('/addEdge', function (req, res) {
 			timeStamp : form.waypoints[i].timeStamp,
 			tick : form.waypoints[i].tick,
 			actuator : form.waypoints[i].actuator,
-			motorControlFlags : [motorControlFlags[0], motorControlFlags[1], motorControlFlags[2], motorControlFlags[3], motorControlFlags[4], motorControlFlags[5], motorControlFlags[6], motorControlFlags[7]],
+			motorControlFlags : [form.waypoints[i].motorControlFlags[0], form.waypoints[i].motorControlFlags[1], form.waypoints[i].motorControlFlags[2], form.waypoints[i].motorControlFlags[3], form.waypoints[i].motorControlFlags[4], form.waypoints[i].motorControlFlags[5], form.waypoints[i].motorControlFlags[6], form.waypoints[i].motorControlFlags[7]],
 			motorThrottle : form.waypoints[i].motorThrottle
 		}
 	}
