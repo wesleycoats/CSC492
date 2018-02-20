@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 // create application/x-www-form-urlencoded parser 
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use(express.static('public'));
+app.use(express.static('public_temp'));
 
 var mongo = require('mongodb');
 
