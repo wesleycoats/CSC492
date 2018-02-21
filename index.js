@@ -66,7 +66,7 @@ app.post('/addEdge', function (req, res) {
 		waypoints : []
 	}
 	for(var i=0;i<form.waypoints.length;i++) {
-		newEdge[i].waypoints = {
+		newEdge.waypoints[i] = {
 			coordinates : [form.waypoints[i].coordinates[0], form.waypoints[i].coordinates[1]],
 			speed : form.waypoints[i].speed,
 			headingAngle : form.waypoints[i].headingAngle,
