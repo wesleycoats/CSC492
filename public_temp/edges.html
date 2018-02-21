@@ -19,6 +19,18 @@
 			startingNode: <input type="text" ng-model="newEdge.startingNode"><br/>
 			endingNode: <input type="text" ng-model="newEdge.endingNode"><br/>
 			distance: <input type="number" ng-model="newEdge.distance"><br/>
+			<p></p>
+            <p>Waypoints</p>
+            waypoint Longtitude: <input type="number" ng-model="newEdge.waypoints[0].coordinates[0]"><br/>
+			waypoint Latitude: <input type="number" ng-model="newEdge.waypoints[0].coordinates[1]"><br/>
+			speed: <input type="number" ng-model="newEdge.waypoints[0].speed"><br/>
+            steeringAngle: <input type="number" ng-model="newEdge.waypoints[0].steeringAngle"><br/>
+            headingAngle: <input type="number" ng-model="newEdge.waypoints[0].headingAngle"><br/>
+            tick: <input type="number" ng-model="newEdge.waypoints[0].tick"><br/>
+            timeStamp: <input type="number" ng-model="newEdge.waypoints[0].timeStamp"><br/>
+            actuator: <input type="number" ng-model="newEdge.waypoints[0].actuator"><br/>
+            motorControlFlags: <input type="number" ng-model="newEdge.waypoints[0].motorControlFlags[0]"><br/>
+            motorThrottle: <input type="number" ng-model="newEdge.waypoints[0].motorThrottle"><br/>
 			
 			<button type="button" ng-click="addEdge()" type="submit" >Add Edge</button>
 		</ul>
