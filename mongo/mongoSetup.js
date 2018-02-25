@@ -100,7 +100,7 @@ var Edges = [
 				steeringAngle : 93.26,
 				timeStamp : new Date(),
 				tick : 0,
-				actuator : [[true,true,true,false,true,false,true,true][true,true,true,false,true,false,true,true],[true,true,true,false,true,false,true,true]],
+				actuator : [[true,true,true,false,true,false,true,true],[true,true,true,false,true,false,true,true],[true,true,true,false,true,false,true,true]],
 				motorControlFlags : [true,true,true,false,true,false,true,true],
 				motorThrottle : [true,true,true,false,true,false,true,true]
 			},
@@ -111,7 +111,7 @@ var Edges = [
 				steeringAngle : 94.26,
 				timeStamp : new Date(),
 				tick : 1,
-				actuator : [[true,true,true,false,true,false,true,true][true,true,true,false,true,false,true,true][true,true,true,false,true,false,true,true]],
+				actuator : [[true,true,true,false,true,false,true,true],[true,true,true,false,true,false,true,true][true,true,true,false,true,false,true,true]],
 				motorControlFlags : [true,true,true,false,true,false,true,true],
 				motorThrottle : [true,true,true,false,true,false,true,true]
 			},
