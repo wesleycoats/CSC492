@@ -28,8 +28,10 @@ Add Test Data:
 * cd to mongo folder
 * Run "npm install"
 * Run "node mongoSetup.js"
+* Close this terminal
 
 #### Run Website
+* Open a terminal
 * cd to where Github repo is
 * Run "npm install"
 * Run "node index.js"
