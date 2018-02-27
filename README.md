@@ -35,4 +35,4 @@ Add Test Data:
 * cd to where Github repo is
 * Run "npm install"
 * Run "node index.js"
-* In a web browswer, go to localhost:3000/home.html
+* In a web browser, go to localhost:3000/home.html
