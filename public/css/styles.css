@@ -1,0 +1,7 @@
+a.signOutLink, a.signOutLink:link, a.signOutLink:visited, a.signOutLink:hover, a.signOutLink:focus, a.signOutLink:active{
+  color:white;
+}
+
+.navbar-right {
+    margin-right: 0px;
+}

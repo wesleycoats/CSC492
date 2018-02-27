@@ -1,0 +1,193 @@
+<div id="accordion" style="z-index:100;position:absolute" class="col-sm-3" ng-show="currentView==0">
+	<div class="card text-white bg-primary">
+		<div class="card-header" id="ridesHeading">
+			<h5 class="mb-0">
+				<button class="btn btn-link" data-toggle="collapse" data-target="#rides" aria-expanded="false" aria-controls="rides" style="color:white">
+					Rides
+				</button>
+			</h5>
+		</div>
+			
+		<div id="rides" class="collapse" aria-labelledby="rides" data-parent="#accordion" data-collapse-group="admin">
+			<div class="card-body">
+				<ul>
+					<li ng-repeat="ride in rides">
+						{{rideTasks[ride.currentTask]}} - {{ride._id}}
+					</li>
+				</ul>
+				<br/>
+			</div>
+		</div>
+	</div>
+	<div class="card text-white bg-primary">
+		<div class="card-header" id="carsHeading">
+			<h5 class="mb-0">
+				<button class="btn btn-link collapsed" data-toggle="collapse" data-target="#cars" aria-expanded="false" aria-controls="cars" style="color:white">
+					Cars
+				</button>
+				<div class="pull-right" ng-click="showAddCarsForm()"><i class="fa fa-plus"></i></div>
+			</h5>
+		</div>
+		<div id="cars" class="collapse" aria-labelledby="cars" data-parent="#accordion" data-collapse-group="admin">
+			<div class="card-body">
+				<ul>
+					<li ng-repeat="car in cars">
+						<span ng-show="car.currentPath">
+							{{car.name}} - {{car.speed}} MPH - Path : {{stations[stationsMap[paths[pathsMap[car.currentPath]].startingNode]].name}} -> {{stations[stationsMap[paths[pathsMap[car.currentPath]].endingNode]].name}}
+						</span>
+						<span ng-show="!car.currentPath">
+							{{car.name}} - {{car._id}}
+						</span>
+					</li>
+				</ul>
+				<br/>
+			</div>
+		</div>
+	</div>
+	<div class="card text-white bg-primary">
+		<div class="card-header" id="stationsHeading">
+			<h5 class="mb-0">
+				<button class="btn btn-link collapsed" data-toggle="collapse" data-target="#stations" aria-expanded="false" aria-controls="stations" style="color:white">
+					Stations
+				</button>
+				<div class="pull-right" ng-click="showAddStationsForm()"><i class="fa fa-plus"></i></div>
+			</h5>
+		</div>
+		<div id="stations" class="collapse" aria-labelledby="stations" data-parent="#accordion" data-collapse-group="admin">
+			<div class="card-body">
+				<ul>
+					<li ng-repeat="station in stations">
+						{{station.name}} - {{stationTypes[station.type]}}
+					</li>
+				</ul>
+				<br/>
+			</div>
+		</div>
+	</div>
+	<div class="card text-white bg-primary">
+		<div class="card-header" id="pathsHeading">
+			<h5 class="mb-0">
+				<button class="btn btn-link collapsed" data-toggle="collapse" data-target="#paths" aria-expanded="false" aria-controls="paths" style="color:white" >
+					Paths
+				</button>
+				<div class="pull-right" ng-click="showAddPathsForm()"><i class="fa fa-plus"></i></div>
+			</h5>
+		</div>
+		<div id="paths" class="collapse" aria-labelledby="paths" data-parent="#accordion" data-collapse-group="admin">
+			<div class="card-body">
+				<ul>
+					<li ng-repeat="path in paths">
+						{{stations[stationsMap[path.startingNode]].name}} -> {{stations[stationsMap[path.endingNode]].name}} - Length: {{path.length}}
+					</li>
+				</ul>
+				<br/>
+			</div>
+		</div>
+	</div>
+</div>
+<div style="z-index:100;position:absolute;" class="col-sm-3" ng-show="currentView==2">
+	<div class="card text-white bg-primary" style="padding:12px;">
+		<div class="card-header">
+			<nav class="navbar navbar-dark bg-primary" style="z-index:100;margin:0px">
+				<div class="container-fluid">
+					<div class="navbar-header">
+				    	<span class="navbar-brand"> <a href="" ng-click="showHome();" class="signOutLink">&lt; Add Car</a>
+				    </div>
+				</div>
+			</nav>
+
+		</div>
+		<hr>
+		<div class="card-body">
+			<form>
+				<div class="form-group">
+					<label for="stationName">Name of Car</label>
+					<input type="text" class="form-control" id="CarName" placeholder="Car Name" ng-model="newCar.name">
+				</div>
+				<button type="button" class="btn btn-lg btn-primary btn-block" ng-click="addCar()" type="submit" >Add Car</button>
+			</form>
+		</div>
+	</div>
+</div>
+<div style="z-index:100;position:absolute;" class="col-sm-3" ng-show="currentView==3">
+	<div class="card text-white bg-primary" style="padding:12px;">
+		<div class="card-header">
+			<nav class="navbar navbar-dark bg-primary" style="z-index:100;margin:0px">
+				<div class="container-fluid">
+					<div class="navbar-header">
+				    	<span class="navbar-brand"> <a href="" ng-click="showHome();" class="signOutLink">&lt; Add Station</a>
+				    	<span ng-show="addingStationsOnMap"><br/>Click on Map to Place Station</span></span>
+				    </div>
+					<ul class="nav navbar-nav navbar-right">
+				    	<li><a href="" ng-click="startPlaceStation()" class="signOutLink"><i class="fa fa-map-marker"></i></a></li>
+				    </ul>
+				</div>
+			</nav>
+
+		</div>
+		<hr>
+		<div class="card-body">
+			<form>
+				<div class="form-group">
+					<label for="stationName">Name of Station</label>
+					<input type="text" class="form-control" id="stationName" placeholder="Station Name" ng-model="newStation.name">
+				</div>
+				<div class="row">
+					<div class="form-group col-xs-6">
+						<label for="stationLocationLng">Location of Station</label>
+						<div class="input-group unity-input">
+							<input type="number" class="form-control" id="stationLocationLng" placeholder="" ng-model="newStation.location[0]"><span class="input-group-addon" id="degrees2">°</span>
+						</div>
+					</div>
+					<div class="form-group col-xs-6">
+						<label for="stationLocationLat">&nbsp;</label>
+						<div class="input-group unity-input">
+							<input type="number" class="form-control" id="stationLocationLat" placeholder="" ng-model="newStation.location[1]"><span class="input-group-addon" id="degrees1">°</span>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="exampleFormControlSelect1">Station Type</label>
+					<select class="form-control" ng-model="newStation.type" ng-options="''+index as type for (index, type) in stationTypes">
+					</select>
+				</div>
+				<button type="button" class="btn btn-lg btn-primary btn-block" ng-click="addStation()" type="submit" >Add Station</button>
+			</form>
+		</div>
+	</div>
+</div>
+<div style="z-index:100;position:absolute;" class="col-sm-3" ng-show="currentView==4">
+	<div class="card text-white bg-primary" style="padding:12px;">
+		<div class="card-header">
+			<nav class="navbar navbar-dark bg-primary" style="z-index:100;margin:0px">
+				<div class="container-fluid">
+					<div class="navbar-header">
+				    	<span class="navbar-brand"> <a href="" ng-click="showHome();" class="signOutLink">&lt; Add Path</a>
+				    </div>
+				</div>
+			</nav>
+
+		</div>
+		<hr>
+		<div class="card-body">
+			<form>
+				<div class="form-group">
+					<label for="stationName">Starting Node</label>
+					<select class="form-control" ng-model="newPath.startingNode" ng-options="''+station._id as station.name for station in stations">
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="stationName">Ending Node</label>
+					<select class="form-control" ng-model="newPath.endingNode" ng-options="''+station._id as station.name for station in stations">
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="stationName">Length</label>
+					<input type="number" class="form-control" id="newPathLength" placeholder="Length" ng-model="newPath.length">
+				</div>
+				<button type="button" class="btn btn-lg btn-primary btn-block" ng-click="addPath()" type="submit" >Add Path</button>
+			</form>
+		</div>
+	</div>
+</div>
+<div id="map" style="width:100%;height:100%;position:absolute;top:0;left:0;overflow:visible;"></div>
