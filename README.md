@@ -3,7 +3,7 @@
 ## EcoPRT
 
 
-### User Guide
+### Installation Guide
 
 #### Download
 
