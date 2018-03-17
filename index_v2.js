@@ -266,33 +266,49 @@ function addStation(form, res) {
 
 function addPath(form, res) {
 	var newPath = {
-		startingNode : form.startingNode,
-		endingNode : form.endingNode,
+		startingNode : new mongo.ObjectID(form.startingNode),
+		endingNode : new mongo.ObjectID(form.endingNode),
 		length : form.length,
 		waypoints : []
 	}
-	for(var i=0;i<form.waypoints.length;i++) {
-		newPath[i].waypoints = {
-			coordinates : [form.waypoints[i].coordinates[0], form.waypoints[i].coordinates[1]],
-			speed : form.waypoints[i].speed,
-			headingAngle : form.waypoints[i].headingAngle,
-			steeringAngle : form.waypoints[i].steeringAngle,
-			timeStamp : form.waypoints[i].timeStamp,
-			tick : form.waypoints[i].tick,
-			actuator : form.waypoints[i].actuator,
-			motorControlFlags : [motorControlFlags[0], motorControlFlags[1], motorControlFlags[2], motorControlFlags[3], motorControlFlags[4], motorControlFlags[5], motorControlFlags[6], motorControlFlags[7]],
-			motorThrottle : form.waypoints[i].motorThrottle
-		}
-	}
-	insertDocument("Edges", newPath, function(np) {
-		if(np) {
-			resSuccess(res, "Path Added");
-			getAllPathsInfo(function(allPaths){
-				io.to('allPathsInfo').emit('allPathsInfo', allPaths);
-			})
-		} else {
-			resError(res, "An Error Occured", 500);
-		}
+	findDocuments("Nodes", {_id:new mongo.ObjectID(form.startingNode)}, function(startingNode){
+		findDocuments("Nodes", {_id:new mongo.ObjectID(form.endingNode)}, function(endingNode){
+			if(startingNode[0] && endingNode[0]) {
+				newPath.waypoints[0] = {
+					coordinates:[startingNode[0].location[0], startingNode[0].location[1]]
+				}
+				for(var i=0;i<form.waypoints.length;i++) {
+					newPath.waypoints[i+1] = {
+						coordinates : [form.waypoints[i].coordinates[0], form.waypoints[i].coordinates[1]],
+						speed : form.waypoints[i].speed,
+						headingAngle : form.waypoints[i].headingAngle,
+						steeringAngle : form.waypoints[i].steeringAngle,
+						timeStamp : form.waypoints[i].timeStamp,
+						tick : form.waypoints[i].tick,
+						actuator : form.waypoints[i].actuator,
+						motorControlFlags : [form.waypoints[i].motorControlFlags[0], form.waypoints[i].motorControlFlags[1], form.waypoints[i].motorControlFlags[2], form.waypoints[i].motorControlFlags[3], form.waypoints[i].motorControlFlags[4], form.waypoints[i].motorControlFlags[5], form.waypoints[i].motorControlFlags[6], form.waypoints[i].motorControlFlags[7]],
+						motorThrottle : form.waypoints[i].motorThrottle
+					}
+				}
+				newPath.waypoints.push(
+					{
+						coordinates:[endingNode[0].location[0], endingNode[0].location[1]]
+					}
+				)
+				insertDocument("Edges", newPath, function(np) {
+					if(np) {
+						resSuccess(res, "Path Added");
+						getAllPathsInfo(function(allPaths){
+							io.to('allPathsInfo').emit('allPathsInfo', allPaths);
+						})
+					} else {
+						resError(res, "An Error Occured", 500);
+					}
+				})
+			} else {
+				resError(res, "Starting or Ending Point Does Not Exist", 400);
+			}
+		})
 	})
 }
 
@@ -541,7 +557,7 @@ findDocuments("Users", {userType:0}, function(admins){
 		newUser.salt = randomString(20);
 		newUser.hash = sha512(password, newUser.salt);
 		newUser.email = "admin@example.com";
-		newUser.lowercaseEmail = form.email.toLowerCase();
+		newUser.lowercaseEmail = newUser.email.toLowerCase();
 		newUser.firstName = "Admin";
 		newUser.lastName = "Admin";
 		newUser.birthday = new Date();

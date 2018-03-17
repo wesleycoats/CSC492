@@ -5,3 +5,7 @@ a.signOutLink, a.signOutLink:link, a.signOutLink:visited, a.signOutLink:hover, a
 .navbar-right {
     margin-right: 0px;
 }
+
+table, th, td {
+    border: 1px solid white;
+}

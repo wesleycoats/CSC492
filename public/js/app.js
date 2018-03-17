@@ -133,7 +133,7 @@ app.controller('signUpCtrl', function($scope, $http, $location) {
 			return $http.post('/signUp', $scope.form)
 			.then(function(result) { 
 				window.alert(result.data);
-				$location.path('/signIn');
+				$location.path('/ecoPRTLogin');
 			})
 			.catch(function(error) {
 				window.alert(error.data);
@@ -162,11 +162,13 @@ app.controller('userHomeCtrl', function($scope, $http, $location) {
 	}
 });
 
-app.controller('adminHomeCtrl', function($scope, $http, $location) {
+app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compile) {
 	
 	$scope.currentView = 0;
 	
 	$scope.addingStationsOnMap = false;
+	$scope.seletingStartNode = false;
+	$scope.seletingEndNode = false;
 	$scope.newStation = {
 		name : "",
 		type : '0',
@@ -185,6 +187,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location) {
 			length : 0,
 			waypoints : []
 		}
+		document.getElementById("waypointsFile").value = '';
 	}
 	
 	$scope.showHome = function() {
@@ -244,20 +247,40 @@ app.controller('adminHomeCtrl', function($scope, $http, $location) {
 	}
 	
 	$scope.addPath = function() {
-		if($scope.newPath && $scope.newPath.startingNode && $scope.newPath.endingNode && $scope.newPath.length >= 0 && $scope.newPath.waypoints.length > 0) {
-			$http.post("/addPath", $scope.newPath, {headers:{authToken:localStorage["authToken"]}}).then(
-				function(response){
-					window.alert(response.data);
-					$scope.resetNewPath();
-					$scope.showHome();
-				}, 
-				function(error){
-					window.alert(error.data);
+		var file = document.getElementById("waypointsFile").files[0];
+		if(file) {
+			var aReader = new FileReader();
+			aReader.readAsText(file, "UTF-8");
+			aReader.onload = function(evt) {
+				$scope.wayPointsText = aReader.result;
+				try {
+					$scope.wayPoints = JSON.parse($scope.wayPointsText);
+					if(Array.isArray($scope.wayPoints)) {
+						$scope.newPath.waypoints = $scope.wayPoints;
+						if($scope.newPath && $scope.newPath.startingNode && $scope.newPath.endingNode && $scope.newPath.length >= 0 && $scope.newPath.waypoints.length > 0) {
+							$http.post("/addPath", $scope.newPath, {headers:{authToken:localStorage["authToken"]}}).then(
+								function(response){
+									window.alert(response.data);
+									$scope.resetNewPath();
+									$scope.showHome();
+								}, 
+								function(error){
+									window.alert(error.data);
+								}
+							);
+						} else {
+							//window.alert("All fields must be filled out")
+							window.alert("Please Fill Out All Fields");
+						}
+					} else {
+						window.alert("Invalid File Format 1");
+					}
+				} catch(e) {
+					window.alert("Invalid File Format 2");
 				}
-			);
+			}
 		} else {
-			//window.alert("All fields must be filled out")
-			window.alert("This doesn't work yet try again later ;)")
+			window.alert("Please Sumbit a File");
 		}
 	}
 	
@@ -284,6 +307,73 @@ app.controller('adminHomeCtrl', function($scope, $http, $location) {
 		zoom: 18
 	});
 	
+	$scope.contextmenuDir = null;
+	
+	$scope.createNodeFromMap = function() {
+		$scope.newStation.location = [$scope.mapLat,$scope.mapLng];
+		$scope.showAddStationsForm();
+		$('#contextmenuClickable').css('visibility', 'hidden');
+	}
+	
+	//http://googleapitips.blogspot.com/p/google-maps-api-v3-context-menu-example.html
+	$scope.getCanvasXY = function(caurrentLatLng){
+		var scale = Math.pow(2, $scope.map.getZoom());
+		var nw = new google.maps.LatLng(
+			$scope.map.getBounds().getNorthEast().lat(),
+			$scope.map.getBounds().getSouthWest().lng()
+		);
+		var worldCoordinateNW = $scope.map.getProjection().fromLatLngToPoint(nw);
+		var worldCoordinate = $scope.map.getProjection().fromLatLngToPoint(caurrentLatLng);
+		var caurrentLatLngOffset = new google.maps.Point(
+			Math.floor((worldCoordinate.x - worldCoordinateNW.x) * scale),
+			Math.floor((worldCoordinate.y - worldCoordinateNW.y) * scale)
+		);
+		return caurrentLatLngOffset;
+	}
+	
+	$scope.setMenuXY = function(caurrentLatLng){
+		var mapWidth = $('#map').width();
+		var mapHeight = $('#map').height();
+		var menuWidth = $('.contextmenu').width();
+		var menuHeight = $('.contextmenu').height();
+		var clickedPosition = $scope.getCanvasXY(caurrentLatLng);
+		var x = clickedPosition.x ;
+		var y = clickedPosition.y ;
+		
+		if((mapWidth - x ) < menuWidth) x = x - menuWidth;
+		if((mapHeight - y ) < menuHeight) y = y - menuHeight;
+		
+		console.log(x, y);
+		$('.contextmenu').css('left',x + $('#map').width());
+		$('.contextmenu').css('top',y);
+		$('.contextmenu').css('position','relative');
+		$('.contextmenu').css('background','#ffffff');
+		$('.contextmenu').css('z-index',100);
+		$('.contextmenu').css('display','inline-block');
+	};
+	
+	$scope.showContextMenu = function(caurrentLatLng) {
+		$scope.mapLat = caurrentLatLng.lat();
+		$scope.mapLng = caurrentLatLng.lng();
+		console.log(caurrentLatLng);
+		var projection;
+		var contextmenuDir;
+		projection = $scope.map.getProjection() ;
+		$('.contextmenu').remove();
+		$scope.contextmenuDir = document.createElement("div");
+		$scope.contextmenuDir.className  = 'contextmenu';
+		var trustedHtml = $sce.trustAsHtml("<a onclick='createNodeFromMap()'>Create New Node Here<\/a>");
+		var compiledHtml = $compile(trustedHtml)($scope);
+		$($scope.map.getDiv()).append($scope.contextmenuDir);
+		
+		$scope.setMenuXY(caurrentLatLng);
+		
+		$scope.contextmenuDir.style.visibility = "visible";
+		$('#contextmenuClickable').css('left', $('.contextmenu')[0].getBoundingClientRect().x)
+		$('#contextmenuClickable').css('top', $('.contextmenu')[0].getBoundingClientRect().y)
+		$('#contextmenuClickable').css('visibility', 'visible');
+	}
+	
 	google.maps.event.addListener($scope.map, 'click', function (event) {
 		var lat = event.latLng.lat();
 		var lng = event.latLng.lng();
@@ -291,7 +381,11 @@ app.controller('adminHomeCtrl', function($scope, $http, $location) {
 			$scope.newStation.location = [lat,lng];
 			$scope.addingStationsOnMap = false;
 		}
+		$scope.seletingStartNode = false;
+		$scope.seletingEndNode = false;
+		$('#contextmenuClickable').css('visibility', 'hidden');
 	});
+	google.maps.event.addListener($scope.map, "rightclick",function(event){$scope.showContextMenu(event.latLng);});
 	
 	$scope.signOut = function() {
 		localStorage["authToken"] = "";
@@ -299,13 +393,18 @@ app.controller('adminHomeCtrl', function($scope, $http, $location) {
 	}
 	
 	$scope.caricon = {
-	    url: "images/car.png", // url
-	    scaledSize: new google.maps.Size(50, 50)
+	    url: "images/car2.png", // url
+	    scaledSize: new google.maps.Size(25, 25),
+        anchor: new google.maps.Point(12.5,12.5)
 	};
 	
 	$scope.stationicon = {
-	    url: "images/ds9.jpg", // url
-	    scaledSize: new google.maps.Size(50, 50)
+	    url: "images/place2.png", // url
+	    scaledSize: new google.maps.Size(13, 13),
+        anchor: new google.maps.Point(6.5, 6.5),
+
+//        origin: new google.maps.Point(0,0), // origin
+//        anchor: new google.maps.Point(0, 0) // anchor
 	};
 	
 	$scope.markers = {};
@@ -367,11 +466,24 @@ app.controller('adminHomeCtrl', function($scope, $http, $location) {
 		        	icon: $scope.stationicon,
 					map: $scope.map
 		        });
+		        (function(i) {
+		        	marker.addListener('click', function(){$scope.stationClicked($scope.stations[i]["_id"])});
+		        })(i)
 		        $scope.markers[$scope.stations[i]["_id"]] = marker;
 			}
 		}
 		
 		setTimeout(function(){$scope.clearOldMap(oldLines)},10);
+	}
+	
+	$scope.stationClicked = function(stationID) {
+		if($scope.seletingStartNode) {
+			$scope.newPath.startingNode = stationID;
+		} else if($scope.seletingEndNode) {
+			$scope.newPath.endingNode = stationID;
+		}
+		$scope.seletingStartNode = false;
+		$scope.seletingEndNode = false;
 	}
 	
 	$scope.clearOldMap = function(oldLines) {
@@ -445,5 +557,15 @@ app.controller('adminHomeCtrl', function($scope, $http, $location) {
 	
 	$scope.startPlaceStation = function() {
 		$scope.addingStationsOnMap = true;
+	}
+	
+	$scope.beginSelectStartNode = function() {
+		$scope.seletingStartNode = !$scope.seletingStartNode;
+		$scope.seletingEndNode = false;
+	}
+	
+	$scope.beginSelectEndNode = function() {
+		$scope.seletingEndNode = !$scope.seletingEndNode;
+		$scope.seletingStartNode = false;
 	}
 });
