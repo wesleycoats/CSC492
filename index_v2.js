@@ -1,4 +1,4 @@
-var runSimulation = true;
+var runSimulation = false;
 var carsRunninginSimulation = 3;
 var distToTravelPerFrame = 1;
 var portToUse = 80;
@@ -103,6 +103,8 @@ app.post('/signUp', function (req, res) {
 		resError(res, "All fields must be filled out", 400)
 	}
 })
+
+// TODO: create post for addRide
 
 app.post('/addCar', function (req, res) {
 	var form = req.body;
@@ -217,6 +219,8 @@ function getAllPathsInfo(callback) {
 		callback(edges);
 	})
 }
+
+// TODO: create addRide function
 
 function addCar(form, res) {
 	var newCar = {

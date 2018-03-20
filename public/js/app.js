@@ -13,7 +13,8 @@ var rideTasks = [
 var stationTypes = [
 	"Pickup Station",
 	"Refuel Station",
-	"Garage"
+	"Garage",
+	"Regular Node"
 ]
 
 app.config(function($routeProvider) {
@@ -193,7 +194,11 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 	$scope.showHome = function() {
 		$scope.currentView = 0;
 	}
-	
+
+	$scope.showAddRidesForm = function() {
+		$scope.currentView = 1;
+	}
+
 	$scope.showAddCarsForm = function() {
 		$scope.currentView = 2;
 	}
@@ -205,6 +210,9 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 	$scope.showAddPathsForm = function() {
 		$scope.currentView = 4;
 	}
+	
+	// TODO: create addRide function
+
 	
 	$scope.addCar = function() {
 		if($scope.newCar && $scope.newCar.name) {
@@ -392,16 +400,18 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 		$location.path('/');
 	}
 	
+	// Image for the car
 	$scope.caricon = {
 	    url: "images/car2.png", // url
 	    scaledSize: new google.maps.Size(25, 25),
-        anchor: new google.maps.Point(12.5,12.5)
+        anchor: new google.maps.Point(12.5,12.5) // move the origin to center of image
 	};
 	
+	// Image for the nodes
 	$scope.stationicon = {
 	    url: "images/place2.png", // url
 	    scaledSize: new google.maps.Size(13, 13),
-        anchor: new google.maps.Point(6.5, 6.5),
+        anchor: new google.maps.Point(6.5, 6.5), // moves origin to center of image
 
 //        origin: new google.maps.Point(0,0), // origin
 //        anchor: new google.maps.Point(0, 0) // anchor
