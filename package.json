@@ -9,7 +9,9 @@
   "dependencies": {
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
+    "geolib": "^2.0.24",
     "mongodb": "^3.0.2",
+    "socket.io": "^2.0.4",
     "x-frame-options": "^1.0.0"
   }
 }
