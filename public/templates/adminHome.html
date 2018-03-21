@@ -225,7 +225,7 @@
 						<label for="stationName">Starting Node <a href="" ng-click="beginSelectStartNode()" class="signOutLink"> <i class="fa fa-mouse-pointer"></i></a>
 							<span ng-show="seletingStartNode"><br/>Click Starting Node</span>
 						</label>
-						<select class="form-control" ng-model="newPath.startingNode" ng-options="''+station._id as station.name for station in stations">
+						<select class="form-control" ng-model="newRide.startingNode" ng-options="''+station._id as station.name for station in stations">
 						</select>
 					</div>
 	
@@ -233,7 +233,7 @@
 						<label for="stationName">Ending Node <a href="" ng-click="beginSelectEndNode()" class="signOutLink"><i class="fa fa-mouse-pointer"></i></a>
 							<span ng-show="seletingEndNode"><br/>Click Ending Node</span>
 						</label>
-						<select class="form-control" ng-model="newPath.endingNode" ng-options="''+station._id as station.name for station in stations">
+						<select class="form-control" ng-model="newRide.endingNode" ng-options="''+station._id as station.name for station in stations">
 						</select>
 					</div>
 
@@ -241,12 +241,12 @@
 					<!-- TODO: ng model, hook it up to app.js and index.js-->
 					<div class="form-group" id="carDropdwn">
 							<label for="exampleFormControlSelect1">Choose Vehicle</label>
-							<select class="form-control" ng-model="newStation.type" ng-options="''+car._id as car.name for car in cars">
+							<select class="form-control" ng-model="newRide.vehicle" ng-options="''+car._id as car.name for car in cars">
 							</select>
 					</div>
 
 					<label for="randomVehicle">
-							<input type="checkbox" id="randomVehicle" />
+							<input type="checkbox" id="randomVehicle" ng-model="newRide.random"/>
 							Random Vehicle?
 					</label>
 

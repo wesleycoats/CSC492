@@ -104,13 +104,31 @@ app.post('/signUp', function (req, res) {
 	}
 })
 
-// TODO: create post for addRide
+app.post('/addRide', function (req, res) {
+	var form = req.body;
+	if(form && form.startingNode && form.endingNode && form.vehicle) {
+		findAdmin(req.get("authToken"), function(admin) {
+			if(admin) {
+				form.user = admin._id;
+				addRide(form, res)
+			} else {
+				resError(res, "Account Not Found", 400);
+			}
+		})
+	} else {
+		resError(res, "All fields must be filled out", 400)
+	}
+})
 
 app.post('/addCar', function (req, res) {
 	var form = req.body;
 	if(form && form.name) {
-		findAdmin(req.get("authToken"), function() {
-			addCar(form, res)
+		findAdmin(req.get("authToken"), function(admin) {
+			if(admin) {
+				addCar(form, res)
+			} else {
+				resError(res, "Account Not Found", 400);
+			}
 		})
 	} else {
 		resError(res, "All fields must be filled out", 400)
@@ -120,8 +138,12 @@ app.post('/addCar', function (req, res) {
 app.post('/addStation', function (req, res) {
 	var form = req.body;
 	if(form && form.name && form.location && form.location.length==2 && form.type) {
-		findAdmin(req.get("authToken"), function() {
-			addStation(form, res)
+		findAdmin(req.get("authToken"), function(admin) {
+			if(admin) {
+				addStation(form, res)
+			} else {
+				resError(res, "Account Not Found", 400);
+			}
 		})
 	} else {
 		resError(res, "All fields must be filled out", 400)
@@ -131,8 +153,12 @@ app.post('/addStation', function (req, res) {
 app.post('/addPath', function (req, res) {
 	var form = req.body;
 	if(form && form.startingNode && form.endingNode && form.length >= 0 && form.waypoints.length >= 0) {
-		findAdmin(req.get("authToken"), function() {
-			addPath(form, res)
+		findAdmin(req.get("authToken"), function(admin) {
+			if(admin) {
+				addPath(form, res)
+			} else {
+				resError(res, "Account Not Found", 400);
+			}
 		})
 	} else {
 		resError(res, "All fields must be filled out", 400)
@@ -220,7 +246,24 @@ function getAllPathsInfo(callback) {
 	})
 }
 
-// TODO: create addRide function
+function addRide(form, res) {
+	var newRide = {
+		vehicleID : new mongo.ObjectID(form.vehicle),
+		userID : form.user,
+		startingNode : new mongo.ObjectID(form.startingNode),
+		endingNodeNode : new mongo.ObjectID(form.startingNode),
+		currentTask : 0
+	}
+	insertDocument("Rides", newRide, function(nr) {
+		if(nr) {
+			resSuccess(res, "Ride Added");
+			getAllRidesInfo(function(carsInfo){
+				io.to('allRidesInfo').emit('allRidesInfo',carsInfo);
+			})
+		} else {
+			resError(res, "An Error Occured", 500);
+		}
+	})}
 
 function addCar(form, res) {
 	var newCar = {

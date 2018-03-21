@@ -176,19 +176,37 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 		location : []
 	}
 	$scope.newPathSet = false;
+	$scope.newRideSet = false;
 	$scope.newPath = {
 		length : 0,
 		waypoints : []
 	}
 	
+	$scope.newRide = {
+		random : false
+	}
+	
 	$scope.resetNewPath = function() {
-		$scope.newPath = {
-			startingNode : $scope.stations[0]._id,
-			endingNode : $scope.stations[0]._id,
-			length : 0,
-			waypoints : []
+		if($scope.stations.length>0) {
+			$scope.newPath = {
+				startingNode : $scope.stations[0]._id,
+				endingNode : $scope.stations[0]._id,
+				length : 0,
+				waypoints : []
+			}
 		}
 		document.getElementById("waypointsFile").value = '';
+	}
+	
+	$scope.resetNewRide = function() {
+		if($scope.stations.length>0 && $scope.cars.length>0) {
+			$scope.newRide = {
+				startingNode : $scope.stations[0]._id,
+				endingNode : $scope.stations[0]._id,
+				vehicle : $scope.cars[0]._id,
+				random : false
+			}
+		}
 	}
 	
 	$scope.showHome = function() {
@@ -213,6 +231,22 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 	
 	// TODO: create addRide function
 
+	$scope.addRide = function() {
+		if($scope.newRide) {
+			$http.post("/addRide", $scope.newRide, {headers:{authToken:localStorage["authToken"]}}).then(
+				function(response){
+					window.alert(response.data);
+					$scope.resetNewRide();
+					$scope.showHome();
+				}, 
+				function(error){
+					window.alert(error.data);
+				}
+			);
+		} else {
+			window.alert("All fields must be filled out")
+		}
+	}
 	
 	$scope.addCar = function() {
 		if($scope.newCar && $scope.newCar.name) {
@@ -419,7 +453,8 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 	
 	$scope.markers = {};
 	$scope.lines = [];
-	$scope.infoWindows = []
+	$scope.infoWindows = [];
+	$scope.infoMarkers = [];
 	
 	$scope.updateMap = function() {
 		var oldLines = []
@@ -476,9 +511,20 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 		        	icon: $scope.stationicon,
 					map: $scope.map
 		        });
-		        (function(i) {
-		        	marker.addListener('click', function(){$scope.stationClicked($scope.stations[i]["_id"])});
-		        })(i)
+		        (function(i, marker) {
+			        var infowindow = new google.maps.InfoWindow({
+		        		content: $scope.stations[i].name
+					});
+					$scope.infoMarkers[$scope.stations[i]["_id"]] = infowindow;
+		        	marker.addListener('click', function(){
+			        	$scope.stationClicked($scope.stations[i]["_id"])
+			        	var infoMarkerKeys = Object.keys($scope.infoMarkers);
+			        	for(var j=0;j<infoMarkerKeys.length;j++) {
+				        	$scope.infoMarkers[infoMarkerKeys[j]].close();
+			        	}
+			        	infowindow.open($scope.map, marker);
+			        });
+		        })(i, marker)
 		        $scope.markers[$scope.stations[i]["_id"]] = marker;
 			}
 		}
@@ -533,9 +579,12 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 		$scope.$apply();
 		$scope.updateMap();
 		if(!$scope.newPathSet) {
-			$scope.newPathSet = true;
 			$scope.resetNewPath();
 		}
+		if($scope.newRideSet && !$scope.newPathSet) {
+			$scope.resetNewRide();
+		}
+		$scope.newPathSet = true;
 	});
 	
 	$scope.socket.on("allPathsInfo", function(paths) {
@@ -558,6 +607,10 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 		$scope.cars = cars;
 		$scope.$apply();
 		$scope.updateMap();
+		if(!$scope.newRideSet && $scope.newPathSet) {
+			$scope.resetNewRide();
+		}
+		$scope.newRideSet = true;
 	});
 	
 	$scope.socket.emit("joinAllRidesInfo",localStorage["authToken"]);
