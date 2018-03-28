@@ -600,7 +600,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 		$scope.updateMap();
 	});
 	
-	$scope.socket.on("allvehiclesInfo", function(vehicles) {
+	$scope.socket.on("allVehiclesInfo", function(vehicles) {
 		/*console.log("---All vehicles Begin---");
 		console.log(vehicles);
 		console.log("---All vehicles End---");*/
@@ -614,7 +614,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 	});
 	
 	$scope.socket.emit("joinAllRidesInfo",localStorage["authToken"]);
-	$scope.socket.emit("joinAllvehiclesInfo",localStorage["authToken"]);
+	$scope.socket.emit("joinAllVehiclesInfo",localStorage["authToken"]);
 	$scope.socket.emit("joinAllStationsInfo",localStorage["authToken"]);
 	$scope.socket.emit("joinAllPathsInfo",localStorage["authToken"]);
 	

@@ -275,7 +275,7 @@ function addvehicle(form, res) {
 				if(ns) {
 					resSuccess(res, "vehicle Added");
 					getAllvehiclesInfo(function(vehiclesInfo){
-						io.to('allvehiclesInfo').emit('allvehiclesInfo',vehiclesInfo);
+						io.to('allVehiclesInfo').emit('allVehiclesInfo',vehiclesInfo);
 					})
 				} else {
 					resError(res, "An Error Occured", 500);
@@ -372,7 +372,7 @@ function updatevehicle(newvehicle) {
 		insertDocument("vehiclesHistory", newvehicleObj, function(nc){
 			if(nc && c) {
 				getAllvehiclesInfo(function(vehiclesInfo){
-					io.to('allvehiclesInfo').emit('allvehiclesInfo',vehiclesInfo);
+					io.to('allVehiclesInfo').emit('allVehiclesInfo',vehiclesInfo);
 				})
 			}
 		})
