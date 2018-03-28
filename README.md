@@ -52,6 +52,7 @@ Add Test Data:
 * cd to where Github repo is
 * Run "npm install"
 * Run "node index_v2.js"
+  * For Linux, you run "sudo node index_v2.js"
 * In a web browser, go to localhost:80
 
 #### Terminating System
