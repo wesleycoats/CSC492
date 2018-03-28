@@ -187,10 +187,10 @@ io.on('connection', function(socket){
 	  })
   })
   
-  socket.on('joinAllvehiclesInfo', function(authToken) {
+  socket.on('joinAllVehiclesInfo', function(authToken) {
 	  findAdmin(authToken, function(admin){
 		  if(admin) {
-			  socket.join('allvehiclesInfo');
+			  socket.join('allVehiclesInfo');
 			  getAllVehiclesInfo(function(vehiclesInfo) {
 				  socket.emit('allVehiclesInfo',vehiclesInfo);
 			  })
