@@ -229,7 +229,7 @@ function getAllRidesInfo(callback) {
 }
 
 function getAllvehiclesInfo(callback) {
-	findDocuments("vehicles", {}, function(vehicles){
+	findDocuments("Vehicles", {}, function(vehicles){
 		callback(vehicles)
 	})
 }
@@ -269,9 +269,9 @@ function addvehicle(form, res) {
 	var newvehicle = {
 		name : form.name,
 	}
-	findDocuments("vehicles", {name:newvehicle.name}, function(vehiclesWithSameName){
+	findDocuments("Vehicles", {name:newvehicle.name}, function(vehiclesWithSameName){
 		if(vehiclesWithSameName.length==0) {
-			insertDocument("vehicles", newvehicle, function(ns) {
+			insertDocument("Vehicles", newvehicle, function(ns) {
 				if(ns) {
 					resSuccess(res, "vehicle Added");
 					getAllvehiclesInfo(function(vehiclesInfo){
@@ -367,7 +367,7 @@ function updatevehicle(newvehicle) {
 			newvehicleObj[newvehicleKeys[i]] = newvehicle[newvehicleKeys[i]]
 		}
 	}
-	updateDocument("vehicles", {_id:newvehicle._id}, newvehicleObj, function(c){
+	updateDocument("Vehicles", {_id:newvehicle._id}, newvehicleObj, function(c){
 		newvehicleObj.vehicleID = newvehicle._id;
 		insertDocument("vehiclesHistory", newvehicleObj, function(nc){
 			if(nc && c) {
@@ -621,7 +621,7 @@ findDocuments("Users", {userType:0}, function(admins){
 
 function simulation() {
 	setTimeout(simulation, 1000);
-	findDocuments("vehicles", {}, function(vehicles){
+	findDocuments("Vehicles", {}, function(vehicles){
 		for(var i=0;i<vehiclesRunninginSimulation;i++) {
 			(function(i) {
 				findDocuments("Edges", {_id:vehicles[i].currentPath}, function(edge){
