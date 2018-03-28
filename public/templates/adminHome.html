@@ -82,13 +82,13 @@
 						</tr>
 						<tr ng-repeat="vehicle in vehicles|filter:{currentPath:'!!'}">
 							<td>
-								{{car.name}}
+								{{vehicle.name}}
 							</td>
 							<td>
-								{{car.speed}} MPH
+								{{vehicle.speed}} MPH
 							</td>
 							<td>
-								{{stations[stationsMap[paths[pathsMap[car.currentPath]].startingNode]].name}} -> {{stations[stationsMap[paths[pathsMap[car.currentPath]].endingNode]].name}}
+								{{stations[stationsMap[paths[pathsMap[vehicle.currentPath]].startingNode]].name}} -> {{stations[stationsMap[paths[pathsMap[vehicle.currentPath]].endingNode]].name}}
 							</td>
 						</tr>
 					</table>
@@ -105,10 +105,10 @@
 						</tr>
 						<tr ng-repeat="vehicle in vehicles|filter:{currentPath:'!'}">
 							<td>
-								{{car.name}}
+								{{vehicle.name}}
 							</td>
 							<td>
-								{{car._id}}
+								{{vehicle._id}}
 							</td>
 						</tr>
 					</table>
