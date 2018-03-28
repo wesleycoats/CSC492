@@ -128,7 +128,7 @@ app.post('/addvehicle', function (req, res) {
 	if(form && form.name) {
 		findAdmin(req.get("authToken"), function(admin) {
 			if(admin) {
-				addvehicle(form, res)
+				addVehicle(form, res)
 			} else {
 				resError(res, "Account Not Found", 400);
 			}
@@ -191,8 +191,8 @@ io.on('connection', function(socket){
 	  findAdmin(authToken, function(admin){
 		  if(admin) {
 			  socket.join('allvehiclesInfo');
-			  getAllvehiclesInfo(function(vehiclesInfo) {
-				  socket.emit('allvehiclesInfo',vehiclesInfo);
+			  getAllVehiclesInfo(function(vehiclesInfo) {
+				  socket.emit('allVehiclesInfo',vehiclesInfo);
 			  })
 		  }
 	  })
@@ -231,7 +231,7 @@ function getAllRidesInfo(callback) {
 	})
 }
 
-function getAllvehiclesInfo(callback) {
+function getAllVehiclesInfo(callback) {
 	findDocuments("Vehicles", {}, function(vehicles){
 		callback(vehicles)
 	})
@@ -281,7 +281,7 @@ function addRide(form, res) {
 		}
 	})}
 
-function addvehicle(form, res) {
+function addVehicle(form, res) {
 	var newvehicle = {
 		name : form.name,
 	}
