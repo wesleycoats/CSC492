@@ -20,14 +20,17 @@
     * In this tab,click the tab for you specific OS
     * Download the program
   * For Linux
-    * https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/
+    * Go to https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/
 * Github Repository
 
 #### MongoDB Setup
 
 Running MongoDB:
-* For Linux/Mac
-  * Enter "mongod" in a terminal to run MongoDB
+* For Linux
+  * Go to https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/
+  * Then go to the "Run MongoDB Community Edition" section to run MongoDB
+* For Mac
+  * Run "mongod"
 * For Windows
    * Add MongoDB to path variable
    * Add a folder called "data" to your C: drive
@@ -48,8 +51,8 @@ Add Test Data:
 * Open a terminal
 * cd to where Github repo is
 * Run "npm install"
-* Run "node index.js"
-* In a web browser, go to localhost:3000/home.html
+* Run "node index_v2.js"
+* In a web browser, go to localhost:80
 
 #### Terminating System
 * Close web browser or tab that has the website running
