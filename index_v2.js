@@ -246,14 +246,16 @@ function getAllStationsInfo(callback) {
 function getAllPathsInfo(callback) {
 	findDocumentsWithFields("Edges", {}, {}, {}, 0, function(edges){
 		var ret = [];
-		ret.push(edges.waypoints[0]);
-		for(var i=edgeResolution;i<edges.waypoints.length-1;i+=edgeResolution) {
-			if(edges.waypoints[i]) {
-				ret.push(edges.waypoints[i]);
+		if(edges.waypoints && edges.waypoints.length>0) {
+			ret.push(edges.waypoints[0]);
+			for(var i=edgeResolution;i<edges.waypoints.length-1;i+=edgeResolution) {
+				if(edges.waypoints[i]) {
+					ret.push(edges.waypoints[i]);
+				}
 			}
+			ret.push(edges.waypoints[edges.waypoints.length-1]);
+			edges.waypoints = ret;
 		}
-		ret.push(edges.waypoints[edges.waypoints.length-1]);
-		edges.waypoints = ret;
 		callback(edges);
 	})
 }
