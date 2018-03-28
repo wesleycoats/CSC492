@@ -1,5 +1,5 @@
 var runSimulation = false;
-var carsRunninginSimulation = 3;
+var vehiclesRunninginSimulation = 3;
 var distToTravelPerFrame = 1;
 var portToUse = 80;
 
@@ -120,12 +120,12 @@ app.post('/addRide', function (req, res) {
 	}
 })
 
-app.post('/addCar', function (req, res) {
+app.post('/addvehicle', function (req, res) {
 	var form = req.body;
 	if(form && form.name) {
 		findAdmin(req.get("authToken"), function(admin) {
 			if(admin) {
-				addCar(form, res)
+				addvehicle(form, res)
 			} else {
 				resError(res, "Account Not Found", 400);
 			}
@@ -169,7 +169,7 @@ var http = require('http').createServer(app);
 
 var io = require('socket.io')(http);
 
-var mostRecentAllCarsInfo;
+var mostRecentAllvehiclesInfo;
 
 io.on('connection', function(socket){
   
@@ -184,12 +184,12 @@ io.on('connection', function(socket){
 	  })
   })
   
-  socket.on('joinAllCarsInfo', function(authToken) {
+  socket.on('joinAllvehiclesInfo', function(authToken) {
 	  findAdmin(authToken, function(admin){
 		  if(admin) {
-			  socket.join('allCarsInfo');
-			  getAllCarsInfo(function(carsInfo) {
-				  socket.emit('allCarsInfo',carsInfo);
+			  socket.join('allvehiclesInfo');
+			  getAllvehiclesInfo(function(vehiclesInfo) {
+				  socket.emit('allvehiclesInfo',vehiclesInfo);
 			  })
 		  }
 	  })
@@ -228,9 +228,9 @@ function getAllRidesInfo(callback) {
 	})
 }
 
-function getAllCarsInfo(callback) {
-	findDocuments("Cars", {}, function(cars){
-		callback(cars)
+function getAllvehiclesInfo(callback) {
+	findDocuments("vehicles", {}, function(vehicles){
+		callback(vehicles)
 	})
 }
 
@@ -257,32 +257,32 @@ function addRide(form, res) {
 	insertDocument("Rides", newRide, function(nr) {
 		if(nr) {
 			resSuccess(res, "Ride Added");
-			getAllRidesInfo(function(carsInfo){
-				io.to('allRidesInfo').emit('allRidesInfo',carsInfo);
+			getAllRidesInfo(function(vehiclesInfo){
+				io.to('allRidesInfo').emit('allRidesInfo',vehiclesInfo);
 			})
 		} else {
 			resError(res, "An Error Occured", 500);
 		}
 	})}
 
-function addCar(form, res) {
-	var newCar = {
+function addvehicle(form, res) {
+	var newvehicle = {
 		name : form.name,
 	}
-	findDocuments("Cars", {name:newCar.name}, function(carsWithSameName){
-		if(carsWithSameName.length==0) {
-			insertDocument("Cars", newCar, function(ns) {
+	findDocuments("vehicles", {name:newvehicle.name}, function(vehiclesWithSameName){
+		if(vehiclesWithSameName.length==0) {
+			insertDocument("vehicles", newvehicle, function(ns) {
 				if(ns) {
-					resSuccess(res, "Car Added");
-					getAllCarsInfo(function(carsInfo){
-						io.to('allCarsInfo').emit('allCarsInfo',carsInfo);
+					resSuccess(res, "vehicle Added");
+					getAllvehiclesInfo(function(vehiclesInfo){
+						io.to('allvehiclesInfo').emit('allvehiclesInfo',vehiclesInfo);
 					})
 				} else {
 					resError(res, "An Error Occured", 500);
 				}
 			})
 		} else {
-			resError(res, "Car With Same Name Already Exists", 400);
+			resError(res, "vehicle With Same Name Already Exists", 400);
 		}
 	})
 }
@@ -359,20 +359,20 @@ function addPath(form, res) {
 	})
 }
 
-function updateCar(newCar) {
-	var newCarKeys = Object.keys(newCar);
-	var newCarObj = {}
-	for(var i=0;i<newCarKeys.length;i++) {
-		if(newCarKeys[i]!="_id" && newCarKeys[i]!="name") {
-			newCarObj[newCarKeys[i]] = newCar[newCarKeys[i]]
+function updatevehicle(newvehicle) {
+	var newvehicleKeys = Object.keys(newvehicle);
+	var newvehicleObj = {}
+	for(var i=0;i<newvehicleKeys.length;i++) {
+		if(newvehicleKeys[i]!="_id" && newvehicleKeys[i]!="name") {
+			newvehicleObj[newvehicleKeys[i]] = newvehicle[newvehicleKeys[i]]
 		}
 	}
-	updateDocument("Cars", {_id:newCar._id}, newCarObj, function(c){
-		newCarObj.carID = newCar._id;
-		insertDocument("carsHistory", newCarObj, function(nc){
+	updateDocument("vehicles", {_id:newvehicle._id}, newvehicleObj, function(c){
+		newvehicleObj.vehicleID = newvehicle._id;
+		insertDocument("vehiclesHistory", newvehicleObj, function(nc){
 			if(nc && c) {
-				getAllCarsInfo(function(carsInfo){
-					io.to('allCarsInfo').emit('allCarsInfo',carsInfo);
+				getAllvehiclesInfo(function(vehiclesInfo){
+					io.to('allvehiclesInfo').emit('allvehiclesInfo',vehiclesInfo);
 				})
 			}
 		})
@@ -621,48 +621,48 @@ findDocuments("Users", {userType:0}, function(admins){
 
 function simulation() {
 	setTimeout(simulation, 1000);
-	findDocuments("Cars", {}, function(cars){
-		for(var i=0;i<carsRunninginSimulation;i++) {
+	findDocuments("vehicles", {}, function(vehicles){
+		for(var i=0;i<vehiclesRunninginSimulation;i++) {
 			(function(i) {
-				findDocuments("Edges", {_id:cars[i].currentPath}, function(edge){
-					var closestEdge = cars[i].nextWaypoint;
+				findDocuments("Edges", {_id:vehicles[i].currentPath}, function(edge){
+					var closestEdge = vehicles[i].nextWaypoint;
 					var closestEdgeDist = geolib.getDistance({
-						latitude:cars[i].currentLocation[0],
-						longitude:cars[i].currentLocation[1]},
+						latitude:vehicles[i].currentLocation[0],
+						longitude:vehicles[i].currentLocation[1]},
 						{latitude:edge[0].waypoints[closestEdge].coordinates[0],
 						longitude:edge[0].waypoints[closestEdge].coordinates[1]}
 					)
 					var bearing = geolib.getBearing({
-						latitude:cars[i].currentLocation[0],
-						longitude:cars[i].currentLocation[1]},
+						latitude:vehicles[i].currentLocation[0],
+						longitude:vehicles[i].currentLocation[1]},
 						{latitude:edge[0].waypoints[closestEdge].coordinates[0],
 						longitude:edge[0].waypoints[closestEdge].coordinates[1]}
 					)
 					var dest = geolib.computeDestinationPoint({
-						latitude:cars[i].currentLocation[0],
-						longitude:cars[i].currentLocation[1]},
+						latitude:vehicles[i].currentLocation[0],
+						longitude:vehicles[i].currentLocation[1]},
 						distToTravelPerFrame, bearing
 					);
 					
 					if(closestEdge==edge[0].waypoints.length-1 && distToTravelPerFrame>=closestEdgeDist) {
 						findDocuments("Edges", {startingNode:edge[0].endingNode}, function(newEdge) {
 							if(newEdge.length>0) {
-								cars[i].nextWaypoint = 1;
-								cars[i].currentPath = newEdge[Math.floor(Math.random() * newEdge.length)]["_id"];
-								cars[i].currentLocation[0] = dest.latitude;
-								cars[i].currentLocation[1] = dest.longitude;
-								updateCar(cars[i]);
+								vehicles[i].nextWaypoint = 1;
+								vehicles[i].currentPath = newEdge[Math.floor(Math.random() * newEdge.length)]["_id"];
+								vehicles[i].currentLocation[0] = dest.latitude;
+								vehicles[i].currentLocation[1] = dest.longitude;
+								updatevehicle(vehicles[i]);
 							}
 						})
 					} else if(distToTravelPerFrame>=closestEdgeDist) {
-						cars[i].nextWaypoint++;
-						cars[i].currentLocation[0] = dest.latitude;
-						cars[i].currentLocation[1] = dest.longitude;
-						updateCar(cars[i]);
+						vehicles[i].nextWaypoint++;
+						vehicles[i].currentLocation[0] = dest.latitude;
+						vehicles[i].currentLocation[1] = dest.longitude;
+						updatevehicle(vehicles[i]);
 					} else {
-						cars[i].currentLocation[0] = dest.latitude;
-						cars[i].currentLocation[1] = dest.longitude;
-						updateCar(cars[i]);
+						vehicles[i].currentLocation[0] = dest.latitude;
+						vehicles[i].currentLocation[1] = dest.longitude;
+						updatevehicle(vehicles[i]);
 					}
 				})
 			})(i)

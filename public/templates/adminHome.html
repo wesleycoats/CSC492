@@ -57,17 +57,17 @@
 
 	<!-- Dropdown for vehicles -->
 	<div class="card text-white bg-info">
-		<div class="card-header" id="carsHeading">
+		<div class="card-header" id="vehiclesHeading">
 			<h5 class="mb-0">
-				<button class="btn btn-link collapsed" data-toggle="collapse" data-target="#cars" aria-expanded="false" aria-controls="cars" style="color:white">
+				<button class="btn btn-link collapsed" data-toggle="collapse" data-target="#vehicles" aria-expanded="false" aria-controls="vehicles" style="color:white">
 					Vehicles
 				</button>
-				<div class="pull-right" ng-click="showAddCarsForm()"><i class="fa fa-plus"></i></div>
+				<div class="pull-right" ng-click="showAddvehiclesForm()"><i class="fa fa-plus"></i></div>
 			</h5>
 		</div>
-		<div id="cars" class="collapse" aria-labelledby="cars" data-parent="#accordion" data-collapse-group="admin">
+		<div id="vehicles" class="collapse" aria-labelledby="vehicles" data-parent="#accordion" data-collapse-group="admin">
 			<div class="card-body">
-				Active Cars
+				Active vehicles
 					<table style="color:white;width:100%">
 						<tr>
 							<th>
@@ -80,7 +80,7 @@
 								Path
 							</th>
 						</tr>
-						<tr ng-repeat="car in cars|filter:{currentPath:'!!'}">
+						<tr ng-repeat="vehicle in vehicles|filter:{currentPath:'!!'}">
 							<td>
 								{{car.name}}
 							</td>
@@ -93,7 +93,7 @@
 						</tr>
 					</table>
 				<br/>
-				Inactive Cars
+				Inactive vehicles
 					<table style="color:white;width:100%">
 						<tr>
 							<th>
@@ -103,7 +103,7 @@
 								ID
 							</th>
 						</tr>
-						<tr ng-repeat="car in cars|filter:{currentPath:'!'}">
+						<tr ng-repeat="vehicle in vehicles|filter:{currentPath:'!'}">
 							<td>
 								{{car.name}}
 							</td>
@@ -241,7 +241,7 @@
 					<!-- TODO: ng model, hook it up to app.js and index.js-->
 					<div class="form-group" id="carDropdwn">
 							<label for="exampleFormControlSelect1">Choose Vehicle</label>
-							<select class="form-control" ng-model="newRide.vehicle" ng-options="''+car._id as car.name for car in cars">
+							<select class="form-control" ng-model="newRide.vehicle" ng-options="''+car._id as car.name for vehicle in vehicles">
 							</select>
 					</div>
 

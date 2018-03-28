@@ -199,11 +199,11 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 	}
 	
 	$scope.resetNewRide = function() {
-		if($scope.stations.length>0 && $scope.cars.length>0) {
+		if($scope.stations.length>0 && $scope.vehicles.length>0) {
 			$scope.newRide = {
 				startingNode : $scope.stations[0]._id,
 				endingNode : $scope.stations[0]._id,
-				vehicle : $scope.cars[0]._id,
+				vehicle : $scope.vehicles[0]._id,
 				random : false
 			}
 		}
@@ -217,7 +217,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 		$scope.currentView = 1;
 	}
 
-	$scope.showAddCarsForm = function() {
+	$scope.showAddvehiclesForm = function() {
 		$scope.currentView = 2;
 	}
 	
@@ -248,12 +248,12 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 		}
 	}
 	
-	$scope.addCar = function() {
-		if($scope.newCar && $scope.newCar.name) {
-			$http.post("/addCar", $scope.newCar, {headers:{authToken:localStorage["authToken"]}}).then(
+	$scope.addvehicle = function() {
+		if($scope.newvehicle && $scope.newvehicle.name) {
+			$http.post("/addvehicle", $scope.newvehicle, {headers:{authToken:localStorage["authToken"]}}).then(
 				function(response){
 					window.alert(response.data);
-					$scope.newCar = {
+					$scope.newvehicle = {
 						name : ""
 					}
 					$scope.showHome();
@@ -434,9 +434,9 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 		$location.path('/');
 	}
 	
-	// Image for the car
-	$scope.caricon = {
-	    url: "images/car2.png", // url
+	// Image for the vehicle
+	$scope.vehicleicon = {
+	    url: "images/vehicle2.png", // url
 	    scaledSize: new google.maps.Size(25, 25),
         anchor: new google.maps.Point(12.5,12.5) // move the origin to center of image
 	};
@@ -462,24 +462,24 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 			oldLines.push($scope.lines[i])
 		}
 		$scope.lines = [];
-		for(var i=0;i<$scope.cars.length;i++) {
-			if($scope.cars[i].currentLocation && $scope.cars[i].currentLocation[0] && $scope.cars[i].currentLocation[1]) {
-				var location = {lat:$scope.cars[i].currentLocation[0],lng:$scope.cars[i].currentLocation[1]};
-				if($scope.markers[$scope.cars[i]["_id"]]) {
-					$scope.markers[$scope.cars[i]["_id"]].setPosition(location)
+		for(var i=0;i<$scope.vehicles.length;i++) {
+			if($scope.vehicles[i].currentLocation && $scope.vehicles[i].currentLocation[0] && $scope.vehicles[i].currentLocation[1]) {
+				var location = {lat:$scope.vehicles[i].currentLocation[0],lng:$scope.vehicles[i].currentLocation[1]};
+				if($scope.markers[$scope.vehicles[i]["_id"]]) {
+					$scope.markers[$scope.vehicles[i]["_id"]].setPosition(location)
 				} else {
 					var marker = new google.maps.Marker({
 			        	position: location,
-			        	icon: $scope.caricon,
+			        	icon: $scope.vehicleicon,
 						map: $scope.map,
-						title:$scope.cars[i].name
+						title:$scope.vehicles[i].name
 			        });
 			        var infowindow = new google.maps.InfoWindow({
-				        content: $scope.cars[i].name
+				        content: $scope.vehicles[i].name
 			        });
 			        infowindow.open($scope.map, marker);
 			        //$scope.markers.push(marker);
-			        $scope.markers[$scope.cars[i]["_id"]] = marker;
+			        $scope.markers[$scope.vehicles[i]["_id"]] = marker;
 			        $scope.infoWindows.push(infowindow);
 				}
 			}
@@ -554,7 +554,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 	$scope.socket = io();
 	
 	$scope.rides = [];
-	$scope.cars = [];
+	$scope.vehicles = [];
 	$scope.stations = [];
 	$scope.paths = [];
 	
@@ -600,11 +600,11 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 		$scope.updateMap();
 	});
 	
-	$scope.socket.on("allCarsInfo", function(cars) {
-		/*console.log("---All Cars Begin---");
-		console.log(cars);
-		console.log("---All Cars End---");*/
-		$scope.cars = cars;
+	$scope.socket.on("allvehiclesInfo", function(vehicles) {
+		/*console.log("---All vehicles Begin---");
+		console.log(vehicles);
+		console.log("---All vehicles End---");*/
+		$scope.vehicles = vehicles;
 		$scope.$apply();
 		$scope.updateMap();
 		if(!$scope.newRideSet && $scope.newPathSet) {
@@ -614,7 +614,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 	});
 	
 	$scope.socket.emit("joinAllRidesInfo",localStorage["authToken"]);
-	$scope.socket.emit("joinAllCarsInfo",localStorage["authToken"]);
+	$scope.socket.emit("joinAllvehiclesInfo",localStorage["authToken"]);
 	$scope.socket.emit("joinAllStationsInfo",localStorage["authToken"]);
 	$scope.socket.emit("joinAllPathsInfo",localStorage["authToken"]);
 	
