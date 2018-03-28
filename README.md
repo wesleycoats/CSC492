@@ -56,6 +56,6 @@ Add Test Data:
 
 #### Terminating System
 * Close web browser or tab that has the website running
-* Go to terminal where you ran “mongod” and enter ctrl-C to close the database
-* Go to terminal where you ran “node index.js” and enter ctrl-C to close the connection
+* Go to terminal where you ran MongoDB and enter ctrl-C to close the database
+* Go to terminal where you ran “node index_v2.js” and enter ctrl-C to close the connection
 
