@@ -1,3 +1,6 @@
+//Draw every X waypoints
+var edgeResolution = 10;
+
 var runSimulation = false;
 var vehiclesRunninginSimulation = 3;
 var distToTravelPerFrame = 1;
@@ -236,6 +239,14 @@ function getAllvehiclesInfo(callback) {
 
 function getAllStationsInfo(callback) {
 	findDocumentsWithFields("Nodes", {}, {}, {}, 0, function(stations){
+		var ret = [];
+		ret.push(stations.waypoints[0]);
+		for(var i=edgeResolution;i<stations.waypoints.length-1;i+=edgeResolution) {
+			if(stations.waypoints[i]) {
+				ret.push(stations.waypoints[i]);
+			}
+		}
+		ret.push(stations.waypoints[stations.waypoints.length-1]);
 		callback(stations);
 	})
 }
