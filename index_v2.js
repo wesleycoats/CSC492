@@ -239,20 +239,21 @@ function getAllvehiclesInfo(callback) {
 
 function getAllStationsInfo(callback) {
 	findDocumentsWithFields("Nodes", {}, {}, {}, 0, function(stations){
-		var ret = [];
-		ret.push(stations.waypoints[0]);
-		for(var i=edgeResolution;i<stations.waypoints.length-1;i+=edgeResolution) {
-			if(stations.waypoints[i]) {
-				ret.push(stations.waypoints[i]);
-			}
-		}
-		ret.push(stations.waypoints[stations.waypoints.length-1]);
 		callback(stations);
 	})
 }
 
 function getAllPathsInfo(callback) {
 	findDocumentsWithFields("Edges", {}, {}, {}, 0, function(edges){
+		var ret = [];
+		ret.push(edges.waypoints[0]);
+		for(var i=edgeResolution;i<edges.waypoints.length-1;i+=edgeResolution) {
+			if(edges.waypoints[i]) {
+				ret.push(edges.waypoints[i]);
+			}
+		}
+		ret.push(edges.waypoints[edges.waypoints.length-1]);
+		edges.waypoints = ret;
 		callback(edges);
 	})
 }
