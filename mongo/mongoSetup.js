@@ -2,7 +2,16 @@ var mongo = require('mongodb');
 
 var Vehicle = {
 	name : "Blue Car",
-	enabled : true
+	enabled : true,
+	batteryLife : 30,
+	coordinates : [35.7686963207063, -78.6771035309432],
+	steeringAngle : 1.243,
+	headingAngle : 0.987,
+	speed : 15,
+	rideID : new mongo.ObjectID(),
+	edgeID : new mongo.ObjectID(),
+	vehicleID : new mongo.ObjectID(),
+	rideQueue : []
 }
 
 var vehicleHistory = {
