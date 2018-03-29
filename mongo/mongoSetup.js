@@ -33,7 +33,7 @@ var Edges = [
 		distance : 12.34,
 		waypoints : [
 			{
-				coordinates : [1,2],
+				coordinates : [35.769219,-78.675626],
 				speed : 13,
 				headingAngle : 54.67,
 				steeringAngle : 93.26,
@@ -42,20 +42,9 @@ var Edges = [
 				actuator : [0,1,2],
 				motorControlFlags : [true,true,true,false,true,false,true,true],
 				motorThrottle : 1
-			},
+			}
 			{
-				coordinates : [2,3],
-				speed : 14,
-				headingAngle : 55.67,
-				steeringAngle : 94.26,
-				timeStamp : new Date(),
-				tick : 1,
-				actuator : [1,2,3],
-				motorControlFlags : [true,true,true,false,true,false,true,true],
-				motorThrottle : 2
-			},
-			{
-				coordinates : [3,4],
+				coordinates : [35.769743,-78.675071],
 				speed : 15,
 				headingAngle : 56.67,
 				steeringAngle : 95.26,
@@ -73,7 +62,7 @@ var Edges = [
 		distance : 34.12,
 		waypoints : [
 			{
-				coordinates : [11,22],
+				coordinates : [35.769743,-78.675071],
 				speed : 10,
 				headingAngle : 54.67,
 				steeringAngle : 93.26,
@@ -82,20 +71,9 @@ var Edges = [
 				actuator : [3,4,5],
 				motorControlFlags : [true,true,true,false,true,false,true,true],
 				motorThrottle : 4
-			},
+			}
 			{
-				coordinates : [22,33],
-				speed : 11,
-				headingAngle : 53.67,
-				steeringAngle : 92.26,
-				timeStamp : new Date(),
-				tick : 1,
-				actuator : [4,5,6],
-				motorControlFlags : [true,true,true,false,true,false,true,true],
-				motorThrottle : 5
-			},
-			{
-				coordinates : [33,44],
+				coordinates : [35.770362,-78.675628],
 				speed : 12,
 				headingAngle : 52.67,
 				steeringAngle : 91.26,
@@ -113,7 +91,7 @@ var Edges = [
 		distance : 43.21,
 		waypoints : [
 			{
-				coordinates : [111,222],
+				coordinates : [35.770362,-78.675628],
 				speed : 20,
 				headingAngle : 34.67,
 				steeringAngle : 67.26,
@@ -122,20 +100,9 @@ var Edges = [
 				actuator : [7,8,9],
 				motorControlFlags : [true,true,true,false,true,false,true,true],
 				motorThrottle : 7
-			},
+			}
 			{
-				coordinates : [222,333],
-				speed : 19,
-				headingAngle : 35.67,
-				steeringAngle : 66.26,
-				timeStamp : new Date(),
-				tick : 1,
-				actuator : [8,9,0],
-				motorControlFlags : [true,true,true,false,true,false,true,true],
-				motorThrottle : 8
-			},
-			{
-				coordinates : [333,444],
+				coordinates : [35.769219,-78.675626],
 				speed : 18,
 				headingAngle : 36.67,
 				steeringAngle : 65.26,
