@@ -42,7 +42,7 @@ var Edges = [
 				actuator : [0,1,2],
 				motorControlFlags : [true,true,true,false,true,false,true,true],
 				motorThrottle : 1
-			}
+			},
 			{
 				coordinates : [35.769743,-78.675071],
 				speed : 15,
@@ -71,7 +71,7 @@ var Edges = [
 				actuator : [3,4,5],
 				motorControlFlags : [true,true,true,false,true,false,true,true],
 				motorThrottle : 4
-			}
+			},
 			{
 				coordinates : [35.770362,-78.675628],
 				speed : 12,
@@ -100,7 +100,7 @@ var Edges = [
 				actuator : [7,8,9],
 				motorControlFlags : [true,true,true,false,true,false,true,true],
 				motorThrottle : 7
-			}
+			},
 			{
 				coordinates : [35.769219,-78.675626],
 				speed : 18,
