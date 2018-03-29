@@ -248,12 +248,12 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 		}
 	}
 	
-	$scope.addvehicle = function() {
-		if($scope.newvehicle && $scope.newvehicle.name) {
-			$http.post("/addvehicle", $scope.newvehicle, {headers:{authToken:localStorage["authToken"]}}).then(
+	$scope.addVehicle = function() {
+		if($scope.newVehicle && $scope.newVehicle.name) {
+			$http.post("/addVehicle", $scope.newVehicle, {headers:{authToken:localStorage["authToken"]}}).then(
 				function(response){
 					window.alert(response.data);
-					$scope.newvehicle = {
+					$scope.newVehicle = {
 						name : ""
 					}
 					$scope.showHome();
@@ -509,11 +509,17 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 				var marker = new google.maps.Marker({
 		        	position: location,
 		        	icon: $scope.stationicon,
-					map: $scope.map
+					map: $scope.map,
+					disableAutoPan: true
 		        });
 		        (function(i, marker) {
+					var contentString = '<div id="content"><h5>' + $scope.stations[i].name + '</h5>'
+					+ '<p>' + 'Lat: ' + $scope.stations[i].location[0].toString()
+					+ ', Long: ' + $scope.stations[i].location[1].toString() + '</p>'
+					+ '<p>Station Type: ' + stationTypes[$scope.stations[i].type]  + '</p></div>';
 			        var infowindow = new google.maps.InfoWindow({
-		        		content: $scope.stations[i].name
+						// content: $scope.stations[i].name
+						content: contentString
 					});
 					$scope.infoMarkers[$scope.stations[i]["_id"]] = infowindow;
 		        	marker.addListener('click', function(){

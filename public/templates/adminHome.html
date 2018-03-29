@@ -241,7 +241,7 @@
 					<!-- TODO: ng model, hook it up to app.js and index.js-->
 					<div class="form-group" id="carDropdwn">
 							<label for="exampleFormControlSelect1">Choose Vehicle</label>
-							<select class="form-control" ng-model="newRide.vehicle" ng-options="''+car._id as car.name for vehicle in vehicles">
+							<select class="form-control" ng-model="newRide.vehicle" ng-options="''+vehicle._id as vehicle.name for vehicle in vehicles">
 							</select>
 					</div>
 

@@ -1,5 +1,5 @@
 //Draw every X waypoints
-var edgeResolution = 10;
+var edgeResolution = 1;
 
 var runSimulation = false;
 var vehiclesRunninginSimulation = 3;
@@ -172,7 +172,7 @@ var http = require('http').createServer(app);
 
 var io = require('socket.io')(http);
 
-var mostRecentAllvehiclesInfo;
+var mostRecentAllVehiclesInfo;
 
 io.on('connection', function(socket){
   
@@ -282,15 +282,15 @@ function addRide(form, res) {
 	})}
 
 function addVehicle(form, res) {
-	var newvehicle = {
+	var newVehicle = {
 		name : form.name,
 	}
-	findDocuments("Vehicles", {name:newvehicle.name}, function(vehiclesWithSameName){
+	findDocuments("Vehicles", {name:newVehicle.name}, function(vehiclesWithSameName){
 		if(vehiclesWithSameName.length==0) {
-			insertDocument("Vehicles", newvehicle, function(ns) {
+			insertDocument("Vehicles", newVehicle, function(ns) {
 				if(ns) {
 					resSuccess(res, "vehicle Added");
-					getAllvehiclesInfo(function(vehiclesInfo){
+					getAllVehiclesInfo(function(vehiclesInfo){
 						io.to('allVehiclesInfo').emit('allVehiclesInfo',vehiclesInfo);
 					})
 				} else {
@@ -375,19 +375,19 @@ function addPath(form, res) {
 	})
 }
 
-function updatevehicle(newvehicle) {
-	var newvehicleKeys = Object.keys(newvehicle);
-	var newvehicleObj = {}
-	for(var i=0;i<newvehicleKeys.length;i++) {
-		if(newvehicleKeys[i]!="_id" && newvehicleKeys[i]!="name") {
-			newvehicleObj[newvehicleKeys[i]] = newvehicle[newvehicleKeys[i]]
+function updateVehicle(newVehicle) {
+	var newVehicleKeys = Object.keys(newVehicle);
+	var newVehicleObj = {}
+	for(var i=0;i<newVehicleKeys.length;i++) {
+		if(newVehicleKeys[i]!="_id" && newVehicleKeys[i]!="name") {
+			newVehicleObj[newVehicleKeys[i]] = newVehicle[newVehicleKeys[i]]
 		}
 	}
-	updateDocument("Vehicles", {_id:newvehicle._id}, newvehicleObj, function(c){
-		newvehicleObj.vehicleID = newvehicle._id;
-		insertDocument("vehiclesHistory", newvehicleObj, function(nc){
+	updateDocument("Vehicles", {_id:newVehicle._id}, newVehicleObj, function(c){
+		newVehicleObj.vehicleID = newvehicle._id;
+		insertDocument("vehiclesHistory", newVehicleObj, function(nc){
 			if(nc && c) {
-				getAllvehiclesInfo(function(vehiclesInfo){
+				getAllVehiclesInfo(function(vehiclesInfo){
 					io.to('allVehiclesInfo').emit('allVehiclesInfo',vehiclesInfo);
 				})
 			}
