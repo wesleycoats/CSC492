@@ -109,7 +109,8 @@ app.post('/signUp', function (req, res) {
 
 app.post('/addRide', function (req, res) {
 	var form = req.body;
-	if(form && form.startingNode && form.endingNode && form.vehicle) {
+	if(form && form.startingNode && form.endingNode) {
+		if(form.random) form.vehicle = null;
 		findAdmin(req.get("authToken"), function(admin) {
 			if(admin) {
 				form.user = admin._id;
@@ -155,7 +156,7 @@ app.post('/addStation', function (req, res) {
 
 app.post('/addPath', function (req, res) {
 	var form = req.body;
-	if(form && form.startingNode && form.endingNode && form.length >= 0 && form.waypoints.length >= 0) {
+	if(form && form.startingNode && form.endingNode && form.distance >= 0 && form.waypoints.length >= 0) {
 		findAdmin(req.get("authToken"), function(admin) {
 			if(admin) {
 				addPath(form, res)

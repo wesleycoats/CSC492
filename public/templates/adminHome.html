@@ -189,7 +189,7 @@
 										{{stations[stationsMap[path.endingNode]].name}}
 								</td>
 								<td>
-										{{path.length}}
+										{{path.distance}}
 								</td>
 							</tr>
 						</table>
@@ -377,7 +377,7 @@
 
 				<div class="form-group">
 					<label for="newPathLength">Length</label>
-					<input type="number" class="form-control" id="newPathLength" placeholder="Length" ng-model="newPath.length">
+					<input type="number" class="form-control" id="newPathLength" placeholder="Length" ng-model="newPath.distance">
 				</div>
 
 				<div class="form-group">
