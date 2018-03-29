@@ -225,7 +225,7 @@
 						<label for="stationName">Starting Node <a href="" ng-click="beginSelectStartNode()" class="signOutLink"> <i class="fa fa-mouse-pointer"></i></a>
 							<span ng-show="seletingStartNode"><br/>Click Starting Node</span>
 						</label>
-						<select class="form-control" ng-model="newRide.startingNode" ng-options="''+station._id as station.name for station in stations">
+						<select class="form-control" ng-model="newRide.pickupNode" ng-options="''+station._id as station.name for station in stations">
 						</select>
 					</div>
 	
@@ -233,7 +233,7 @@
 						<label for="stationName">Ending Node <a href="" ng-click="beginSelectEndNode()" class="signOutLink"><i class="fa fa-mouse-pointer"></i></a>
 							<span ng-show="seletingEndNode"><br/>Click Ending Node</span>
 						</label>
-						<select class="form-control" ng-model="newRide.endingNode" ng-options="''+station._id as station.name for station in stations">
+						<select class="form-control" ng-model="newRide.dropoffNode" ng-options="''+station._id as station.name for station in stations">
 						</select>
 					</div>
 
