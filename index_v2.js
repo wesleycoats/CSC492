@@ -4,7 +4,7 @@ var edgeResolution = 1;
 var runSimulation = false;
 var vehiclesRunninginSimulation = 3;
 var distToTravelPerFrame = 1;
-var portToUse = 80;
+var portToUse = 81;
 
 var express = require('express');
 var crypto = require('crypto');
@@ -644,20 +644,20 @@ function simulation() {
 				findDocuments("Edges", {_id:vehicles[i].currentPath}, function(edge){
 					var closestEdge = vehicles[i].nextWaypoint;
 					var closestEdgeDist = geolib.getDistance({
-						latitude:vehicles[i].currentLocation[0],
-						longitude:vehicles[i].currentLocation[1]},
+						latitude:vehicles[i].coordinates[0],
+						longitude:vehicles[i].coordinates[1]},
 						{latitude:edge[0].waypoints[closestEdge].coordinates[0],
 						longitude:edge[0].waypoints[closestEdge].coordinates[1]}
 					)
 					var bearing = geolib.getBearing({
-						latitude:vehicles[i].currentLocation[0],
-						longitude:vehicles[i].currentLocation[1]},
+						latitude:vehicles[i].coordinates[0],
+						longitude:vehicles[i].coordinates[1]},
 						{latitude:edge[0].waypoints[closestEdge].coordinates[0],
 						longitude:edge[0].waypoints[closestEdge].coordinates[1]}
 					)
 					var dest = geolib.computeDestinationPoint({
-						latitude:vehicles[i].currentLocation[0],
-						longitude:vehicles[i].currentLocation[1]},
+						latitude:vehicles[i].coordinates[0],
+						longitude:vehicles[i].coordinates[1]},
 						distToTravelPerFrame, bearing
 					);
 					
@@ -666,19 +666,19 @@ function simulation() {
 							if(newEdge.length>0) {
 								vehicles[i].nextWaypoint = 1;
 								vehicles[i].currentPath = newEdge[Math.floor(Math.random() * newEdge.length)]["_id"];
-								vehicles[i].currentLocation[0] = dest.latitude;
-								vehicles[i].currentLocation[1] = dest.longitude;
+								vehicles[i].coordinates[0] = dest.latitude;
+								vehicles[i].coordinates[1] = dest.longitude;
 								updatevehicle(vehicles[i]);
 							}
 						})
 					} else if(distToTravelPerFrame>=closestEdgeDist) {
 						vehicles[i].nextWaypoint++;
-						vehicles[i].currentLocation[0] = dest.latitude;
-						vehicles[i].currentLocation[1] = dest.longitude;
+						vehicles[i].coordinates[0] = dest.latitude;
+						vehicles[i].coordinates[1] = dest.longitude;
 						updatevehicle(vehicles[i]);
 					} else {
-						vehicles[i].currentLocation[0] = dest.latitude;
-						vehicles[i].currentLocation[1] = dest.longitude;
+						vehicles[i].coordinates[0] = dest.latitude;
+						vehicles[i].coordinates[1] = dest.longitude;
 						updatevehicle(vehicles[i]);
 					}
 				})

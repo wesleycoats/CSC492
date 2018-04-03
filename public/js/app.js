@@ -463,8 +463,8 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 		}
 		$scope.lines = [];
 		for(var i=0;i<$scope.vehicles.length;i++) {
-			if($scope.vehicles[i].currentLocation && $scope.vehicles[i].currentLocation[0] && $scope.vehicles[i].currentLocation[1]) {
-				var location = {lat:$scope.vehicles[i].currentLocation[0],lng:$scope.vehicles[i].currentLocation[1]};
+			if($scope.vehicles[i].coordinates && $scope.vehicles[i].coordinates[0] && $scope.vehicles[i].coordinates[1]) {
+				var location = {lat:$scope.vehicles[i].coordinates[0],lng:$scope.vehicles[i].coordinates[1]};
 				if($scope.markers[$scope.vehicles[i]["_id"]]) {
 					$scope.markers[$scope.vehicles[i]["_id"]].setPosition(location)
 				} else {
