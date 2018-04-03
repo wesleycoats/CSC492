@@ -690,3 +690,11 @@ function simulation() {
 if(runSimulation) {
 	simulation()
 }
+
+function updateVehicleLocation() {
+	getAllVehiclesInfo(function(vehiclesInfo){
+		io.to('allVehiclesInfo').emit('allVehiclesInfo',vehiclesInfo);
+		setTimeout(updateVehicleLocation, 1000);
+	})
+}
+updateVehicleLocation();
