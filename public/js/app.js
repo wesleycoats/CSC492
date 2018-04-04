@@ -201,8 +201,8 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 	$scope.resetNewRide = function() {
 		if($scope.stations.length>0 && $scope.vehicles.length>0) {
 			$scope.newRide = {
-				startingNode : $scope.stations[0]._id,
-				endingNode : $scope.stations[0]._id,
+				pickupNode : $scope.stations[0]._id,
+				dropoffNode : $scope.stations[0]._id,
 				vehicle : $scope.vehicles[0]._id,
 				random : false
 			}
@@ -472,15 +472,39 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 			        	position: location,
 			        	icon: $scope.vehicleicon,
 						map: $scope.map,
-						title:$scope.vehicles[i].name
-			        });
-			        var infowindow = new google.maps.InfoWindow({
-				        content: $scope.vehicles[i].name
-			        });
-			        infowindow.open($scope.map, marker);
+						title:$scope.vehicles[i].name,
+						disableAutoPan: true
+					});
+					(function(i, marker) {
+						var contentString = '<p><b>' + $scope.vehicles[i].name + '</b><br/>' 
+						+ 'Battery: ' + $scope.vehicles[i].batteryLife.toString() +'%' +'<br/>'
+						+ 'Speed: ' + $scope.vehicles[i].speed.toString() + '<br/>' 
+						+ 'Enabled?: ' + $scope.vehicles[i].enabled.toString() + '</p>';
+	
+						// + '<p>' + 'Lat: ' + $scope.stations[i].location[0].toString()
+						// + ', Long: ' + $scope.stations[i].location[1].toString() + '</p>'
+						// + '<p>Station Type: ' + stationTypes[$scope.stations[i].type]  + '</p></div>';
+						
+						var infowindow = new google.maps.InfoWindow({
+							content: contentString
+						});
+						$scope.infoMarkers[$scope.stations[i]["_id"]] = infowindow;
+						marker.addListener('click', function(){
+							$scope.stationClicked($scope.stations[i]["_id"])
+							var infoMarkerKeys = Object.keys($scope.infoMarkers);
+							for(var j=0;j<infoMarkerKeys.length;j++) {
+								$scope.infoMarkers[infoMarkerKeys[j]].close();
+							}
+							infowindow.open($scope.map, marker);
+						});
+					})(i, marker)
+			        // var infowindow = new google.maps.InfoWindow({
+				    //     content: $scope.vehicles[i].name
+					// });
+			        // infowindow.open($scope.map, marker);
 			        //$scope.markers.push(marker);
 			        $scope.markers[$scope.vehicles[i]["_id"]] = marker;
-			        $scope.infoWindows.push(infowindow);
+			        // $scope.infoWindows.push(infowindow);
 				}
 			}
 		}
@@ -513,10 +537,15 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 					disableAutoPan: true
 		        });
 		        (function(i, marker) {
-					var contentString = '<div id="content"><h5>' + $scope.stations[i].name + '</h5>'
-					+ '<p>' + 'Lat: ' + $scope.stations[i].location[0].toString()
-					+ ', Long: ' + $scope.stations[i].location[1].toString() + '</p>'
-					+ '<p>Station Type: ' + stationTypes[$scope.stations[i].type]  + '</p></div>';
+					var contentString = '<p>' + '<b>' + $scope.stations[i].name + '</b>' +'<br/><br/>' 
+					+ 'Lat: ' + $scope.stations[i].location[0].toString() + '<br/>'
+					+ 'Long: ' + $scope.stations[i].location[1].toString() + '<br/>' 
+					+ 'Station Type: ' + stationTypes[$scope.stations[i].type] + '</p>';
+
+					// + '<p>' + 'Lat: ' + $scope.stations[i].location[0].toString()
+					// + ', Long: ' + $scope.stations[i].location[1].toString() + '</p>'
+					// + '<p>Station Type: ' + stationTypes[$scope.stations[i].type]  + '</p></div>';
+					
 			        var infowindow = new google.maps.InfoWindow({
 						// content: $scope.stations[i].name
 						content: contentString

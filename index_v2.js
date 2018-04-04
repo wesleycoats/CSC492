@@ -2,7 +2,7 @@
 var edgeResolution = 1;
 
 var runSimulation = false;
-var vehiclesRunninginSimulation = 3;
+var vehiclesRunninginSimulation = 1;
 var distToTravelPerFrame = 1;
 var portToUse = 80;
 
