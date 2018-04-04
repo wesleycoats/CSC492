@@ -71,6 +71,8 @@
 					<table style="color:white;width:100%">
 						<tr>
 							<th>
+							</th>
+							<th>
 								Name
 							</th>
 							<th>
@@ -81,6 +83,9 @@
 							</th>
 						</tr>
 						<tr ng-repeat="vehicle in vehicles|filter:{currentPath:'!!'}">
+							<td>
+								<div ng-click="deleteVehicle(vehicle._id)" style="cursor:pointer;"><i class="fa fa-minus-circle"></i></div>
+							</td>
 							<td>
 								{{vehicle.name}}
 							</td>
@@ -97,6 +102,8 @@
 					<table style="color:white;width:100%">
 						<tr>
 							<th>
+							</th>
+							<th>
 								Name
 							</th>
 							<th>
@@ -104,6 +111,9 @@
 							</th>
 						</tr>
 						<tr ng-repeat="vehicle in vehicles|filter:{currentPath:'!'}">
+							<td>
+								<div ng-click="deleteVehicle(vehicle._id)" style="cursor:pointer;"><i class="fa fa-minus-circle"></i></div>
+							</td>
 							<td>
 								{{vehicle.name}}
 							</td>
@@ -132,6 +142,8 @@
 				<table style="color:white;width:100%">
 						<tr>
 							<th>
+							</th>
+							<th>
 								Node Name
 							</th>
 							<th>
@@ -139,6 +151,9 @@
 							</th>
 						</tr>
 						<tr ng-repeat="station in stations">
+							<td>
+								<div ng-click="deleteNode(station._id)" style="cursor:pointer;"><i class="fa fa-minus-circle"></i></div>
+							</td>
 							<td>
 								{{station.name}}
 							</td>
@@ -172,6 +187,8 @@
 					<table style="color:white;width:100%">
 							<tr>
 								<th>
+								</th>
+								<th>
 									Starting Node
 								</th>
 								<th>
@@ -182,6 +199,9 @@
 								</th>
 							</tr>
 							<tr ng-repeat="path in paths">
+								<td>
+									<div ng-click="deleteEdge(path._id)" style="cursor:pointer;"><i class="fa fa-minus-circle"></i></div>
+								</td>
 								<td>
 										{{stations[stationsMap[path.startingNode]].name}} 
 								</td>

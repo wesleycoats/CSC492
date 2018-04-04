@@ -326,6 +326,42 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 		}
 	}
 	
+	$scope.deleteNode = function(id) {
+		$http.post("/deleteNode", {id:id}, {headers:{authToken:localStorage["authToken"]}}).then(
+			function(response){
+				window.alert(response.data);
+				location.reload();
+			}, 
+			function(error){
+				window.alert(error.data);
+			}
+		);
+	}
+	
+	$scope.deleteEdge = function(id) {
+		$http.post("/deleteEdge", {id:id}, {headers:{authToken:localStorage["authToken"]}}).then(
+			function(response){
+				window.alert(response.data);
+				location.reload();
+			}, 
+			function(error){
+				window.alert(error.data);
+			}
+		);
+	}
+	
+	$scope.deleteVehicle = function(id) {
+		$http.post("/deleteVehicle", {id:id}, {headers:{authToken:localStorage["authToken"]}}).then(
+			function(response){
+				window.alert(response.data);
+				location.reload();
+			}, 
+			function(error){
+				window.alert(error.data);
+			}
+		);
+	}
+	
 	$scope.rideTasks = rideTasks;
 	$scope.stationTypes = stationTypes;
 	$http.get('/userInfo', {headers:{authToken:localStorage["authToken"]}})
@@ -451,10 +487,13 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 //        anchor: new google.maps.Point(0, 0) // anchor
 	};
 	
-	$scope.markers = {};
-	$scope.lines = [];
-	$scope.infoWindows = [];
-	$scope.infoMarkers = [];
+	$scope.resetMap = function() {
+		$scope.markers = {};
+		$scope.lines = [];
+		$scope.infoWindows = [];
+		$scope.infoMarkers = [];
+	}
+	$scope.resetMap();
 	
 	$scope.updateMap = function() {
 		var oldLines = []
@@ -488,9 +527,9 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 						var infowindow = new google.maps.InfoWindow({
 							content: contentString
 						});
-						$scope.infoMarkers[$scope.stations[i]["_id"]] = infowindow;
+						$scope.infoMarkers[$scope.vehicles[i]["_id"]] = infowindow;
 						marker.addListener('click', function(){
-							$scope.stationClicked($scope.stations[i]["_id"])
+							//$scope.stationClicked($scope.vehicles[i]["_id"])
 							var infoMarkerKeys = Object.keys($scope.infoMarkers);
 							for(var j=0;j<infoMarkerKeys.length;j++) {
 								$scope.infoMarkers[infoMarkerKeys[j]].close();
@@ -622,7 +661,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 		$scope.newPathSet = true;
 	});
 	
-	$scope.socket.on("allPathsInfo", function(paths) {
+	$scope.socket.on("allEdgesInfo", function(paths) {
 		/*console.log("---All Paths Begin---");
 		console.log(paths);
 		console.log("---All Paths End---");*/
@@ -651,7 +690,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 	$scope.socket.emit("joinAllRidesInfo",localStorage["authToken"]);
 	$scope.socket.emit("joinAllVehiclesInfo",localStorage["authToken"]);
 	$scope.socket.emit("joinAllStationsInfo",localStorage["authToken"]);
-	$scope.socket.emit("joinAllPathsInfo",localStorage["authToken"]);
+	$scope.socket.emit("joinallEdgesInfo",localStorage["authToken"]);
 	
 	$scope.startPlaceStation = function() {
 		$scope.addingStationsOnMap = true;
