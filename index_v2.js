@@ -385,7 +385,7 @@ function updateVehicle(newVehicle) {
 		}
 	}
 	updateDocument("Vehicles", {_id:newVehicle._id}, newVehicleObj, function(c){
-		newVehicleObj.vehicleID = newvehicle._id;
+		newVehicleObj.vehicleID = newVehicle._id;
 		insertDocument("vehiclesHistory", newVehicleObj, function(nc){
 			if(nc && c) {
 				getAllVehiclesInfo(function(vehiclesInfo){
