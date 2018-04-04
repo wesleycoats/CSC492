@@ -668,18 +668,18 @@ function simulation() {
 								vehicles[i].currentPath = newEdge[Math.floor(Math.random() * newEdge.length)]["_id"];
 								vehicles[i].coordinates[0] = dest.latitude;
 								vehicles[i].coordinates[1] = dest.longitude;
-								updatevehicle(vehicles[i]);
+								updateVehicle(vehicles[i]);
 							}
 						})
 					} else if(distToTravelPerFrame>=closestEdgeDist) {
 						vehicles[i].nextWaypoint++;
 						vehicles[i].coordinates[0] = dest.latitude;
 						vehicles[i].coordinates[1] = dest.longitude;
-						updatevehicle(vehicles[i]);
+						updateVehicle(vehicles[i]);
 					} else {
 						vehicles[i].coordinates[0] = dest.latitude;
 						vehicles[i].coordinates[1] = dest.longitude;
-						updatevehicle(vehicles[i]);
+						updateVehicle(vehicles[i]);
 					}
 				})
 			})(i)
