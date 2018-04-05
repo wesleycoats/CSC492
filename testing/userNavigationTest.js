@@ -14,52 +14,52 @@ casper.test.begin('Testing user navigation', function suite(test) {
 
     casper.then(function() {
         this.waitUntilVisible('a', function(){
-        	casper.capture('navigation.png');
+        	casper.capture('img/navigation.png');
         	test.comment('loading...');
         	test.comment('clicking on Log In...');
         	this.clickLabel('Log In', 'a');
         	test.assertTitle("ECO PRT", "ecoPRT title is the same");
        	    test.assertUrlMatch(config.url + 'ecoPRTLogin', 'you should be on the Log in page');
-       	    casper.capture('navigation.png');
+       	    casper.capture('img/navigation.png');
         });
         
     });
     
     casper.then(function() {
         this.waitUntilVisible('a', function(){
-        	casper.capture('navigation.png');
+        	casper.capture('img/navigation.png');
         	test.comment('loading...');
         	test.comment('clicking on Home...');
         	this.clickLabel('Home', 'a');
         	test.assertTitle("ECO PRT", "ecoPRT title is the same");
        	    test.assertUrlMatch(config.url, 'you should be on the Home page');
-       	    casper.capture('navigation.png');
+       	    casper.capture('img/navigation.png');
         });
         
     });
     
     casper.then(function() {
         this.waitUntilVisible('a', function(){
-        	casper.capture('navigation.png');
+        	casper.capture('img/navigation.png');
         	test.comment('loading...');
         	test.comment('clicking on Sign Up...');
         	this.clickLabel('Sign Up', 'a');
         	test.assertTitle("ECO PRT", "ecoPRT title is the same");
        	    test.assertUrlMatch(config.url + 'ecoPRTSignUp', 'you should be on the SignUp  page');
-       	    casper.capture('navigation.png');
+       	    casper.capture('img/navigation.png');
         });
         
     });
     
     casper.then(function() {
         this.waitUntilVisible('a', function(){
-        	casper.capture('navigation.png');
+        	casper.capture('img/navigation.png');
         	test.comment('loading...');
         	test.comment('clicking on EcoPRT...');
         	this.clickLabel('EcoPRT', 'a');
         	test.assertTitle("ECO PRT", "ecoPRT title is the same");
        	    test.assertUrlMatch(config.url, 'you should be on the Home page');
-       	    casper.capture('navigation.png');
+       	    casper.capture('img/navigation.png');
         });
         
     });

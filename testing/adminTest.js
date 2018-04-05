@@ -8,7 +8,7 @@ casper.test.begin('Testing admin', function suite(test) {
     
     casper.start(config.url, function() {
         this.waitForResource(config.url, function() {
-       		casper.capture('1.png');
+       		casper.capture('img/1.png');
        		test.assertTitle("ECO PRT", "ecoPRT title is the same");
             test.assertUrlMatch(config.url, 'you should be on the home page');
         });
@@ -21,7 +21,7 @@ casper.test.begin('Testing admin', function suite(test) {
         	this.clickLabel('Log In', 'a');
         	test.assertTitle("ECO PRT", "ecoPRT title is the same");
        		test.assertUrlMatch(config.url + 'ecoPRTLogin', 'you should be on the Log in page');
-       		casper.capture('2.png');
+       		casper.capture('img/2.png');
        	});
        	
     });
@@ -44,22 +44,22 @@ casper.capture('3.png');
 
 	casper.then(function() {
         this.wait(1000, function(){
-        	casper.capture('admin.png');
+        	casper.capture('img/admin.png');
         	test.assertUrlMatch(config.url + 'adminHome', 'you should be on the adminHome page');
-        	casper.capture('7.png');
+        	casper.capture('img/7.png');
         });
         
     });
     
     casper.then(function() {
         this.waitUntilVisible('a', function(){
-        	casper.capture('home.png');
+        	casper.capture('img/home.png');
         	test.comment('loading...');
         	test.comment('clicking on Sign Out...');
         	this.clickLabel('Sign Out', 'a');
         	test.assertTitle("ECO PRT", "ecoPRT title is the same");
        	    test.assertUrlMatch(config.url, 'you should be on the Home page');
-       	    casper.capture('mohe2.png');
+       	    casper.capture('img/mohe2.png');
         });
         
     });
