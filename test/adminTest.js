@@ -29,16 +29,16 @@ casper.test.begin('Testing admin', function suite(test) {
 
 
     casper.then(function() {
-casper.capture('3.png');
+		casper.capture('img/3.png');
        	    this.wait(5000, function(){
-        	    casper.capture('4.png');
+        	    casper.capture('img/4.png');
           	    this.fillXPath('form#login-form', {
         		    '//input[@id="email"]': 'admin@example.com',
         		    '//input[@id="password"]': 'admin'
         	    }, true);
         	    test.assertUrlMatch(config.url + 'ecoPRTLogin', 'you should be on the Log in page');
         	    this.clickLabel('Sign In', 'button');
-        	    casper.capture('5.png');
+        	    casper.capture('img/5.png');
             });
     });
 
