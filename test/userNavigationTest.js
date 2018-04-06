@@ -40,13 +40,18 @@ casper.test.begin('Testing user navigation', function suite(test) {
     
     casper.then(function() {
         this.waitUntilVisible('a', function(){
-        	casper.capture('img/navigation.png');
+        	casper.capture('img/1navigation.png');
         	test.comment('loading...');
         	test.comment('clicking on Sign Up...');
+        	this.clickLabel('Sign Out', 'a');
         	this.clickLabel('Sign Up', 'a');
+        	this.waitUntilVisible('a', function() {
+        	
+        	casper.capture('img/2navigation.png');
         	test.assertTitle("ECO PRT", "ecoPRT title is the same");
        	    test.assertUrlMatch(config.url + 'ecoPRTSignUp', 'you should be on the SignUp  page');
-       	    casper.capture('img/navigation.png');
+       	    casper.capture('img/3navigation.png');
+       	    });
         });
         
     });
