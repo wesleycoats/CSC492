@@ -137,6 +137,7 @@ describe("REST api Test",function(){
         })
         .end(function(err, res) {
             var token = res.body.authToken
+            chai.request('http://localhost:80')
             //console.log(token)
             .post('/addvehicle')
             .type('form')
