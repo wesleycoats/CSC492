@@ -1,7 +1,7 @@
 //Draw every X waypoints
 var edgeResolution = 1;
 
-var runSimulation = true;
+var runSimulation = false;
 var vehiclesRunninginSimulation = 3;
 var distToTravelPerFrame = 1;
 var portToUse = 80;
@@ -309,11 +309,13 @@ function getallEdgesInfo(callback) {
 }
 
 function addRide(form, res) {
+	var vehicleID = null;
+	if(!form.random)vehicleID=new mongo.ObjectID(form.vehicle)
 	var newRide = {
-		vehicleID : new mongo.ObjectID(form.vehicle),
+		vehicleID : vehicleID,
 		userID : form.user,
-		startingNode : new mongo.ObjectID(form.startingNode),
-		endingNodeNode : new mongo.ObjectID(form.startingNode),
+		pickupNode : new mongo.ObjectID(form.pickupNode),
+		dropoffNode : new mongo.ObjectID(form.dropoffNode),
 		currentTask : 0
 	}
 	insertDocument("Rides", newRide, function(nr) {
@@ -766,3 +768,11 @@ function simulation() {
 if(runSimulation) {
 	simulation()
 }
+
+function updateVehicleLocation() {
+	getAllVehiclesInfo(function(vehiclesInfo){
+		io.to('allVehiclesInfo').emit('allVehiclesInfo',vehiclesInfo);
+		setTimeout(updateVehicleLocation, 1000);
+	})
+}
+updateVehicleLocation();
