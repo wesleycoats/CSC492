@@ -1,11 +1,8 @@
-var supertest = require("supertest");
-var should = require("should");
+var chai = require('chai')
+  , chaiHttp = require('chai-http');
 
-// This agent refers to PORT where program is runninng.
-
-var server = supertest.agent("http://localhost:80");
-
-// UNIT test begin
+chai.use(chaiHttp);
+var expect = chai.expect;
 
 describe("REST api Test",function(){
 
@@ -14,19 +11,36 @@ describe("REST api Test",function(){
     it("should return home page",function(done){
 
         // calling home page api
-        server
-        .get("/")
-        .expect("Content-type",/json/)
-        .expect(200) // THis is HTTP response
-        .end(function(err,res){
-            // HTTP status should be 200
-            res.status.should.equal(200);
-            // Error key should be false.
-            //res.body.error.should.equal(false);
+        chai.request('http://localhost:80')
+        .get('/')
+        .end(function(err, res) {
+            expect(res).to.have.status(200);
             done();
         });
     });
     
+    it("should return home page",function(done){
+
+        // calling home page api
+        var emailnum = (Math.random() * 1000)
+        chai.request('http://localhost:80')
+        .post('/signUp')
+        .type('form')
+        .send({
+            username : 'testname',
+            email : 'testname'+ emailnum + '@test.com',
+            firstName : 'Test',
+            lastName : 'Name',
+            birthday : '06/09/1969',
+            password : 'password'
+        })
+        .end(function(err, res) {
+            expect(res).to.have.status(200);
+            done();
+        });
+    });
+    
+    /*
     it("testing bad user info",function(done){
 
         // calling home page api
@@ -57,6 +71,7 @@ describe("REST api Test",function(){
             res.body.data.should.equal(30);
             done();
         });
-    });
+    });*/
+    
 
 });
