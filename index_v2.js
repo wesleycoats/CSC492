@@ -109,7 +109,7 @@ app.post('/signUp', function (req, res) {
 
 app.post('/addRide', function (req, res) {
 	var form = req.body;
-	if(form && form.startingNode && form.endingNode) {
+	if(form && form.pickupNode && form.dropoffNode) {
 		if(form.random) form.vehicle = null;
 		findAdmin(req.get("authToken"), function(admin) {
 			if(admin) {
