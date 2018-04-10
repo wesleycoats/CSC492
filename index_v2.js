@@ -1,7 +1,7 @@
 //Draw every X waypoints
 var edgeResolution = 1;
 
-var runSimulation = false;
+var runSimulation = true;
 var vehiclesRunninginSimulation = 3;
 var distToTravelPerFrame = 1;
 var portToUse = 80;
@@ -109,7 +109,7 @@ app.post('/signUp', function (req, res) {
 
 app.post('/addRide', function (req, res) {
 	var form = req.body;
-	if(form && form.startingNode && form.endingNode) {
+	if(form && form.pickupNode && form.dropoffNode) {
 		if(form.random) form.vehicle = null;
 		findAdmin(req.get("authToken"), function(admin) {
 			if(admin) {
@@ -169,6 +169,51 @@ app.post('/addPath', function (req, res) {
 	}
 })
 
+app.post('/deleteNode', function (req, res) {
+	var form = req.body;
+	if(form && form.id) {
+		findAdmin(req.get("authToken"), function(admin) {
+			if(admin) {
+				deleteNode(form, res)
+			} else {
+				resError(res, "Account Not Found", 400);
+			}
+		})
+	} else {
+		resError(res, "All fields must be filled out", 400)
+	}
+})
+
+app.post('/deleteEdge', function (req, res) {
+	var form = req.body;
+	if(form && form.id) {
+		findAdmin(req.get("authToken"), function(admin) {
+			if(admin) {
+				deleteEdge(form, res)
+			} else {
+				resError(res, "Account Not Found", 400);
+			}
+		})
+	} else {
+		resError(res, "All fields must be filled out", 400)
+	}
+})
+
+app.post('/deleteVehicle', function (req, res) {
+	var form = req.body;
+	if(form && form.id) {
+		findAdmin(req.get("authToken"), function(admin) {
+			if(admin) {
+				deleteVehicle(form, res)
+			} else {
+				resError(res, "Account Not Found", 400);
+			}
+		})
+	} else {
+		resError(res, "All fields must be filled out", 400)
+	}
+})
+
 var http = require('http').createServer(app);
 
 var io = require('socket.io')(http);
@@ -210,12 +255,12 @@ io.on('connection', function(socket){
 	  })
   })
   
-  socket.on('joinAllPathsInfo', function(authToken) {
+  socket.on('joinallEdgesInfo', function(authToken) {
 	  findAdmin(authToken, function(admin){
 		  if(admin) {
-		  	socket.join('allPathsInfo');
-		  	getAllPathsInfo(function(paths){
-				socket.emit('allPathsInfo',paths);
+		  	socket.join('allEdgesInfo');
+		  	getallEdgesInfo(function(paths){
+				socket.emit('allEdgesInfo',paths);
 			})
 		}
 	  })
@@ -244,7 +289,7 @@ function getAllStationsInfo(callback) {
 	})
 }
 
-function getAllPathsInfo(callback) {
+function getallEdgesInfo(callback) {
 	findDocumentsWithFields("Edges", {}, {}, {}, 0, function(edges){
 		for(var i=0;i<edges.length;i++) {
 			if(edges[i].waypoints && edges[i].waypoints.length>0) {
@@ -332,17 +377,14 @@ function addPath(form, res) {
 	var newPath = {
 		startingNode : new mongo.ObjectID(form.startingNode),
 		endingNode : new mongo.ObjectID(form.endingNode),
-		length : form.length,
+		distance : form.distance,
 		waypoints : []
 	}
 	findDocuments("Nodes", {_id:new mongo.ObjectID(form.startingNode)}, function(startingNode){
 		findDocuments("Nodes", {_id:new mongo.ObjectID(form.endingNode)}, function(endingNode){
 			if(startingNode[0] && endingNode[0]) {
-				newPath.waypoints[0] = {
-					coordinates:[startingNode[0].location[0], startingNode[0].location[1]]
-				}
 				for(var i=0;i<form.waypoints.length;i++) {
-					newPath.waypoints[i+1] = {
+					newPath.waypoints[i] = {
 						coordinates : [form.waypoints[i].coordinates[0], form.waypoints[i].coordinates[1]],
 						speed : form.waypoints[i].speed,
 						headingAngle : form.waypoints[i].headingAngle,
@@ -354,16 +396,11 @@ function addPath(form, res) {
 						motorThrottle : form.waypoints[i].motorThrottle
 					}
 				}
-				newPath.waypoints.push(
-					{
-						coordinates:[endingNode[0].location[0], endingNode[0].location[1]]
-					}
-				)
 				insertDocument("Edges", newPath, function(np) {
 					if(np) {
 						resSuccess(res, "Path Added");
-						getAllPathsInfo(function(allPaths){
-							io.to('allPathsInfo').emit('allPathsInfo', allPaths);
+						getallEdgesInfo(function(allPaths){
+							io.to('allEdgesInfo').emit('allEdgesInfo', allPaths);
 						})
 					} else {
 						resError(res, "An Error Occured", 500);
@@ -376,6 +413,45 @@ function addPath(form, res) {
 	})
 }
 
+function deleteNode(form, res) {
+	deleteDocument("Nodes", {_id: new mongo.ObjectID(form.id)}, function(deletedStation){
+		if(deletedStation) {
+			resSuccess(res, "Station Deleted");
+			getAllStationsInfo(function(allNodes){
+				io.to('allStationsInfo').emit('allStationsInfo', allNodes);
+			})
+		} else {
+			resError(res, "An Error Occured", 500);
+		}
+	})
+}
+
+function deleteEdge(form, res) {
+	deleteDocument("Edges", {_id: new mongo.ObjectID(form.id)}, function(deletedEdge){
+		if(deletedEdge) {
+			resSuccess(res, "Edge Deleted");
+			getallEdgesInfo(function(allPaths){
+				io.to('allEdgesInfo').emit('allEdgesInfo', allPaths);
+			})
+		} else {
+			resError(res, "An Error Occured", 500);
+		}
+	})
+}
+
+function deleteVehicle(form, res) {
+	deleteDocument("Vehicles", {_id: new mongo.ObjectID(form.id)}, function(deletedVehicle){
+		if(deletedVehicle) {
+			resSuccess(res, "Vehicle Deleted");
+			getAllVehiclesInfo(function(vehiclesInfo){
+				io.to('allVehiclesInfo').emit('allVehiclesInfo',vehiclesInfo);
+			})
+		} else {
+			resError(res, "An Error Occured", 500);
+		}
+	})
+}
+
 function updateVehicle(newVehicle) {
 	var newVehicleKeys = Object.keys(newVehicle);
 	var newVehicleObj = {}
@@ -385,7 +461,7 @@ function updateVehicle(newVehicle) {
 		}
 	}
 	updateDocument("Vehicles", {_id:newVehicle._id}, newVehicleObj, function(c){
-		newVehicleObj.vehicleID = newvehicle._id;
+		newVehicleObj.vehicleID = newVehicle._id;
 		insertDocument("vehiclesHistory", newVehicleObj, function(nc){
 			if(nc && c) {
 				getAllVehiclesInfo(function(vehiclesInfo){
@@ -668,18 +744,30 @@ function simulation() {
 								vehicles[i].currentPath = newEdge[Math.floor(Math.random() * newEdge.length)]["_id"];
 								vehicles[i].coordinates[0] = dest.latitude;
 								vehicles[i].coordinates[1] = dest.longitude;
+<<<<<<< HEAD
 								updatevehicle(vehicles[i]);
+=======
+								updateVehicle(vehicles[i]);
+>>>>>>> master
 							}
 						})
 					} else if(distToTravelPerFrame>=closestEdgeDist) {
 						vehicles[i].nextWaypoint++;
 						vehicles[i].coordinates[0] = dest.latitude;
 						vehicles[i].coordinates[1] = dest.longitude;
+<<<<<<< HEAD
 						updatevehicle(vehicles[i]);
 					} else {
 						vehicles[i].coordinates[0] = dest.latitude;
 						vehicles[i].coordinates[1] = dest.longitude;
 						updatevehicle(vehicles[i]);
+=======
+						updateVehicle(vehicles[i]);
+					} else {
+						vehicles[i].coordinates[0] = dest.latitude;
+						vehicles[i].coordinates[1] = dest.longitude;
+						updateVehicle(vehicles[i]);
+>>>>>>> master
 					}
 				})
 			})(i)
@@ -690,6 +778,7 @@ function simulation() {
 if(runSimulation) {
 	simulation()
 }
+<<<<<<< HEAD
 
 function updateVehicleLocation() {
 	getAllVehiclesInfo(function(vehiclesInfo){
@@ -698,3 +787,5 @@ function updateVehicleLocation() {
 	})
 }
 updateVehicleLocation();
+=======
+>>>>>>> master
