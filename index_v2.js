@@ -1,7 +1,7 @@
 //Draw every X waypoints
 var edgeResolution = 1;
 
-var runSimulation = false;
+var runSimulation = true;
 var vehiclesRunninginSimulation = 3;
 var distToTravelPerFrame = 1;
 var portToUse = 80;
