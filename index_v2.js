@@ -309,11 +309,13 @@ function getallEdgesInfo(callback) {
 }
 
 function addRide(form, res) {
+	var vehicleID = null;
+	if(!form.random)vehicleID=new mongo.ObjectID(form.vehicle)
 	var newRide = {
-		vehicleID : new mongo.ObjectID(form.vehicle),
+		vehicleID : vehicleID,
 		userID : form.user,
-		startingNode : new mongo.ObjectID(form.startingNode),
-		endingNodeNode : new mongo.ObjectID(form.startingNode),
+		pickupNode : new mongo.ObjectID(form.pickupNode),
+		dropoffNode : new mongo.ObjectID(form.dropoffNode),
 		currentTask : 0
 	}
 	insertDocument("Rides", newRide, function(nr) {
@@ -744,30 +746,18 @@ function simulation() {
 								vehicles[i].currentPath = newEdge[Math.floor(Math.random() * newEdge.length)]["_id"];
 								vehicles[i].coordinates[0] = dest.latitude;
 								vehicles[i].coordinates[1] = dest.longitude;
-<<<<<<< HEAD
-								updatevehicle(vehicles[i]);
-=======
 								updateVehicle(vehicles[i]);
->>>>>>> master
 							}
 						})
 					} else if(distToTravelPerFrame>=closestEdgeDist) {
 						vehicles[i].nextWaypoint++;
 						vehicles[i].coordinates[0] = dest.latitude;
 						vehicles[i].coordinates[1] = dest.longitude;
-<<<<<<< HEAD
-						updatevehicle(vehicles[i]);
-					} else {
-						vehicles[i].coordinates[0] = dest.latitude;
-						vehicles[i].coordinates[1] = dest.longitude;
-						updatevehicle(vehicles[i]);
-=======
 						updateVehicle(vehicles[i]);
 					} else {
 						vehicles[i].coordinates[0] = dest.latitude;
 						vehicles[i].coordinates[1] = dest.longitude;
 						updateVehicle(vehicles[i]);
->>>>>>> master
 					}
 				})
 			})(i)
@@ -778,7 +768,6 @@ function simulation() {
 if(runSimulation) {
 	simulation()
 }
-<<<<<<< HEAD
 
 function updateVehicleLocation() {
 	getAllVehiclesInfo(function(vehiclesInfo){
@@ -787,5 +776,3 @@ function updateVehicleLocation() {
 	})
 }
 updateVehicleLocation();
-=======
->>>>>>> master
