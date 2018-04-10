@@ -383,11 +383,8 @@ function addPath(form, res) {
 	findDocuments("Nodes", {_id:new mongo.ObjectID(form.startingNode)}, function(startingNode){
 		findDocuments("Nodes", {_id:new mongo.ObjectID(form.endingNode)}, function(endingNode){
 			if(startingNode[0] && endingNode[0]) {
-				newPath.waypoints[0] = {
-					coordinates:[startingNode[0].location[0], startingNode[0].location[1]]
-				}
 				for(var i=0;i<form.waypoints.length;i++) {
-					newPath.waypoints[i+1] = {
+					newPath.waypoints[i] = {
 						coordinates : [form.waypoints[i].coordinates[0], form.waypoints[i].coordinates[1]],
 						speed : form.waypoints[i].speed,
 						headingAngle : form.waypoints[i].headingAngle,
@@ -399,11 +396,6 @@ function addPath(form, res) {
 						motorThrottle : form.waypoints[i].motorThrottle
 					}
 				}
-				newPath.waypoints.push(
-					{
-						coordinates:[endingNode[0].location[0], endingNode[0].location[1]]
-					}
-				)
 				insertDocument("Edges", newPath, function(np) {
 					if(np) {
 						resSuccess(res, "Path Added");
