@@ -178,7 +178,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 	$scope.newPathSet = false;
 	$scope.newRideSet = false;
 	$scope.newPath = {
-		length : 0,
+		distance : 0,
 		waypoints : []
 	}
 	
@@ -191,7 +191,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 			$scope.newPath = {
 				startingNode : $scope.stations[0]._id,
 				endingNode : $scope.stations[0]._id,
-				length : 0,
+				distance : 0,
 				waypoints : []
 			}
 		}
@@ -299,7 +299,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 					$scope.wayPoints = JSON.parse($scope.wayPointsText);
 					if(Array.isArray($scope.wayPoints)) {
 						$scope.newPath.waypoints = $scope.wayPoints;
-						if($scope.newPath && $scope.newPath.startingNode && $scope.newPath.endingNode && $scope.newPath.length >= 0 && $scope.newPath.waypoints.length > 0) {
+						if($scope.newPath && $scope.newPath.startingNode && $scope.newPath.endingNode && $scope.newPath.distance >= 0 && $scope.newPath.waypoints.length > 0) {
 							$http.post("/addPath", $scope.newPath, {headers:{authToken:localStorage["authToken"]}}).then(
 								function(response){
 									window.alert(response.data);

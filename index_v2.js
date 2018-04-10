@@ -377,7 +377,7 @@ function addPath(form, res) {
 	var newPath = {
 		startingNode : new mongo.ObjectID(form.startingNode),
 		endingNode : new mongo.ObjectID(form.endingNode),
-		length : form.length,
+		distance : form.distance,
 		waypoints : []
 	}
 	findDocuments("Nodes", {_id:new mongo.ObjectID(form.startingNode)}, function(startingNode){
