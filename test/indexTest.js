@@ -125,7 +125,7 @@ describe("REST api Test",function(){
             done();
         });
     });
-    /*
+    
     it("testing add vehicle",function(done){
         chai.request('http://localhost:80')
         
@@ -136,15 +136,15 @@ describe("REST api Test",function(){
             password : 'admin'
         })
         .end(function(err, res) {
-            var token = res.body.authToken
-            //console.log(token)
+            var token = res.text
+            var vehiclenum = (Math.random() * 1000)
             chai.request('http://localhost:80')
-            //console.log(token)
             .post('/addvehicle')
             .type('form')
+            .set('authToken', token)
+            
             .send({
-                name : 'vehicle',
-                authToken : token
+                name : 'vehicle' + vehiclenum
             })
             .end(function(err, res) {
                 expect(res).to.have.status(200);
@@ -152,47 +152,29 @@ describe("REST api Test",function(){
             });
         });
     });
-    */
-    /*
-    it("testing add vehicle",function(done){
-        //chai.request('http://localhost:80')
-        var agent = chai.request.agent('http://localhost:80')
-        agent.post('/signIn')
-            .send({
-                email : 'admin@example.com',
-                password : 'admin'
-            })
-            .then(function (res) {
-                agent.post('/addvehicle')
-                    
-                        .type('form')
-                        .send({
-                            name : 'vehicle',
-                        })
-                        .end(function(err, res) {
-                            expect(res).to.have.status(200);
-                            agent.close()
-                            done();
-                        });
-                   
-            });
 
-    });
-    */
-    /*
-    it("testing add ride",function(done){
+    it("testing add vehicle bad account",function(done){
         chai.request('http://localhost:80')
-        .post('/addRide')
+        .post('/signIn')
         .type('form')
         .send({
-            pickupNode : 'pickup',
-            dropoffNode : 'dropoff',
-            vehicle : 'vehicle'
+            email : 'admin@example.com',
+            password : 'admi'
         })
         .end(function(err, res) {
-            expect(res).to.have.status(200);
-            done();
+            var token = res.text
+            chai.request('http://localhost:80')
+            .post('/addvehicle')
+            .type('form')
+            .set('authToken', token)
+            .send({
+                name : 'vehicle',
+            })
+            .end(function(err, res) {
+                expect(res).to.have.status(400);
+                done();
+            });
         });
-    });*/
+    });
     
 });
