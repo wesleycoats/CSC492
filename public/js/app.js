@@ -186,6 +186,11 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 		random : false
 	}
 	
+	//new=true
+	//edit=false
+	$scope.newOrEdit = false;
+	$scope.editID = "";
+	
 	$scope.resetNewPath = function() {
 		if($scope.stations.length>0) {
 			$scope.newPath = {
@@ -214,19 +219,55 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 	}
 
 	$scope.showAddRidesForm = function() {
+		$scope.newOrEdit = true;
 		$scope.currentView = 1;
 	}
 
 	$scope.showAddvehiclesForm = function() {
+		$scope.newOrEdit = true;
 		$scope.currentView = 2;
 	}
 	
 	$scope.showAddStationsForm = function() {
+		$scope.newOrEdit = true;
 		$scope.currentView = 3;
 	}
 	
 	$scope.showAddPathsForm = function() {
+		$scope.newOrEdit = true;
 		$scope.currentView = 4;
+	}
+
+	$scope.showEditVehiclesForm = function(id) {
+		$scope.newOrEdit = false;
+		$scope.currentView = 2;
+		$scope.editID = id;
+		$scope.newVehicle = {
+			name : $scope.vehicles[$scope.vehiclesMap[id]].name
+		};
+	}
+	
+	$scope.showEditStationsForm = function(id) {
+		$scope.newOrEdit = false;
+		$scope.currentView = 3;
+		$scope.editID = id;
+		console.log($scope.stations[$scope.stationsMap[id]]);
+		$scope.newStation = {
+			name:$scope.stations[$scope.stationsMap[id]].name,
+			location:$scope.stations[$scope.stationsMap[id]].location,
+			type:$scope.stations[$scope.stationsMap[id]].type.toString()
+		};
+	}
+	
+	$scope.showEditPathsForm = function(id) {
+		$scope.newOrEdit = false;
+		$scope.currentView = 4;
+		$scope.editID = id;
+		$scope.newPath = {
+			startingNode:$scope.paths[$scope.pathsMap[id]].startingNode,
+			endingNode:$scope.paths[$scope.pathsMap[id]].endingNode,
+			distance:$scope.paths[$scope.pathsMap[id]].distance
+		};
 	}
 	
 	// TODO: create addRide function
@@ -249,117 +290,209 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 	}
 	
 	$scope.addVehicle = function() {
-		if($scope.newVehicle && $scope.newVehicle.name) {
-			$http.post("/addVehicle", $scope.newVehicle, {headers:{authToken:localStorage["authToken"]}}).then(
-				function(response){
-					window.alert(response.data);
-					$scope.newVehicle = {
-						name : ""
+		if($scope.newOrEdit) {
+			if($scope.newVehicle && $scope.newVehicle.name) {
+				$http.post("/addVehicle", $scope.newVehicle, {headers:{authToken:localStorage["authToken"]}}).then(
+					function(response){
+						window.alert(response.data);
+						$scope.newVehicle = {
+							name : ""
+						}
+						$scope.showHome();
+					}, 
+					function(error){
+						window.alert(error.data);
 					}
-					$scope.showHome();
-				}, 
-				function(error){
-					window.alert(error.data);
-				}
-			);
+				);
+			} else {
+				window.alert("All fields must be filled out")
+			}
 		} else {
-			window.alert("All fields must be filled out")
+			if($scope.newVehicle && $scope.newVehicle.name) {
+				$http.post("/editVehicle", {id:$scope.editID, edits:$scope.newVehicle}, {headers:{authToken:localStorage["authToken"]}}).then(
+					function(response){
+						window.alert(response.data);
+						$scope.newVehicle = {
+							name : ""
+						}
+						$scope.showHome();
+					}, 
+					function(error){
+						window.alert(error.data);
+					}
+				);
+			} else {
+				window.alert("All fields must be filled out")
+			}
 		}
 	}
 	
 	$scope.addStation = function() {
-		if($scope.newStation && $scope.newStation.name && $scope.newStation.location[0] && $scope.newStation.location[1] && $scope.newStation.type>=0) {
-			$http.post("/addStation", $scope.newStation, {headers:{authToken:localStorage["authToken"]}}).then(
-				function(response){
-					window.alert(response.data);
-					$scope.newStation = {
-						name : "",
-						type : '0',
-						location : []
+		if($scope.newOrEdit) {
+			if($scope.newStation && $scope.newStation.name && $scope.newStation.location[0] && $scope.newStation.location[1] && $scope.newStation.type>=0) {
+				$http.post("/addStation", $scope.newStation, {headers:{authToken:localStorage["authToken"]}}).then(
+					function(response){
+						window.alert(response.data);
+						$scope.newStation = {
+							name : "",
+							type : '0',
+							location : []
+						}
+						$scope.showHome();
+					}, 
+					function(error){
+						window.alert(error.data);
 					}
-					$scope.showHome();
-				}, 
-				function(error){
-					window.alert(error.data);
-				}
-			);
+				);
+			} else {
+				window.alert("All fields must be filled out")
+			}
 		} else {
-			window.alert("All fields must be filled out")
+			if($scope.newStation && $scope.newStation.name && $scope.newStation.location[0] && $scope.newStation.location[1] && $scope.newStation.type>=0) {
+				$http.post("/editNode", {id:$scope.editID, edits:$scope.newStation}, {headers:{authToken:localStorage["authToken"]}}).then(
+					function(response){
+						window.alert(response.data);
+						$scope.newStation = {
+							name : "",
+							type : '0',
+							location : []
+						}
+						$scope.showHome();
+					}, 
+					function(error){
+						window.alert(error.data);
+					}
+				);
+			} else {
+				window.alert("All fields must be filled out")
+			}
 		}
 	}
 	
 	$scope.addPath = function() {
 		var file = document.getElementById("waypointsFile").files[0];
-		if(file) {
-			var aReader = new FileReader();
-			aReader.readAsText(file, "UTF-8");
-			aReader.onload = function(evt) {
-				$scope.wayPointsText = aReader.result;
-				try {
-					$scope.wayPoints = JSON.parse($scope.wayPointsText);
-					if(Array.isArray($scope.wayPoints)) {
-						$scope.newPath.waypoints = $scope.wayPoints;
-						if($scope.newPath && $scope.newPath.startingNode && $scope.newPath.endingNode && $scope.newPath.distance >= 0 && $scope.newPath.waypoints.length > 0) {
-							$http.post("/addPath", $scope.newPath, {headers:{authToken:localStorage["authToken"]}}).then(
-								function(response){
-									window.alert(response.data);
-									$scope.resetNewPath();
-									$scope.showHome();
-								}, 
-								function(error){
-									window.alert(error.data);
-								}
-							);
+		if($scope.newOrEdit) {
+			if(file) {
+				var aReader = new FileReader();
+				aReader.readAsText(file, "UTF-8");
+				aReader.onload = function(evt) {
+					$scope.wayPointsText = aReader.result;
+					try {
+						$scope.wayPoints = JSON.parse($scope.wayPointsText);
+						if(Array.isArray($scope.wayPoints)) {
+							$scope.newPath.waypoints = $scope.wayPoints;
+							if($scope.newPath && $scope.newPath.startingNode && $scope.newPath.endingNode && $scope.newPath.distance >= 0 && $scope.newPath.waypoints.length > 0) {
+								$http.post("/addPath", $scope.newPath, {headers:{authToken:localStorage["authToken"]}}).then(
+									function(response){
+										window.alert(response.data);
+										$scope.resetNewPath();
+										$scope.showHome();
+									}, 
+									function(error){
+										window.alert(error.data);
+									}
+								);
+							} else {
+								//window.alert("All fields must be filled out")
+								window.alert("Please Fill Out All Fields");
+							}
 						} else {
-							//window.alert("All fields must be filled out")
-							window.alert("Please Fill Out All Fields");
+							window.alert("Invalid File Format 1");
 						}
-					} else {
-						window.alert("Invalid File Format 1");
+					} catch(e) {
+						window.alert("Invalid File Format 2");
 					}
-				} catch(e) {
-					window.alert("Invalid File Format 2");
 				}
+			} else {
+				window.alert("Please Sumbit a File");
 			}
 		} else {
-			window.alert("Please Sumbit a File");
+			if(file) {
+				var aReader = new FileReader();
+				aReader.readAsText(file, "UTF-8");
+				aReader.onload = function(evt) {
+					$scope.wayPointsText = aReader.result;
+					try {
+						$scope.wayPoints = JSON.parse($scope.wayPointsText);
+						if(Array.isArray($scope.wayPoints)) {
+							$scope.newPath.waypoints = $scope.wayPoints;
+							if($scope.newPath && $scope.newPath.startingNode && $scope.newPath.endingNode && $scope.newPath.distance >= 0 && $scope.newPath.waypoints.length > 0) {
+								$http.post("/editEdge", {id:$scope.editID, edits:$scope.newPath}, {headers:{authToken:localStorage["authToken"]}}).then(
+									function(response){
+										window.alert(response.data);
+										$scope.resetNewPath();
+										$scope.showHome();
+									}, 
+									function(error){
+										window.alert(error.data);
+									}
+								);
+							} else {
+								//window.alert("All fields must be filled out")
+								window.alert("Please Fill Out All Fields");
+							}
+						} else {
+							window.alert("Invalid File Format 1");
+						}
+					} catch(e) {
+						window.alert("Invalid File Format 2");
+					}
+				}
+			} else {
+				$http.post("/editEdge", {id:$scope.editID, edits:$scope.newPath}, {headers:{authToken:localStorage["authToken"]}}).then(
+					function(response){
+						window.alert(response.data);
+						$scope.resetNewPath();
+						$scope.showHome();
+					}, 
+					function(error){
+						window.alert(error.data);
+					}
+				);
+			}
 		}
 	}
 	
 	$scope.deleteNode = function(id) {
-		$http.post("/deleteNode", {id:id}, {headers:{authToken:localStorage["authToken"]}}).then(
-			function(response){
-				window.alert(response.data);
-				location.reload();
-			}, 
-			function(error){
-				window.alert(error.data);
-			}
-		);
+		if(confirm("Do you wish to delete this node?")) {
+			$http.post("/deleteNode", {id:id}, {headers:{authToken:localStorage["authToken"]}}).then(
+				function(response){
+					window.alert(response.data);
+					location.reload();
+				}, 
+				function(error){
+					window.alert(error.data);
+				}
+			);
+		}
 	}
 	
 	$scope.deleteEdge = function(id) {
-		$http.post("/deleteEdge", {id:id}, {headers:{authToken:localStorage["authToken"]}}).then(
-			function(response){
-				window.alert(response.data);
-				location.reload();
-			}, 
-			function(error){
-				window.alert(error.data);
-			}
-		);
+		if(confirm("Do you wish to delete this edge?")) {
+			$http.post("/deleteEdge", {id:id}, {headers:{authToken:localStorage["authToken"]}}).then(
+				function(response){
+					window.alert(response.data);
+					location.reload();
+				}, 
+				function(error){
+					window.alert(error.data);
+				}
+			);
+		}
 	}
 	
 	$scope.deleteVehicle = function(id) {
-		$http.post("/deleteVehicle", {id:id}, {headers:{authToken:localStorage["authToken"]}}).then(
-			function(response){
-				window.alert(response.data);
-				location.reload();
-			}, 
-			function(error){
-				window.alert(error.data);
-			}
-		);
+		if(confirm("Do you wish to delete this vehicle?")) {
+			$http.post("/deleteVehicle", {id:id}, {headers:{authToken:localStorage["authToken"]}}).then(
+				function(response){
+					window.alert(response.data);
+					location.reload();
+				}, 
+				function(error){
+					window.alert(error.data);
+				}
+			);
+		}
 	}
 	
 	$scope.rideTasks = rideTasks;
@@ -679,6 +812,10 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 		console.log(vehicles);
 		console.log("---All vehicles End---");*/
 		$scope.vehicles = vehicles;
+		$scope.vehiclesMap = [];
+		for(var i=0;i<$scope.vehicles.length;i++) {
+			$scope.vehiclesMap[$scope.vehicles[i]["_id"]] = i;
+		}
 		$scope.$apply();
 		$scope.updateMap();
 		if(!$scope.newRideSet && $scope.newPathSet) {
