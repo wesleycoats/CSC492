@@ -1,7 +1,7 @@
 //Draw every X waypoints
 var edgeResolution = 1;
 
-var runSimulation = false;
+var runSimulation = true;
 var vehiclesRunninginSimulation = 3;
 var distToTravelPerFrame = 1;
 var portToUse = 80;
@@ -160,6 +160,51 @@ app.post('/addPath', function (req, res) {
 		findAdmin(req.get("authToken"), function(admin) {
 			if(admin) {
 				addPath(form, res)
+			} else {
+				resError(res, "Account Not Found", 400);
+			}
+		})
+	} else {
+		resError(res, "All fields must be filled out", 400)
+	}
+})
+
+app.post('/editNode', function (req, res) {
+	var form = req.body;
+	if(form && form.id && form.edits) {
+		findAdmin(req.get("authToken"), function(admin) {
+			if(admin) {
+				editNode(form, res)
+			} else {
+				resError(res, "Account Not Found", 400);
+			}
+		})
+	} else {
+		resError(res, "All fields must be filled out", 400)
+	}
+})
+
+app.post('/editEdge', function (req, res) {
+	var form = req.body;
+	if(form && form.id && form.edits) {
+		findAdmin(req.get("authToken"), function(admin) {
+			if(admin) {
+				editEdge(form, res)
+			} else {
+				resError(res, "Account Not Found", 400);
+			}
+		})
+	} else {
+		resError(res, "All fields must be filled out", 400)
+	}
+})
+
+app.post('/editVehicle', function (req, res) {
+	var form = req.body;
+	if(form && form.id && form.edits) {
+		findAdmin(req.get("authToken"), function(admin) {
+			if(admin) {
+				editVehicle(form, res)
 			} else {
 				resError(res, "Account Not Found", 400);
 			}
@@ -391,7 +436,7 @@ function addPath(form, res) {
 						speed : form.waypoints[i].speed,
 						headingAngle : form.waypoints[i].headingAngle,
 						steeringAngle : form.waypoints[i].steeringAngle,
-						timeStamp : form.waypoints[i].timeStamp,
+						timeStamp : new Date(form.waypoints[i].timeStamp),
 						tick : form.waypoints[i].tick,
 						actuator : form.waypoints[i].actuator,
 						motorControlFlags : [form.waypoints[i].motorControlFlags[0], form.waypoints[i].motorControlFlags[1], form.waypoints[i].motorControlFlags[2], form.waypoints[i].motorControlFlags[3], form.waypoints[i].motorControlFlags[4], form.waypoints[i].motorControlFlags[5], form.waypoints[i].motorControlFlags[6], form.waypoints[i].motorControlFlags[7]],
@@ -412,6 +457,46 @@ function addPath(form, res) {
 				resError(res, "Starting or Ending Point Does Not Exist", 400);
 			}
 		})
+	})
+}
+
+function editNode(form, res) {
+	updateDocument("Nodes", {_id: new mongo.ObjectID(form.id)}, form.edits, function(editedStation){
+		if(editedStation) {
+			resSuccess(res, "Station Edited");
+			getAllStationsInfo(function(allNodes){
+				io.to('allStationsInfo').emit('allStationsInfo', allNodes);
+			})
+		} else {
+			resError(res, "An Error Occured", 500);
+		}
+	})
+}
+
+function editEdge(form, res) {
+	form.edits.type = +form.edits.type;
+	updateDocument("Edges", {_id: new mongo.ObjectID(form.id)}, form.edits, function(editedEdge){
+		if(editedEdge) {
+			resSuccess(res, "Edge Edited");
+			getallEdgesInfo(function(allPaths){
+				io.to('allEdgesInfo').emit('allEdgesInfo', allPaths);
+			})
+		} else {
+			resError(res, "An Error Occured", 500);
+		}
+	})
+}
+
+function editVehicle(form, res) {
+	updateDocument("Vehicles", {_id: new mongo.ObjectID(form.id)}, form.edits, function(editedVehicle){
+		if(editedVehicle) {
+			resSuccess(res, "Vehicle Edited");
+			getAllVehiclesInfo(function(vehiclesInfo){
+				io.to('allVehiclesInfo').emit('allVehiclesInfo',vehiclesInfo);
+			})
+		} else {
+			resError(res, "An Error Occured", 500);
+		}
 	})
 }
 

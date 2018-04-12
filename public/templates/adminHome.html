@@ -73,6 +73,8 @@
 							<th>
 							</th>
 							<th>
+							</th>
+							<th>
 								Name
 							</th>
 							<th>
@@ -85,6 +87,9 @@
 						<tr ng-repeat="vehicle in vehicles|filter:{currentPath:'!!'}">
 							<td>
 								<div ng-click="deleteVehicle(vehicle._id)" style="cursor:pointer;"><i class="fa fa-minus-circle"></i></div>
+							</td>
+							<td>
+								<div ng-click="showEditVehiclesForm(vehicle._id)" style="cursor:pointer;"><i class="fa fa-edit"></i></div>
 							</td>
 							<td>
 								{{vehicle.name}}
@@ -104,6 +109,8 @@
 							<th>
 							</th>
 							<th>
+							</th>
+							<th>
 								Name
 							</th>
 							<th>
@@ -113,6 +120,9 @@
 						<tr ng-repeat="vehicle in vehicles|filter:{currentPath:'!'}">
 							<td>
 								<div ng-click="deleteVehicle(vehicle._id)" style="cursor:pointer;"><i class="fa fa-minus-circle"></i></div>
+							</td>
+							<td>
+								<div ng-click="showEditVehiclesForm(vehicle._id)" style="cursor:pointer;"><i class="fa fa-edit"></i></div>
 							</td>
 							<td>
 								{{vehicle.name}}
@@ -144,6 +154,8 @@
 							<th>
 							</th>
 							<th>
+							</th>
+							<th>
 								Node Name
 							</th>
 							<th>
@@ -153,6 +165,9 @@
 						<tr ng-repeat="station in stations">
 							<td>
 								<div ng-click="deleteNode(station._id)" style="cursor:pointer;"><i class="fa fa-minus-circle"></i></div>
+							</td>
+							<td>
+								<div ng-click="showEditStationsForm(station._id)" style="cursor:pointer;"><i class="fa fa-edit"></i></div>
 							</td>
 							<td>
 								{{station.name}}
@@ -189,6 +204,8 @@
 								<th>
 								</th>
 								<th>
+								</th>
+								<th>
 									Starting Node
 								</th>
 								<th>
@@ -201,6 +218,9 @@
 							<tr ng-repeat="path in paths">
 								<td>
 									<div ng-click="deleteEdge(path._id)" style="cursor:pointer;"><i class="fa fa-minus-circle"></i></div>
+								</td>
+								<td>
+									<div ng-click="showEditPathsForm(path._id)" style="cursor:pointer;"><i class="fa fa-edit"></i></div>
 								</td>
 								<td>
 										{{stations[stationsMap[path.startingNode]].name}} 
@@ -231,7 +251,7 @@
 				<nav class="navbar navbar-dark bg-info" style="z-index:100;margin:0px">
 					<div class="container-fluid">
 						<div class="navbar-header">
-							<span class="navbar-brand"> <a href="" ng-click="showHome();" class="signOutLink">&lt; Add Ride</a>
+							<span class="navbar-brand"> <a href="" ng-click="showHome();" class="signOutLink">&lt; {{newOrEdit?"Add":"Edit"}} Ride</a>
 						</div>
 					</div>
 				</nav>
@@ -282,7 +302,7 @@
 						});
 						
 					</script>
-					<button type="button" class="btn btn-lg btn-danger btn-block" ng-click="addRide()" type="submit" >Add Ride</button>
+					<button type="button" class="btn btn-lg btn-danger btn-block" ng-click="addRide()" type="submit" >{{newOrEdit?"Add":"Edit"}} Ride</button>
 				</form>
 			</div>
 		</div>
@@ -295,7 +315,7 @@
 			<nav class="navbar navbar-dark bg-info" style="z-index:100;margin:0px">
 				<div class="container-fluid">
 					<div class="navbar-header">
-				    	<span class="navbar-brand"> <a href="" ng-click="showHome();" class="signOutLink">&lt; Add Vehicle</a>
+				    	<span class="navbar-brand"> <a href="" ng-click="showHome();" class="signOutLink">&lt; {{newOrEdit?"Add":"Edit"}} Vehicle</a>
 				    </div>
 				</div>
 			</nav>
@@ -308,7 +328,7 @@
 					<label for="stationName">Name of Vehicle</label>
 					<input type="text" class="form-control" id="VehicleName" placeholder="Vehicle Name" ng-model="newVehicle.name">
 				</div>
-				<button type="button" class="btn btn-lg btn-danger btn-block" ng-click="addVehicle()" type="submit" >Add Vehicle</button>
+				<button type="button" class="btn btn-lg btn-danger btn-block" ng-click="addVehicle()" type="submit" >{{newOrEdit?"Add":"Edit"}} Vehicle</button>
 			</form>
 		</div>
 	</div>
@@ -321,7 +341,7 @@
 			<nav class="navbar navbar-dark bg-info" style="z-index:100;margin:0px">
 				<div class="container-fluid">
 					<div class="navbar-header">
-				    	<span class="navbar-brand"> <a href="" ng-click="showHome();" class="signOutLink">&lt; Add Node</a>
+				    	<span class="navbar-brand"> <a href="" ng-click="showHome();" class="signOutLink">&lt; {{newOrEdit?"Add":"Edit"}} Node</a>
 				    	<span ng-show="addingStationsOnMap"><br/>Click on Map to Place Station</span></span>
 				    </div>
 					<ul class="nav navbar-nav navbar-right">
@@ -357,7 +377,7 @@
 					<select class="form-control" ng-model="newStation.type" ng-options="''+index as type for (index, type) in stationTypes">
 					</select>
 				</div>
-				<button type="button" class="btn btn-lg btn-danger btn-block" ng-click="addStation()" type="submit" >Add Node</button>
+				<button type="button" class="btn btn-lg btn-danger btn-block" ng-click="addStation()" type="submit" >{{newOrEdit?"Add":"Edit"}} Node</button>
 			</form>
 		</div>
 	</div>
@@ -370,7 +390,7 @@
 			<nav class="navbar navbar-dark bg-info" style="z-index:100;margin:0px">
 				<div class="container-fluid">
 					<div class="navbar-header">
-				    	<span class="navbar-brand"> <a href="" ng-click="showHome();" class="signOutLink">&lt; Add Edge</a>
+				    	<span class="navbar-brand"> <a href="" ng-click="showHome();" class="signOutLink">&lt; {{newOrEdit?"Add":"Edit"}} Edge</a>
 				    </div>
 				</div>
 			</nav>
@@ -406,7 +426,7 @@
 					<input type="file" id="waypointsFile" />
 				</div>
 
-				<button type="button" class="btn btn-lg btn-danger btn-block" ng-click="addPath()" type="submit" >Add Edge</button>
+				<button type="button" class="btn btn-lg btn-danger btn-block" ng-click="addPath()" type="submit" >{{newOrEdit?"Add":"Edit"}} Edge</button>
 			</form>
 		</div>
 	</div>
