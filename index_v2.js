@@ -436,7 +436,7 @@ function addPath(form, res) {
 						speed : form.waypoints[i].speed,
 						headingAngle : form.waypoints[i].headingAngle,
 						steeringAngle : form.waypoints[i].steeringAngle,
-						timeStamp : form.waypoints[i].timeStamp,
+						timeStamp : new Date(form.waypoints[i].timeStamp),
 						tick : form.waypoints[i].tick,
 						actuator : form.waypoints[i].actuator,
 						motorControlFlags : [form.waypoints[i].motorControlFlags[0], form.waypoints[i].motorControlFlags[1], form.waypoints[i].motorControlFlags[2], form.waypoints[i].motorControlFlags[3], form.waypoints[i].motorControlFlags[4], form.waypoints[i].motorControlFlags[5], form.waypoints[i].motorControlFlags[6], form.waypoints[i].motorControlFlags[7]],
