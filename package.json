@@ -4,7 +4,7 @@
   "description": "",
   "main": "index_v2.js",
   "scripts": {
-    "test": "babel-node ./node_modules/istanbul/lib/cli cover node_modules/mocha/bin/_mocha -- --bail --recursive 'test/indexTest.js'"
+    "test": "nyc --reporter=html --reporter=text --all mocha test/indexTest.js && casperjs test test/casperTest/*.js"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
