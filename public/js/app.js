@@ -521,7 +521,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 	$scope.contextmenuDir = null;
 	
 	$scope.createNodeFromMap = function() {
-		$scope.newStation.location = [$scope.mapLat,$scope.mapLng];
+		$scope.newStation.coordinates = [$scope.mapLat,$scope.mapLng];
 		$scope.showAddStationsForm();
 		$('#contextmenuClickable').css('visibility', 'hidden');
 	}
@@ -589,7 +589,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 		var lat = event.latLng.lat();
 		var lng = event.latLng.lng();
 		if($scope.addingStationsOnMap) {
-			$scope.newStation.location = [lat,lng];
+			$scope.newStation.coordinates = [lat,lng];
 			$scope.addingStationsOnMap = false;
 		}
 		$scope.seletingStartNode = false;
