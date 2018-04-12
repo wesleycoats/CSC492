@@ -399,7 +399,7 @@ function addVehicle(form, res) {
 function addStation(form, res) {
 	var newStation = {
 		name : form.name,
-		location : [form.location[0], form.location[1]],
+		coordinates : [form.location[0], form.location[1]],
 		type : +form.type
 	}
 	findDocuments("Nodes", {name:newStation.name}, function(stationsWithSameName){

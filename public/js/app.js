@@ -254,7 +254,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 		console.log($scope.stations[$scope.stationsMap[id]]);
 		$scope.newStation = {
 			name:$scope.stations[$scope.stationsMap[id]].name,
-			location:$scope.stations[$scope.stationsMap[id]].location,
+			coordinates:$scope.stations[$scope.stationsMap[id]].coordinates,
 			type:$scope.stations[$scope.stationsMap[id]].type.toString()
 		};
 	}
@@ -329,14 +329,14 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 	
 	$scope.addStation = function() {
 		if($scope.newOrEdit) {
-			if($scope.newStation && $scope.newStation.name && $scope.newStation.location[0] && $scope.newStation.location[1] && $scope.newStation.type>=0) {
+			if($scope.newStation && $scope.newStation.name && $scope.newStation.coordinates[0] && $scope.newStation.coordinates[1] && $scope.newStation.type>=0) {
 				$http.post("/addStation", $scope.newStation, {headers:{authToken:localStorage["authToken"]}}).then(
 					function(response){
 						window.alert(response.data);
 						$scope.newStation = {
 							name : "",
 							type : '0',
-							location : []
+							coordinates : []
 						}
 						$scope.showHome();
 					}, 
@@ -348,14 +348,14 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 				window.alert("All fields must be filled out")
 			}
 		} else {
-			if($scope.newStation && $scope.newStation.name && $scope.newStation.location[0] && $scope.newStation.location[1] && $scope.newStation.type>=0) {
+			if($scope.newStation && $scope.newStation.name && $scope.newStation.coordinates[0] && $scope.newStation.coordinates[1] && $scope.newStation.type>=0) {
 				$http.post("/editNode", {id:$scope.editID, edits:$scope.newStation}, {headers:{authToken:localStorage["authToken"]}}).then(
 					function(response){
 						window.alert(response.data);
 						$scope.newStation = {
 							name : "",
 							type : '0',
-							location : []
+							coordinates : []
 						}
 						$scope.showHome();
 					}, 
@@ -710,8 +710,8 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 		        });
 		        (function(i, marker) {
 					var contentString = '<p>' + '<b>' + $scope.stations[i].name + '</b>' +'<br/><br/>' 
-					+ 'Lat: ' + $scope.stations[i].location[0].toString() + '<br/>'
-					+ 'Long: ' + $scope.stations[i].location[1].toString() + '<br/>' 
+					+ 'Lat: ' + $scope.stations[i].coordinates[0].toString() + '<br/>'
+					+ 'Long: ' + $scope.stations[i].coordinates[1].toString() + '<br/>' 
 					+ 'Station Type: ' + stationTypes[$scope.stations[i].type] + '</p>';
 
 					// + '<p>' + 'Lat: ' + $scope.stations[i].location[0].toString()
