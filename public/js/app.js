@@ -698,41 +698,43 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 		}
 		
 		for(var i=0;i<$scope.stations.length;i++) {
-			var location = {lat:$scope.stations[i].coordinates[0],lng:$scope.stations[i].coordinates[1]};
-			if($scope.markers[$scope.stations[i]["_id"]]) {
-				$scope.markers[$scope.stations[i]["_id"]].setPosition(location)
-			} else {
-				var marker = new google.maps.Marker({
-		        	position: location,
-		        	icon: $scope.stationicon,
-					map: $scope.map,
-					disableAutoPan: true
-		        });
-		        (function(i, marker) {
-					var contentString = '<p>' + '<b>' + $scope.stations[i].name + '</b>' +'<br/><br/>' 
-					+ 'Lat: ' + $scope.stations[i].coordinates[0].toString() + '<br/>'
-					+ 'Long: ' + $scope.stations[i].coordinates[1].toString() + '<br/>' 
-					+ 'Station Type: ' + stationTypes[$scope.stations[i].type] + '</p>';
-
-					// + '<p>' + 'Lat: ' + $scope.stations[i].location[0].toString()
-					// + ', Long: ' + $scope.stations[i].location[1].toString() + '</p>'
-					// + '<p>Station Type: ' + stationTypes[$scope.stations[i].type]  + '</p></div>';
-					
-			        var infowindow = new google.maps.InfoWindow({
-						// content: $scope.stations[i].name
-						content: contentString
-					});
-					$scope.infoMarkers[$scope.stations[i]["_id"]] = infowindow;
-		        	marker.addListener('click', function(){
-			        	$scope.stationClicked($scope.stations[i]["_id"])
-			        	var infoMarkerKeys = Object.keys($scope.infoMarkers);
-			        	for(var j=0;j<infoMarkerKeys.length;j++) {
-				        	$scope.infoMarkers[infoMarkerKeys[j]].close();
-			        	}
-			        	infowindow.open($scope.map, marker);
+			if($scope.stations[i].coordinates) {
+				var location = {lat:$scope.stations[i].coordinates[0],lng:$scope.stations[i].coordinates[1]};
+				if($scope.markers[$scope.stations[i]["_id"]]) {
+					$scope.markers[$scope.stations[i]["_id"]].setPosition(location)
+				} else {
+					var marker = new google.maps.Marker({
+			        	position: location,
+			        	icon: $scope.stationicon,
+						map: $scope.map,
+						disableAutoPan: true
 			        });
-		        })(i, marker)
-		        $scope.markers[$scope.stations[i]["_id"]] = marker;
+			        (function(i, marker) {
+						var contentString = '<p>' + '<b>' + $scope.stations[i].name + '</b>' +'<br/><br/>' 
+						+ 'Lat: ' + $scope.stations[i].coordinates[0].toString() + '<br/>'
+						+ 'Long: ' + $scope.stations[i].coordinates[1].toString() + '<br/>' 
+						+ 'Station Type: ' + stationTypes[$scope.stations[i].type] + '</p>';
+	
+						// + '<p>' + 'Lat: ' + $scope.stations[i].location[0].toString()
+						// + ', Long: ' + $scope.stations[i].location[1].toString() + '</p>'
+						// + '<p>Station Type: ' + stationTypes[$scope.stations[i].type]  + '</p></div>';
+						
+				        var infowindow = new google.maps.InfoWindow({
+							// content: $scope.stations[i].name
+							content: contentString
+						});
+						$scope.infoMarkers[$scope.stations[i]["_id"]] = infowindow;
+			        	marker.addListener('click', function(){
+				        	$scope.stationClicked($scope.stations[i]["_id"])
+				        	var infoMarkerKeys = Object.keys($scope.infoMarkers);
+				        	for(var j=0;j<infoMarkerKeys.length;j++) {
+					        	$scope.infoMarkers[infoMarkerKeys[j]].close();
+				        	}
+				        	infowindow.open($scope.map, marker);
+				        });
+			        })(i, marker)
+			        $scope.markers[$scope.stations[i]["_id"]] = marker;
+				}
 			}
 		}
 		
