@@ -698,7 +698,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 		}
 		
 		for(var i=0;i<$scope.stations.length;i++) {
-			var location = {lat:$scope.stations[i].location[0],lng:$scope.stations[i].location[1]};
+			var location = {lat:$scope.stations[i].coordinates[0],lng:$scope.stations[i].coordinates[1]};
 			if($scope.markers[$scope.stations[i]["_id"]]) {
 				$scope.markers[$scope.stations[i]["_id"]].setPosition(location)
 			} else {
