@@ -141,7 +141,7 @@ app.post('/addvehicle', function (req, res) {
 
 app.post('/addStation', function (req, res) {
 	var form = req.body;
-	if(form && form.name && form.location && form.location.length==2 && form.type) {
+	if(form && form.name && form.coordinates && form.coordinates.length==2 && form.type) {
 		findAdmin(req.get("authToken"), function(admin) {
 			if(admin) {
 				addStation(form, res)
@@ -399,7 +399,7 @@ function addVehicle(form, res) {
 function addStation(form, res) {
 	var newStation = {
 		name : form.name,
-		coordinates : [form.location[0], form.location[1]],
+		coordinates : [form.coordinates[0], form.coordinates[1]],
 		type : +form.type
 	}
 	findDocuments("Nodes", {name:newStation.name}, function(stationsWithSameName){
