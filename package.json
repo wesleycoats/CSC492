@@ -4,7 +4,7 @@
   "description": "",
   "main": "index_v2.js",
   "scripts": {
-    "test": "nyc --reporter=html --reporter=text --all mocha test/indexTest.js && casperjs test test/casperTest/*.js"
+    "test": "nyc --reporter=html --reporter=text --all mocha --recursive test/indexTest.js && casperjs test test/casperTest/*.js"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
