@@ -118,17 +118,17 @@ var Edges = [
 
 var Nodes = [
 	{
-		location : [35.769219, -78.675626],
+		coordinates : [35.769219, -78.675626],
 		name : "Point 1",
 		type : 0,
 	},
 	{
-		location : [35.769743, -78.675071],
+		coordinates : [35.769743, -78.675071],
 		name : "Point 2",
 		type : 1,
 	},
 	{
-		location : [35.770362, -78.675628],
+		coordinates : [35.770362, -78.675628],
 		name : "Point 3",
 		type : 2,
 	}
