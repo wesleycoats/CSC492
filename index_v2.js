@@ -365,7 +365,7 @@ function addRide(form, res) {
 	}
 	insertDocument("Rides", newRide, function(nr) {
 		if(nr) {
-			resSuccess(res, "Ride Added");
+			resSuccess(res, {"id":nr.insertedIds[0], "msg": "Ride Added"});
 			getAllRidesInfo(function(vehiclesInfo){
 				io.to('allRidesInfo').emit('allRidesInfo',vehiclesInfo);
 			})
@@ -382,7 +382,7 @@ function addVehicle(form, res) {
 		if(vehiclesWithSameName.length==0) {
 			insertDocument("Vehicles", newVehicle, function(ns) {
 				if(ns) {
-					resSuccess(res, "vehicle Added");
+					resSuccess(res, {"id":ns.insertedIds[0], "msg": "vehicle Added"});
 					getAllVehiclesInfo(function(vehiclesInfo){
 						io.to('allVehiclesInfo').emit('allVehiclesInfo',vehiclesInfo);
 					})
@@ -406,7 +406,7 @@ function addStation(form, res) {
 		if(stationsWithSameName.length==0) {
 			insertDocument("Nodes", newStation, function(ns) {
 				if(ns) {
-					resSuccess(res, "Station Added");
+					resSuccess(res, {"id":ns.insertedIds[0], "msg":"Station Added"});
 					getAllStationsInfo(function(allNodes){
 						io.to('allStationsInfo').emit('allStationsInfo', allNodes);
 					})
@@ -445,7 +445,7 @@ function addPath(form, res) {
 				}
 				insertDocument("Edges", newPath, function(np) {
 					if(np) {
-						resSuccess(res, "Path Added");
+						resSuccess(res, {"id":np.insertedIds[0], "msg": "Path Added"});
 						getallEdgesInfo(function(allPaths){
 							io.to('allEdgesInfo').emit('allEdgesInfo', allPaths);
 						})

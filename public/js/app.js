@@ -276,7 +276,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 		if($scope.newRide) {
 			$http.post("/addRide", $scope.newRide, {headers:{authToken:localStorage["authToken"]}}).then(
 				function(response){
-					window.alert(response.data);
+					window.alert(response.data.msg);
 					$scope.resetNewRide();
 					$scope.showHome();
 				}, 
@@ -294,7 +294,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 			if($scope.newVehicle && $scope.newVehicle.name) {
 				$http.post("/addVehicle", $scope.newVehicle, {headers:{authToken:localStorage["authToken"]}}).then(
 					function(response){
-						window.alert(response.data);
+						window.alert(response.data.msg);
 						$scope.newVehicle = {
 							name : ""
 						}
@@ -311,7 +311,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 			if($scope.newVehicle && $scope.newVehicle.name) {
 				$http.post("/editVehicle", {id:$scope.editID, edits:$scope.newVehicle}, {headers:{authToken:localStorage["authToken"]}}).then(
 					function(response){
-						window.alert(response.data);
+						window.alert(response.data.msg);
 						$scope.newVehicle = {
 							name : ""
 						}
@@ -332,7 +332,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 			if($scope.newStation && $scope.newStation.name && $scope.newStation.coordinates[0] && $scope.newStation.coordinates[1] && $scope.newStation.type>=0) {
 				$http.post("/addStation", $scope.newStation, {headers:{authToken:localStorage["authToken"]}}).then(
 					function(response){
-						window.alert(response.data);
+						window.alert(response.data.msg);
 						$scope.newStation = {
 							name : "",
 							type : '0',
