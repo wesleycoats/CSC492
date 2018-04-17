@@ -189,7 +189,8 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 	$scope.isCurrentlySelected = false;
 	$scope.currentlySelectedName = "";
 	$scope.currentlySelectedDesc = "";
-	$scope.currentlySelectedLocation = [];
+	$scope.currentlySelectedLocationLat = 0;
+	$scope.currentlySelectedLocationLng = 0;
 	$scope.currentlySelectedButtons = [];
 	
 	
@@ -708,7 +709,8 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 							$scope.isCurrentlySelected = true;
 							$scope.currentlySelectedName = $scope.vehicles[i].name;
 							$scope.currentlySelectedDesc = ["Battery:" + $scope.vehicles[i].batteryLife.toString() +"%","Speed: " + $scope.vehicles[i].speed.toString(),"Enabled?: " + $scope.vehicles[i].enabled.toString()].join("\n");
-							$scope.currentlySelectedLocation = $scope.vehicles[i].coordinates;
+							$scope.currentlySelectedLocationLat = $scope.vehicles[i].coordinates[0];
+							$scope.currentlySelectedLocationLng = $scope.vehicles[i].coordinates[1];
 							$scope.currentlySelectedButtons = [{icon:"fa-edit", fn: function(){$scope.showVehiclesForm($scope.vehicles[i]._id)}}];
 							$scope.$apply();
 						});
@@ -744,6 +746,8 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 					$scope.currentlySelectedName = $scope.stations[$scope.stationsMap[$scope.paths[i].startingNode]].name + " -> " + $scope.stations[$scope.stationsMap[$scope.paths[i].endingNode]].name;
 					$scope.currentlySelectedDesc = "";
 					$scope.currentlySelectedLocation = $scope.paths[i].waypoints[Math.floor($scope.paths[i].length/2)].coordinates;
+					$scope.currentlySelectedLocationLat = $scope.paths[i].waypoints[Math.floor($scope.paths[i].length/2)].coordinates[0];
+					$scope.currentlySelectedLocationLng = $scope.paths[i].waypoints[Math.floor($scope.paths[i].length/2)].coordinates[1];
 					$scope.currentlySelectedButtons = [{icon:"fa-edit", fn: function(){$scope.showEditPathsForm($scope.paths[i]._id)}}];
 					$scope.$apply();
 				});
@@ -789,7 +793,8 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 							$scope.isCurrentlySelected = true;
 							$scope.currentlySelectedName = $scope.stations[i].name;
 							$scope.currentlySelectedDesc = "Station Type: " + stationTypes[$scope.stations[i].type];
-							$scope.currentlySelectedLocation = $scope.stations[i].coordinates;
+							$scope.currentlySelectedLocationLat = $scope.stations[i].coordinates[0];
+							$scope.currentlySelectedLocationLng = $scope.stations[i].coordinates[1];
 							$scope.currentlySelectedButtons = [{icon:"fa-edit", fn: function(){$scope.showEditStationsForm($scope.stations[i]._id)}}];
 							$scope.$apply();
 						});
