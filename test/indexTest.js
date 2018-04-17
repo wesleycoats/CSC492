@@ -315,7 +315,6 @@ describe("REST api Test",function(){
         
         it("testing add ride",function(done){
             chai.request('http://localhost:80')
-        
             .post('/signIn')
             .type('form')
             .send({
@@ -339,10 +338,394 @@ describe("REST api Test",function(){
             });
         });
         
+        it("testing add ride bad account",function(done){
+            chai.request('http://localhost:80')
+            .post('/signIn')
+            .type('form')
+            .send({
+                email : 'admin@example.com',
+                password : 'admi'
+            })
+            .end(function(err, res) {
+                var token = res.text
+                chai.request('http://localhost:80')
+                .post('/addRide')
+                .set('authToken', token)
+                .send({
+                    pickupNode : stationID,
+                    dropoffNode : stationID2
+                })
+                .end(function(err, res) {
+                    //console.log(res)
+                    expect(res).to.have.status(400);
+                    done();
+                });
+            });
+        });
+        
+        it("testing add ride missing field",function(done){
+            chai.request('http://localhost:80')
+            .post('/signIn')
+            .type('form')
+            .send({
+                email : 'admin@example.com',
+                password : 'admin'
+            })
+            .end(function(err, res) {
+                var token = res.text
+                chai.request('http://localhost:80')
+                .post('/addRide')
+                .set('authToken', token)
+                .send({
+                    pickupNode : stationID,
+                })
+                .end(function(err, res) {
+                    //console.log(res)
+                    expect(res).to.have.status(400);
+                    done();
+                });
+            });
+        });
+        
     });
     
     describe("Editing Tests",function(){
+    
+        it("testing edit node",function(done){
+            chai.request('http://localhost:80')
+            .post('/signIn')
+            .type('form')
+            .send({
+                email : 'admin@example.com',
+                password : 'admin'
+            })
+            .end(function(err, res) {
+                var token = res.text
+                var editsobj = {
+		            name : "newname",
+	            }
+                chai.request('http://localhost:80')
+                .post('/editNode')
+                .set('authToken', token)
+                .send({
+                    id : stationID,
+                    edits : editsobj
+                })
+                .end(function(err, res) {
+                    //console.log(res)
+                    expect(res).to.have.status(200);
+                    done();
+                });
+            });
+        });
+        
+        it("testing edit node bad account",function(done){
+            chai.request('http://localhost:80')
+            .post('/signIn')
+            .type('form')
+            .send({
+                email : 'admin@example.com',
+                password : 'admi'
+            })
+            .end(function(err, res) {
+                var token = res.text
+                var editsobj = {
+		            name : "newname",
+	            }
+                chai.request('http://localhost:80')
+                .post('/editNode')
+                .set('authToken', token)
+                .send({
+                    id : stationID,
+                    edits : editsobj
+                })
+                .end(function(err, res) {
+                    //console.log(res)
+                    expect(res).to.have.status(400);
+                    done();
+                });
+            });
+        });
+        
+        it("testing edit node missing field",function(done){
+            chai.request('http://localhost:80')
+            .post('/signIn')
+            .type('form')
+            .send({
+                email : 'admin@example.com',
+                password : 'admin'
+            })
+            .end(function(err, res) {
+                var token = res.text
+                var editsobj = {
+		            name : "newname",
+	            }
+                chai.request('http://localhost:80')
+                .post('/editNode')
+                .set('authToken', token)
+                .send({
+                    edits : editsobj
+                })
+                .end(function(err, res) {
+                    //console.log(res)
+                    expect(res).to.have.status(400);
+                    done();
+                });
+            });
+        });
+        
+        it("testing edit vehicle",function(done){
+            chai.request('http://localhost:80')
+            .post('/signIn')
+            .type('form')
+            .send({
+                email : 'admin@example.com',
+                password : 'admin'
+            })
+            .end(function(err, res) {
+                var token = res.text
+                var editsobj = {
+		            name : "newname",
+	            }
+                chai.request('http://localhost:80')
+                .post('/editVehicle')
+                .set('authToken', token)
+                .send({
+                    id : vehicleID,
+                    edits : editsobj
+                })
+                .end(function(err, res) {
+                    //console.log(res)
+                    expect(res).to.have.status(200);
+                    done();
+                });
+            });
+        });
+        
+        it("testing edit vehicle bad account",function(done){
+            chai.request('http://localhost:80')
+            .post('/signIn')
+            .type('form')
+            .send({
+                email : 'admin@example.com',
+                password : 'admi'
+            })
+            .end(function(err, res) {
+                var token = res.text
+                var editsobj = {
+		            name : "newname",
+	            }
+                chai.request('http://localhost:80')
+                .post('/editVehicle')
+                .set('authToken', token)
+                .send({
+                    id : vehicleID,
+                    edits : editsobj
+                })
+                .end(function(err, res) {
+                    //console.log(res)
+                    expect(res).to.have.status(400);
+                    done();
+                });
+            });
+        });
+        
+        it("testing edit vehicle missing field",function(done){
+            chai.request('http://localhost:80')
+            .post('/signIn')
+            .type('form')
+            .send({
+                email : 'admin@example.com',
+                password : 'admin'
+            })
+            .end(function(err, res) {
+                var token = res.text
+                var editsobj = {
+		            name : "newname",
+	            }
+                chai.request('http://localhost:80')
+                .post('/editVehicle')
+                .set('authToken', token)
+                .send({
+                    edits : editsobj
+                })
+                .end(function(err, res) {
+                    //console.log(res)
+                    expect(res).to.have.status(400);
+                    done();
+                });
+            });
+        });
+    
     });
+    
     describe("Deleting Tests",function(){
+        it("testing delete node missing field",function(done){
+            chai.request('http://localhost:80')
+            .post('/signIn')
+            .type('form')
+            .send({
+                email : 'admin@example.com',
+                password : 'admin'
+            })
+            .end(function(err, res) {
+                var token = res.text
+                chai.request('http://localhost:80')
+                .post('/deleteNode')
+                .set('authToken', token)
+                .send({
+                    id: ''
+                })
+                .end(function(err, res) {
+                    //console.log(res)
+                    expect(res).to.have.status(400);
+                    done();
+                });
+            });
+        });
+        
+        it("testing delete node bad account",function(done){
+            chai.request('http://localhost:80')
+            .post('/signIn')
+            .type('form')
+            .send({
+                email : 'admin@example.com',
+                password : 'admi'
+            })
+            .end(function(err, res) {
+                var token = res.text
+                chai.request('http://localhost:80')
+                .post('/deleteNode')
+                .set('authToken', token)
+                .send({
+                    id: stationID
+                })
+                .end(function(err, res) {
+                    //console.log(res)
+                    expect(res).to.have.status(400);
+                    done();
+                });
+            });
+        });
+        
+        it("testing delete node",function(done){
+            chai.request('http://localhost:80')
+            .post('/signIn')
+            .type('form')
+            .send({
+                email : 'admin@example.com',
+                password : 'admin'
+            })
+            .end(function(err, res) {
+                var token = res.text
+                chai.request('http://localhost:80')
+                .post('/deleteNode')
+                .set('authToken', token)
+                .send({
+                    id: stationID
+                })
+                .end(function(err, res) {
+                    //console.log(res)
+                    expect(res).to.have.status(200);
+                    done();
+                });
+            });
+        });
+        
+        it("testing delete second node",function(done){
+            chai.request('http://localhost:80')
+            .post('/signIn')
+            .type('form')
+            .send({
+                email : 'admin@example.com',
+                password : 'admin'
+            })
+            .end(function(err, res) {
+                var token = res.text
+                chai.request('http://localhost:80')
+                .post('/deleteNode')
+                .set('authToken', token)
+                .send({
+                    id: stationID2
+                })
+                .end(function(err, res) {
+                    //console.log(res)
+                    expect(res).to.have.status(200);
+                    done();
+                });
+            });
+        });
+        
+        it("testing delete vehicle missing field",function(done){
+            chai.request('http://localhost:80')
+            .post('/signIn')
+            .type('form')
+            .send({
+                email : 'admin@example.com',
+                password : 'admin'
+            })
+            .end(function(err, res) {
+                var token = res.text
+                chai.request('http://localhost:80')
+                .post('/deleteVehicle')
+                .set('authToken', token)
+                .send({
+                    id: ''
+                })
+                .end(function(err, res) {
+                    //console.log(res)
+                    expect(res).to.have.status(400);
+                    done();
+                });
+            });
+        });
+        
+        it("testing delete vehicle bad account",function(done){
+            chai.request('http://localhost:80')
+            .post('/signIn')
+            .type('form')
+            .send({
+                email : 'admin@example.com',
+                password : 'admi'
+            })
+            .end(function(err, res) {
+                var token = res.text
+                chai.request('http://localhost:80')
+                .post('/deleteNode')
+                .set('authToken', token)
+                .send({
+                    id: vehicleID
+                })
+                .end(function(err, res) {
+                    //console.log(res)
+                    expect(res).to.have.status(400);
+                    done();
+                });
+            });
+        });
+        
+        it("testing delete vehicle",function(done){
+            chai.request('http://localhost:80')
+            .post('/signIn')
+            .type('form')
+            .send({
+                email : 'admin@example.com',
+                password : 'admin'
+            })
+            .end(function(err, res) {
+                var token = res.text
+                chai.request('http://localhost:80')
+                .post('/deleteNode')
+                .set('authToken', token)
+                .send({
+                    id: vehicleID
+                })
+                .end(function(err, res) {
+                    //console.log(res)
+                    expect(res).to.have.status(200);
+                    done();
+                });
+            });
+        });
     });
 });
