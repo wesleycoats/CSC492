@@ -684,6 +684,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 					});
 					if($scope.vehicles[i]._id == $scope.currentlySelectedId) {
 						$scope.currentlySelectedLocation = $scope.vehicles[i].coordinates;
+						$scope.$apply();
 					}
 					(function(i, marker) {
 						/*var contentString = '<p><b>' + $scope.vehicles[i].name + '</b><br/>' 
