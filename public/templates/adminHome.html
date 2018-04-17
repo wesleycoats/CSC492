@@ -107,7 +107,7 @@
 								N/A
 							</td>
 							<td ng-if="pathsMap[vehicle.currentPath]">
-								{{pathsMap[vehicle.currentPath]?stations[stationsMap[paths[pathsMap[vehicle.currentPath]].startingNode]].name}} -> {{stations[stationsMap[paths[pathsMap[vehicle.currentPath]].endingNode]].name}}
+								{{stations[stationsMap[paths[pathsMap[vehicle.currentPath]].startingNode]].name}} -> {{stations[stationsMap[paths[pathsMap[vehicle.currentPath]].endingNode]].name}}
 							</td>
 							<td ng-if="!pathsMap[vehicle.currentPath]">
 								N/A
