@@ -670,6 +670,9 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 		}
 		$scope.lines = [];
 		for(var i=0;i<$scope.vehicles.length;i++) {
+			if($scope.vehicles[i]._id == $scope.currentlySelectedId) {
+				$scope.currentlySelectedLocation = $scope.vehicles[i].coordinates;
+			}
 			if($scope.vehicles[i].coordinates && $scope.vehicles[i].coordinates[0] && $scope.vehicles[i].coordinates[1]) {
 				var location = {lat:$scope.vehicles[i].coordinates[0],lng:$scope.vehicles[i].coordinates[1]};
 				if($scope.markers[$scope.vehicles[i]["_id"]]) {
@@ -682,7 +685,6 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 						title:$scope.vehicles[i].name,
 						disableAutoPan: true
 					});
-					console.log($scope.vehicles[i]._id, $scope.currentlySelectedId);
 					(function(i, marker) {
 						/*var contentString = '<p><b>' + $scope.vehicles[i].name + '</b><br/>' 
 						+ 'Battery: ' + $scope.vehicles[i].batteryLife.toString() +'%' +'<br/>'
@@ -705,11 +707,6 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 							}
 							infowindow.open($scope.map, marker);
 						});*/
-						console.log($scope.vehicles[i]._id, $scope.currentlySelectedId);
-						if($scope.vehicles[i]._id == $scope.currentlySelectedId) {
-							console.log("yay");
-							$scope.currentlySelectedLocation = $scope.vehicles[i].coordinates;
-						}
 						marker.addListener('click', function(){
 							$scope.isCurrentlySelected = true;
 							$scope.currentlySelectedId = $scope.vehicles[i]._id;
