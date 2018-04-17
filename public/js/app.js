@@ -714,10 +714,8 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 							$scope.currentlySelectedDesc = ["Battery:" + $scope.vehicles[i].batteryLife.toString() +"%","Speed: " + $scope.vehicles[i].speed.toString(),"Enabled?: " + $scope.vehicles[i].enabled.toString()].join("\n");
 							$scope.currentlySelectedLocation = $scope.vehicles[i].coordinates;
 							$scope.currentlySelectedButtons = [
-								{icon:"fa-edit", fn: function(){$scope.showEditVehiclesForm($scope.vehicles[i]._id)}},
-								{icon:"fa-minus-circle", fn:function(){$scope.deleteVehicle($scope.vehicles[i]._id);
-									$scope.currentlySelectedId = "";
-									$scope.isCurrentlySelected = false;}}
+								{icon:"fa-minus-circle", fn:function(){$scope.deleteVehicle($scope.vehicles[i]._id);$scope.currentlySelectedId = "";$scope.isCurrentlySelected = false;}},
+								{icon:"fa-edit", fn: function(){$scope.showEditVehiclesForm($scope.vehicles[i]._id)}}
 							];
 							$scope.$apply();
 						});
@@ -755,8 +753,8 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 					$scope.currentlySelectedDesc = "";
 					$scope.currentlySelectedLocation = $scope.paths[i].waypoints[Math.floor($scope.paths[i].waypoints.length/2)].coordinates;
 					$scope.currentlySelectedButtons = [
-						{icon:"fa-edit", fn: function(){$scope.showEditPathsForm($scope.paths[i]._id)}},
-						{icon:"fa-minus-circle", fn:function(){$scope.deleteEdge($scope.paths[i]._id);$scope.isCurrentlySelected = false;}}
+						{icon:"fa-minus-circle", fn:function(){$scope.deleteEdge($scope.paths[i]._id);$scope.isCurrentlySelected = false;}},
+						{icon:"fa-edit", fn: function(){$scope.showEditPathsForm($scope.paths[i]._id)}}
 					];
 					$scope.$apply();
 				});
@@ -805,8 +803,8 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 							$scope.currentlySelectedDesc = "Station Type: " + stationTypes[$scope.stations[i].type];
 							$scope.currentlySelectedLocation = $scope.stations[i].coordinates;
 							$scope.currentlySelectedButtons = [
-								{icon:"fa-edit", fn: function(){$scope.showEditStationsForm($scope.stations[i]._id)}},
-								{icon:"fa-minus-circle", fn:function(){$scope.deleteNode($scope.stations[i]._id);$scope.isCurrentlySelected = false;}}
+								{icon:"fa-minus-circle", fn:function(){$scope.deleteNode($scope.stations[i]._id);$scope.isCurrentlySelected = false;}},
+								{icon:"fa-edit", fn: function(){$scope.showEditStationsForm($scope.stations[i]._id)}}
 							];
 							$scope.$apply();
 						});
