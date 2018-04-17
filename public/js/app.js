@@ -682,7 +682,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 						title:$scope.vehicles[i].name,
 						disableAutoPan: true
 					});
-					if($scope.vehicles[i] == $scope.currentlySelectedId) {
+					if($scope.vehicles[i]._id == $scope.currentlySelectedId) {
 						$scope.currentlySelectedLocation = $scope.vehicles[i].coordinates;
 					}
 					(function(i, marker) {
