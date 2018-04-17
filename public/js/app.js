@@ -713,7 +713,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 							$scope.currentlySelectedName = $scope.vehicles[i].name;
 							$scope.currentlySelectedDesc = ["Battery:" + $scope.vehicles[i].batteryLife.toString() +"%","Speed: " + $scope.vehicles[i].speed.toString(),"Enabled?: " + $scope.vehicles[i].enabled.toString()].join("\n");
 							$scope.currentlySelectedLocation = $scope.vehicles[i].coordinates;
-							$scope.currentlySelectedButtons = [{icon:"fa-edit", fn: function(){$scope.showVehiclesForm($scope.vehicles[i]._id)}}];
+							$scope.currentlySelectedButtons = [{icon:"fa-edit", fn: function(){$scope.showEditVehiclesForm($scope.vehicles[i]._id)}}];
 							$scope.$apply();
 						});
 					})(i, marker)
