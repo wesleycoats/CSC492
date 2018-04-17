@@ -753,7 +753,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 					$scope.currentlySelectedId = $scope.paths[i]._id;
 					$scope.currentlySelectedName = $scope.stations[$scope.stationsMap[$scope.paths[i].startingNode]].name + " -> " + $scope.stations[$scope.stationsMap[$scope.paths[i].endingNode]].name;
 					$scope.currentlySelectedDesc = "";
-					$scope.currentlySelectedLocation = $scope.paths[i].waypoints[Math.floor($scope.paths[i].length/2)].coordinates;
+					$scope.currentlySelectedLocation = $scope.paths[i].waypoints[Math.floor($scope.paths[i].waypoints.length/2)].coordinates;
 					$scope.currentlySelectedButtons = [
 						{icon:"fa-edit", fn: function(){$scope.showEditPathsForm($scope.paths[i]._id)}},
 						{icon:"fa-minus-circle", fn:function(){$scope.deleteEdge($scope.paths[i]._id);$scope.isCurrentlySelected = false;}}
