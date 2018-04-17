@@ -103,7 +103,7 @@
 							<td ng-if="vehicle.speed>=0">
 								{{vehicle.speed}} MPH
 							</td>
-							<td ng-if="!vehicle.speed>=0">
+							<td ng-if="!(vehicle.speed>=0)">
 								N/A
 							</td>
 							<td ng-if="pathsMap[vehicle.currentPath]">

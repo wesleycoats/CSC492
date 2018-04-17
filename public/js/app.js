@@ -707,7 +707,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 						marker.addListener('click', function(){
 							$scope.isCurrentlySelected = true;
 							$scope.currentlySelectedName = $scope.vehicles[i].name;
-							$scope.currentlySelectedDesc = ["Battery:" + $scope.vehicles[i].batteryLife.toString() +"%","Speed: " + $scope.vehicles[i].speed.toString(),"Enabled?: " + $scope.vehicles[i].enabled.toString()].join("\n");
+							//$scope.currentlySelectedDesc = ["Battery:" + $scope.vehicles[i].batteryLife.toString() +"%","Speed: " + $scope.vehicles[i].speed.toString(),"Enabled?: " + $scope.vehicles[i].enabled.toString()].join("\n");
 							$scope.currentlySelectedLocation = $scope.vehicles[i].location;
 							$scope.currentlySelectedButtons = [{icon:"fa-edit", fn: function(){$scope.showVehiclesForm($scope.vehicles[i]._id)}}];
 							$scope.$apply();
