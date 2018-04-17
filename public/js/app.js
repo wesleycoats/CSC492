@@ -596,7 +596,23 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 		$scope.seletingEndNode = false;
 		$('#contextmenuClickable').css('visibility', 'hidden');
 	});
-	google.maps.event.addListener($scope.map, "rightclick",function(event){$scope.showContextMenu(event.latLng);});
+	// google.maps.event.addListener($scope.map, "rightclick",function(event){$scope.showContextMenu(event.latLng);});
+
+	// use Control Click to create a new node
+	var selecting = false;
+
+	window.onkeydown = function(e) {
+	selecting = ((e.keyIdentifier == 'Control') || (e.ctrlKey == true));
+	}
+	window.onkeyup = function(e) {
+	selecting = false;
+	}
+	google.maps.event.addListener($scope.map, "click",function(event){
+		if(selecting){
+			$scope.showContextMenu(event.latLng);
+		}
+		});
+
 	
 	$scope.signOut = function() {
 		localStorage["authToken"] = "";
