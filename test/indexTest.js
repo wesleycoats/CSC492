@@ -30,6 +30,7 @@ describe("REST api Test",function(){
                 password : 'password'
             })
             .end(function(err, res) {
+                //console.log(res.text)
                 expect(res).to.have.status(200);
                 done();
             });
@@ -129,10 +130,15 @@ describe("REST api Test",function(){
             });
         });
     });
+    
+    var vehicleID
+    var stationID
+    var stationID2
+    
     describe("Adding Tests",function(){
+        
         it("testing add vehicle",function(done){
             chai.request('http://localhost:80')
-        
             .post('/signIn')
             .type('form')
             .send({
@@ -151,7 +157,7 @@ describe("REST api Test",function(){
                     name : 'vehicle' + vehiclenum
                 })
                 .end(function(err, res) {
-                    //console.log(res)
+                    vehicleID = JSON.parse(res.text).id
                     expect(res).to.have.status(200);
                     done();
                 });
@@ -181,6 +187,158 @@ describe("REST api Test",function(){
                 });
             });
         });
+        
+        it("testing add station",function(done){
+            chai.request('http://localhost:80')
+        
+            .post('/signIn')
+            .type('form')
+            .send({
+                email : 'admin@example.com',
+                password : 'admin'
+            })
+            .end(function(err, res) {
+                var token = res.text
+                var stationnum = (Math.random() * 1000)
+                var coord = [(Math.random() * 1000),(Math.random() * 1000)]
+                chai.request('http://localhost:80')
+                .post('/addStation')
+                .set('authToken', token)
+                .set('content-type', 'application/json')
+            
+                .send({
+                    name : 'station' + stationnum,
+                    coordinates : [coord[0],coord[1]],
+                    type: 1
+                })
+                .end(function(err, res) {
+                    //console.log(res)
+                    stationID = JSON.parse(res.text).id
+                    expect(res).to.have.status(200);
+                    done();
+                });
+            });
+        });
+        
+        it("testing add second station",function(done){
+            chai.request('http://localhost:80')
+        
+            .post('/signIn')
+            .type('form')
+            .send({
+                email : 'admin@example.com',
+                password : 'admin'
+            })
+            .end(function(err, res) {
+                var token = res.text
+                var stationnum = (Math.random() * 1000)
+                var coord = [(Math.random() * 1000),(Math.random() * 1000)]
+                chai.request('http://localhost:80')
+                .post('/addStation')
+                .set('authToken', token)
+                .set('content-type', 'application/json')
+            
+                .send({
+                    name : 'station' + stationnum,
+                    coordinates : [coord[0],coord[1]],
+                    type: 1
+                })
+                .end(function(err, res) {
+                    //console.log(res)
+                    stationID2 = JSON.parse(res.text).id
+                    expect(res).to.have.status(200);
+                    done();
+                });
+            });
+        });
+        
+        it("testing add station bad account",function(done){
+            chai.request('http://localhost:80')
+        
+            .post('/signIn')
+            .type('form')
+            .send({
+                email : 'admin@example.com',
+                password : 'admi'
+            })
+            .end(function(err, res) {
+                var token = res.text
+                var stationnum = (Math.random() * 1000)
+                var coord = [(Math.random() * 1000),(Math.random() * 1000)]
+                chai.request('http://localhost:80')
+                .post('/addStation')
+                .set('authToken', token)
+                .set('content-type', 'application/json')
+            
+                .send({
+                    name : 'station' + stationnum,
+                    coordinates : [coord[0],coord[1]],
+                    type: 1
+                })
+                .end(function(err, res) {
+                    //console.log(res)
+                    expect(res).to.have.status(400);
+                    done();
+                });
+            });
+        });
+        
+        it("testing add station missing fields",function(done){
+            chai.request('http://localhost:80')
+        
+            .post('/signIn')
+            .type('form')
+            .send({
+                email : 'admin@example.com',
+                password : 'admin'
+            })
+            .end(function(err, res) {
+                var token = res.text
+                var stationnum = (Math.random() * 1000)
+                var coord = [(Math.random() * 1000),(Math.random() * 1000)]
+                chai.request('http://localhost:80')
+                .post('/addStation')
+                .set('authToken', token)
+                .set('content-type', 'application/json')
+            
+                .send({
+                    name : 'station' + stationnum,
+                    coordinates : [coord[0],coord[1]],
+                })
+                .end(function(err, res) {
+                    //console.log(res)
+                    expect(res).to.have.status(400);
+                    done();
+                });
+            });
+        });
+        
+        it("testing add ride",function(done){
+            chai.request('http://localhost:80')
+        
+            .post('/signIn')
+            .type('form')
+            .send({
+                email : 'admin@example.com',
+                password : 'admin'
+            })
+            .end(function(err, res) {
+                var token = res.text
+                chai.request('http://localhost:80')
+                .post('/addRide')
+                .set('authToken', token)
+                .send({
+                    pickupNode : stationID,
+                    dropoffNode : stationID2
+                })
+                .end(function(err, res) {
+                    //console.log(res)
+                    expect(res).to.have.status(200);
+                    done();
+                });
+            });
+        });
+        
     });
     
     describe("Editing Tests",function(){
