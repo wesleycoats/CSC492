@@ -377,6 +377,7 @@ function addRide(form, res) {
 function addVehicle(form, res) {
 	var newVehicle = {
 		name : form.name,
+		enabled : false
 	}
 	findDocuments("Vehicles", {name:newVehicle.name}, function(vehiclesWithSameName){
 		if(vehiclesWithSameName.length==0) {
