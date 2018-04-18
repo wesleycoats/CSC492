@@ -22,22 +22,22 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>0/401</span>
+        <span class='fraction'>0/410</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>0/121</span>
+        <span class='fraction'>0/126</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>0/90</span>
+        <span class='fraction'>0/93</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>0/397</span>
+        <span class='fraction'>0/406</span>
       </div>
     </div>
     <p class="quiet">
@@ -892,7 +892,24 @@
 <a name='L844'></a><a href='#L844'>844</a>
 <a name='L845'></a><a href='#L845'>845</a>
 <a name='L846'></a><a href='#L846'>846</a>
-<a name='L847'></a><a href='#L847'>847</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L847'></a><a href='#L847'>847</a>
+<a name='L848'></a><a href='#L848'>848</a>
+<a name='L849'></a><a href='#L849'>849</a>
+<a name='L850'></a><a href='#L850'>850</a>
+<a name='L851'></a><a href='#L851'>851</a>
+<a name='L852'></a><a href='#L852'>852</a>
+<a name='L853'></a><a href='#L853'>853</a>
+<a name='L854'></a><a href='#L854'>854</a>
+<a name='L855'></a><a href='#L855'>855</a>
+<a name='L856'></a><a href='#L856'>856</a>
+<a name='L857'></a><a href='#L857'>857</a>
+<a name='L858'></a><a href='#L858'>858</a>
+<a name='L859'></a><a href='#L859'>859</a>
+<a name='L860'></a><a href='#L860'>860</a>
+<a name='L861'></a><a href='#L861'>861</a>
+<a name='L862'></a><a href='#L862'>862</a>
+<a name='L863'></a><a href='#L863'>863</a>
+<a name='L864'></a><a href='#L864'>864</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1491,6 +1508,23 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -2016,7 +2050,7 @@ var stationTypes = <span class="cstat-no" title="statement not covered" >[</span
 <span class="cstat-no" title="statement not covered" >		if($scope.newRide) {</span>
 <span class="cstat-no" title="statement not covered" >			$http.post("/addRide", $scope.newRide, {headers:{authToken:localStorage["authToken"]}}).then(</span>
 <span class="fstat-no" title="function not covered" >				fu</span>nction(response){
-<span class="cstat-no" title="statement not covered" >					window.alert(response.data);</span>
+<span class="cstat-no" title="statement not covered" >					window.alert(response.data.msg);</span>
 <span class="cstat-no" title="statement not covered" >					$scope.resetNewRide();</span>
 <span class="cstat-no" title="statement not covered" >					$scope.showHome();</span>
 				}, 
@@ -2034,7 +2068,7 @@ var stationTypes = <span class="cstat-no" title="statement not covered" >[</span
 <span class="cstat-no" title="statement not covered" >			if($scope.newVehicle &amp;&amp; $scope.newVehicle.name) {</span>
 <span class="cstat-no" title="statement not covered" >				$http.post("/addVehicle", $scope.newVehicle, {headers:{authToken:localStorage["authToken"]}}).then(</span>
 <span class="fstat-no" title="function not covered" >					fu</span>nction(response){
-<span class="cstat-no" title="statement not covered" >						window.alert(response.data);</span>
+<span class="cstat-no" title="statement not covered" >						window.alert(response.data.msg);</span>
 <span class="cstat-no" title="statement not covered" >						$scope.newVehicle = {</span>
 							name : ""
 						}
@@ -2051,7 +2085,7 @@ var stationTypes = <span class="cstat-no" title="statement not covered" >[</span
 <span class="cstat-no" title="statement not covered" >			if($scope.newVehicle &amp;&amp; $scope.newVehicle.name) {</span>
 <span class="cstat-no" title="statement not covered" >				$http.post("/editVehicle", {id:$scope.editID, edits:$scope.newVehicle}, {headers:{authToken:localStorage["authToken"]}}).then(</span>
 <span class="fstat-no" title="function not covered" >					fu</span>nction(response){
-<span class="cstat-no" title="statement not covered" >						window.alert(response.data);</span>
+<span class="cstat-no" title="statement not covered" >						window.alert(response.data.msg);</span>
 <span class="cstat-no" title="statement not covered" >						$scope.newVehicle = {</span>
 							name : ""
 						}
@@ -2072,7 +2106,7 @@ var stationTypes = <span class="cstat-no" title="statement not covered" >[</span
 <span class="cstat-no" title="statement not covered" >			if($scope.newStation &amp;&amp; $scope.newStation.name &amp;&amp; $scope.newStation.coordinates[0] &amp;&amp; $scope.newStation.coordinates[1] &amp;&amp; $scope.newStation.type&gt;=0) {</span>
 <span class="cstat-no" title="statement not covered" >				$http.post("/addStation", $scope.newStation, {headers:{authToken:localStorage["authToken"]}}).then(</span>
 <span class="fstat-no" title="function not covered" >					fu</span>nction(response){
-<span class="cstat-no" title="statement not covered" >						window.alert(response.data);</span>
+<span class="cstat-no" title="statement not covered" >						window.alert(response.data.msg);</span>
 <span class="cstat-no" title="statement not covered" >						$scope.newStation = {</span>
 							name : "",
 							type : '0',
@@ -2336,7 +2370,24 @@ var stationTypes = <span class="cstat-no" title="statement not covered" >[</span
 <span class="cstat-no" title="statement not covered" >		$scope.seletingEndNode = false;</span>
 <span class="cstat-no" title="statement not covered" >		$('#contextmenuClickable').css('visibility', 'hidden');</span>
 	});
-<span class="cstat-no" title="statement not covered" >	google.maps.event.addListener($scope.map, "rightclick",<span class="fstat-no" title="function not covered" >fu</span>nction(event){<span class="cstat-no" title="statement not covered" >$scope.showContextMenu(event.latLng);}</span>);</span>
+<span class="cstat-no" title="statement not covered" >	google.maps.event.addListener($scope.map, "contextmenu",<span class="fstat-no" title="function not covered" >fu</span>nction(event){<span class="cstat-no" title="statement not covered" >$scope.showContextMenu(event.latLng);}</span>);</span>
+&nbsp;
+	// use Control Click to create a new node
+	var selecting = <span class="cstat-no" title="statement not covered" >false;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	window.onkeydown = <span class="fstat-no" title="function not covered" >fu</span>nction(e) {</span>
+<span class="cstat-no" title="statement not covered" >	selecting = ((e.key == 'Shift') || (e.keyIdentifier == 'Shift') || (e.shiftKey == true));</span>
+	}
+<span class="cstat-no" title="statement not covered" >	window.onkeyup = <span class="fstat-no" title="function not covered" >fu</span>nction(e) {</span>
+<span class="cstat-no" title="statement not covered" >	selecting = false;</span>
+	}
+<span class="cstat-no" title="statement not covered" >	google.maps.event.addListener($scope.map, "click",<span class="fstat-no" title="function not covered" >fu</span>nction(event){</span>
+<span class="cstat-no" title="statement not covered" >		console.log(selecting);</span>
+<span class="cstat-no" title="statement not covered" >		if(selecting){</span>
+<span class="cstat-no" title="statement not covered" >			$scope.showContextMenu(event.latLng);</span>
+		}
+		});
+&nbsp;
 	
 <span class="cstat-no" title="statement not covered" >	$scope.signOut = <span class="fstat-no" title="function not covered" >fu</span>nction() {</span>
 <span class="cstat-no" title="statement not covered" >		localStorage["authToken"] = "";</span>
@@ -2590,7 +2641,7 @@ var stationTypes = <span class="cstat-no" title="statement not covered" >[</span
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Apr 12 2018 18:25:05 GMT-0400 (EDT)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Tue Apr 17 2018 15:27:26 GMT-0400 (EDT)
 </div>
 </div>
 <script src="../../../prettify.js"></script>

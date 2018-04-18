@@ -186,6 +186,13 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 		random : false
 	}
 	
+	$scope.isCurrentlySelected = false;
+	$scope.currentlySelectedName = "";
+	$scope.currentlySelectedDesc = "";
+	$scope.currentlySelectedLocation = [];
+	$scope.currentlySelectedButtons = [];
+	
+	
 	//new=true
 	//edit=false
 	$scope.newOrEdit = false;
@@ -276,7 +283,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 		if($scope.newRide) {
 			$http.post("/addRide", $scope.newRide, {headers:{authToken:localStorage["authToken"]}}).then(
 				function(response){
-					window.alert(response.data);
+					window.alert(response.data.msg);
 					$scope.resetNewRide();
 					$scope.showHome();
 				}, 
@@ -294,7 +301,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 			if($scope.newVehicle && $scope.newVehicle.name) {
 				$http.post("/addVehicle", $scope.newVehicle, {headers:{authToken:localStorage["authToken"]}}).then(
 					function(response){
-						window.alert(response.data);
+						window.alert(response.data.msg);
 						$scope.newVehicle = {
 							name : ""
 						}
@@ -332,7 +339,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 			if($scope.newStation && $scope.newStation.name && $scope.newStation.coordinates[0] && $scope.newStation.coordinates[1] && $scope.newStation.type>=0) {
 				$http.post("/addStation", $scope.newStation, {headers:{authToken:localStorage["authToken"]}}).then(
 					function(response){
-						window.alert(response.data);
+						window.alert(response.data.msg);
 						$scope.newStation = {
 							name : "",
 							type : '0',
@@ -384,7 +391,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 							if($scope.newPath && $scope.newPath.startingNode && $scope.newPath.endingNode && $scope.newPath.distance >= 0 && $scope.newPath.waypoints.length > 0) {
 								$http.post("/addPath", $scope.newPath, {headers:{authToken:localStorage["authToken"]}}).then(
 									function(response){
-										window.alert(response.data);
+										window.alert(response.data.msg);
 										$scope.resetNewPath();
 										$scope.showHome();
 									}, 
@@ -451,6 +458,17 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 				);
 			}
 		}
+	}
+	
+	$scope.changeEnableVehicle = function(id, newValue) {
+		$http.post("/editVehicle", {id:id, edits:{enabled:newValue}}, {headers:{authToken:localStorage["authToken"]}}).then(
+			function(response){
+				
+			}, 
+			function(error){
+				window.alert(error.data);
+			}
+		);
 	}
 	
 	$scope.deleteNode = function(id) {
@@ -596,7 +614,24 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 		$scope.seletingEndNode = false;
 		$('#contextmenuClickable').css('visibility', 'hidden');
 	});
-	google.maps.event.addListener($scope.map, "rightclick",function(event){$scope.showContextMenu(event.latLng);});
+	google.maps.event.addListener($scope.map, "contextmenu",function(event){$scope.showContextMenu(event.latLng);});
+
+	// use Control Click to create a new node
+	var selecting = false;
+
+	window.onkeydown = function(e) {
+	selecting = ((e.key == 'Shift') || (e.keyIdentifier == 'Shift') || (e.shiftKey == true));
+	}
+	window.onkeyup = function(e) {
+	selecting = false;
+	}
+	google.maps.event.addListener($scope.map, "click",function(event){
+		console.log(selecting);
+		if(selecting){
+			$scope.showContextMenu(event.latLng);
+		}
+		});
+
 	
 	$scope.signOut = function() {
 		localStorage["authToken"] = "";
@@ -635,6 +670,9 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 		}
 		$scope.lines = [];
 		for(var i=0;i<$scope.vehicles.length;i++) {
+			if($scope.vehicles[i]._id == $scope.currentlySelectedId) {
+				$scope.currentlySelectedLocation = $scope.vehicles[i].coordinates;
+			}
 			if($scope.vehicles[i].coordinates && $scope.vehicles[i].coordinates[0] && $scope.vehicles[i].coordinates[1]) {
 				var location = {lat:$scope.vehicles[i].coordinates[0],lng:$scope.vehicles[i].coordinates[1]};
 				if($scope.markers[$scope.vehicles[i]["_id"]]) {
@@ -648,7 +686,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 						disableAutoPan: true
 					});
 					(function(i, marker) {
-						var contentString = '<p><b>' + $scope.vehicles[i].name + '</b><br/>' 
+						/*var contentString = '<p><b>' + $scope.vehicles[i].name + '</b><br/>' 
 						+ 'Battery: ' + $scope.vehicles[i].batteryLife.toString() +'%' +'<br/>'
 						+ 'Speed: ' + $scope.vehicles[i].speed.toString() + '<br/>' 
 						+ 'Enabled?: ' + $scope.vehicles[i].enabled.toString() + '</p>';
@@ -668,6 +706,18 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 								$scope.infoMarkers[infoMarkerKeys[j]].close();
 							}
 							infowindow.open($scope.map, marker);
+						});*/
+						marker.addListener('click', function(){
+							$scope.isCurrentlySelected = true;
+							$scope.currentlySelectedId = $scope.vehicles[i]._id;
+							$scope.currentlySelectedName = $scope.vehicles[i].name;
+							$scope.currentlySelectedDesc = ["Battery:" + $scope.vehicles[i].batteryLife.toString() +"%","Speed: " + $scope.vehicles[i].speed.toString(),"Enabled?: " + $scope.vehicles[i].enabled.toString()].join("\n");
+							$scope.currentlySelectedLocation = $scope.vehicles[i].coordinates;
+							$scope.currentlySelectedButtons = [
+								{icon:"fa-minus-circle", fn:function(){$scope.deleteVehicle($scope.vehicles[i]._id);$scope.currentlySelectedId = "";$scope.isCurrentlySelected = false;}},
+								{icon:"fa-edit", fn: function(){$scope.showEditVehiclesForm($scope.vehicles[i]._id)}}
+							];
+							$scope.$apply();
 						});
 					})(i, marker)
 			        // var infowindow = new google.maps.InfoWindow({
@@ -695,6 +745,20 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 				map: $scope.map
 	        });
 	        $scope.lines.push(line);
+	        (function(i, line) {
+		        line.addListener('click', function(){
+					$scope.isCurrentlySelected = true;
+					$scope.currentlySelectedId = $scope.paths[i]._id;
+					$scope.currentlySelectedName = $scope.stations[$scope.stationsMap[$scope.paths[i].startingNode]].name + " -> " + $scope.stations[$scope.stationsMap[$scope.paths[i].endingNode]].name;
+					$scope.currentlySelectedDesc = "";
+					$scope.currentlySelectedLocation = $scope.paths[i].waypoints[Math.floor($scope.paths[i].waypoints.length/2)].coordinates;
+					$scope.currentlySelectedButtons = [
+						{icon:"fa-minus-circle", fn:function(){$scope.deleteEdge($scope.paths[i]._id);$scope.isCurrentlySelected = false;}},
+						{icon:"fa-edit", fn: function(){$scope.showEditPathsForm($scope.paths[i]._id)}}
+					];
+					$scope.$apply();
+				});
+			})(i, line);
 		}
 		
 		for(var i=0;i<$scope.stations.length;i++) {
@@ -710,7 +774,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 						disableAutoPan: true
 			        });
 			        (function(i, marker) {
-						var contentString = '<p>' + '<b>' + $scope.stations[i].name + '</b>' +'<br/><br/>' 
+						/*var contentString = '<p>' + '<b>' + $scope.stations[i].name + '</b>' +'<br/><br/>' 
 						+ 'Lat: ' + $scope.stations[i].coordinates[0].toString() + '<br/>'
 						+ 'Long: ' + $scope.stations[i].coordinates[1].toString() + '<br/>' 
 						+ 'Station Type: ' + stationTypes[$scope.stations[i].type] + '</p>';
@@ -731,7 +795,19 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 					        	$scope.infoMarkers[infoMarkerKeys[j]].close();
 				        	}
 				        	infowindow.open($scope.map, marker);
-				        });
+				        });*/
+				        marker.addListener('click', function(){
+							$scope.isCurrentlySelected = true;
+							$scope.currentlySelectedId = $scope.stations[i]._id;
+							$scope.currentlySelectedName = $scope.stations[i].name;
+							$scope.currentlySelectedDesc = "Station Type: " + stationTypes[$scope.stations[i].type];
+							$scope.currentlySelectedLocation = $scope.stations[i].coordinates;
+							$scope.currentlySelectedButtons = [
+								{icon:"fa-minus-circle", fn:function(){$scope.deleteNode($scope.stations[i]._id);$scope.isCurrentlySelected = false;}},
+								{icon:"fa-edit", fn: function(){$scope.showEditStationsForm($scope.stations[i]._id)}}
+							];
+							$scope.$apply();
+						});
 			        })(i, marker)
 			        $scope.markers[$scope.stations[i]["_id"]] = marker;
 				}

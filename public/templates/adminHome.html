@@ -67,12 +67,15 @@
 		</div>
 		<div id="vehicles" class="collapse" aria-labelledby="vehicles" data-parent="#accordion" data-collapse-group="admin">
 			<div class="card-body">
-				Active vehicles
+				Enabled vehicles
 					<table style="color:white;width:100%">
 						<tr>
 							<th>
 							</th>
 							<th>
+							</th>
+							<th>
+								E
 							</th>
 							<th>
 								Name
@@ -84,7 +87,7 @@
 								Path
 							</th>
 						</tr>
-						<tr ng-repeat="vehicle in vehicles|filter:{currentPath:'!!'}">
+						<tr ng-repeat="vehicle in vehicles|filter:{enabled:true}">
 							<td>
 								<div ng-click="deleteVehicle(vehicle._id)" style="cursor:pointer;"><i class="fa fa-minus-circle"></i></div>
 							</td>
@@ -92,23 +95,35 @@
 								<div ng-click="showEditVehiclesForm(vehicle._id)" style="cursor:pointer;"><i class="fa fa-edit"></i></div>
 							</td>
 							<td>
+								<input type="checkbox" ng-model="vehicle.enabled" ng-change="changeEnableVehicle(vehicle._id, vehicle.enabled)">
+							</td>
+							<td>
 								{{vehicle.name}}
 							</td>
-							<td>
+							<td ng-if="vehicle.speed>=0">
 								{{vehicle.speed}} MPH
 							</td>
-							<td>
+							<td ng-if="!(vehicle.speed>=0)">
+								N/A
+							</td>
+							<td ng-if="pathsMap[vehicle.currentPath]">
 								{{stations[stationsMap[paths[pathsMap[vehicle.currentPath]].startingNode]].name}} -> {{stations[stationsMap[paths[pathsMap[vehicle.currentPath]].endingNode]].name}}
+							</td>
+							<td ng-if="!pathsMap[vehicle.currentPath]">
+								N/A
 							</td>
 						</tr>
 					</table>
 				<br/>
-				Inactive vehicles
+				Disabled vehicles
 					<table style="color:white;width:100%">
 						<tr>
 							<th>
 							</th>
 							<th>
+							</th>
+							<th>
+								E
 							</th>
 							<th>
 								Name
@@ -117,12 +132,15 @@
 								ID
 							</th>
 						</tr>
-						<tr ng-repeat="vehicle in vehicles|filter:{currentPath:'!'}">
+						<tr ng-repeat="vehicle in vehicles|filter:{enabled:false}">
 							<td>
 								<div ng-click="deleteVehicle(vehicle._id)" style="cursor:pointer;"><i class="fa fa-minus-circle"></i></div>
 							</td>
 							<td>
 								<div ng-click="showEditVehiclesForm(vehicle._id)" style="cursor:pointer;"><i class="fa fa-edit"></i></div>
+							</td>
+							<td>
+								<input type="checkbox" ng-model="vehicle.enabled" ng-change="changeEnableVehicle(vehicle._id, vehicle.enabled)">
 							</td>
 							<td>
 								{{vehicle.name}}
@@ -281,7 +299,7 @@
 					<!-- TODO: ng model, hook it up to app.js and index.js-->
 					<div class="form-group" id="carDropdwn">
 							<label for="exampleFormControlSelect1">Choose Vehicle</label>
-							<select class="form-control" ng-model="newRide.vehicle" ng-options="''+vehicle._id as vehicle.name for vehicle in vehicles">
+							<select class="form-control" ng-model="newRide.vehicle" ng-options="''+vehicle._id as vehicle.name for vehicle in vehicles|filter:{enabled:true}">
 							</select>
 					</div>
 
@@ -437,3 +455,14 @@
 
 <!-- Allows you to add a node from right clicking on the map -->
 <a id="contextmenuClickable" ng-click='createNodeFromMap()' style="visibility:hidden; position:absolute; background:white; padding:10px">Create New Node Here</a>
+
+<nav class="navbar fixed-bottom navbar-dark" style="background-color: #33A6FF ;" ng-show="isCurrentlySelected">
+	<div class="navbar-brand">
+		<span ng-repeat="button in currentlySelectedButtons">
+			<span ng-click="button.fn()" style="cursor:pointer;"><i class="fa {{button.icon}}"></i></span>
+		</span>
+		{{currentlySelectedName}}</div>
+	<ul class="nav navbar-nav navbar-right">
+      <li><div style="color:white"><span class="glyphicon glyphicon-log-out"></span>{{currentlySelectedLocation[0]}}, {{currentlySelectedLocation[1]}}</div></li>
+    </ul>
+</nav>
