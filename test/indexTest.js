@@ -1,3 +1,4 @@
+//require('../index_v2');
 var chai = require('chai')
   , chaiHttp = require('chai-http');
 
