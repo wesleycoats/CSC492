@@ -23,4 +23,5 @@ table, th, td {
 
 .scroll {
 	overflow: scroll;
+	height: 500px;
 }
