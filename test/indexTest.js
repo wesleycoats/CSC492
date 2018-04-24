@@ -189,6 +189,31 @@ describe("REST api Test",function(){
             });
         });
         
+        it("testing add vehicle missing fields",function(done){
+            chai.request('http://localhost:80')
+            .post('/signIn')
+            .type('form')
+            .send({
+                email : 'admin@example.com',
+                password : 'admin'
+            })
+            .end(function(err, res) {
+                var token = res.text
+                var vehiclenum = (Math.random() * 1000)
+                chai.request('http://localhost:80')
+                .post('/addvehicle')
+                .type('form')
+                .set('authToken', token)
+                .send({
+                    name : ''
+                })
+                .end(function(err, res) {
+                    expect(res).to.have.status(400);
+                    done();
+                });
+            });
+        });
+        
         it("testing add station",function(done){
             chai.request('http://localhost:80')
         
@@ -657,6 +682,29 @@ describe("REST api Test",function(){
             });
         });
         
+        it("testing delete vehicle",function(done){
+            chai.request('http://localhost:80')
+            .post('/signIn')
+            .type('form')
+            .send({
+                email : 'admin@example.com',
+                password : 'admin'
+            })
+            .end(function(err, res) {
+                var token = res.text
+                chai.request('http://localhost:80')
+                .post('/deleteVehicle')
+                .set('authToken', token)
+                .send({
+                    id: vehicleID
+                })
+                .end(function(err, res) {
+                    //console.log(res)
+                    expect(res).to.have.status(200);
+                    done();
+                });
+            });
+        });
         it("testing delete vehicle missing field",function(done){
             chai.request('http://localhost:80')
             .post('/signIn')
@@ -692,7 +740,7 @@ describe("REST api Test",function(){
             .end(function(err, res) {
                 var token = res.text
                 chai.request('http://localhost:80')
-                .post('/deleteNode')
+                .post('/deleteVehicle')
                 .set('authToken', token)
                 .send({
                     id: vehicleID
@@ -705,28 +753,6 @@ describe("REST api Test",function(){
             });
         });
         
-        it("testing delete vehicle",function(done){
-            chai.request('http://localhost:80')
-            .post('/signIn')
-            .type('form')
-            .send({
-                email : 'admin@example.com',
-                password : 'admin'
-            })
-            .end(function(err, res) {
-                var token = res.text
-                chai.request('http://localhost:80')
-                .post('/deleteNode')
-                .set('authToken', token)
-                .send({
-                    id: vehicleID
-                })
-                .end(function(err, res) {
-                    //console.log(res)
-                    expect(res).to.have.status(200);
-                    done();
-                });
-            });
-        });
+        
     });
 });
