@@ -982,4 +982,8 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 		$scope.seletingEndNode = !$scope.seletingEndNode;
 		$scope.seletingStartNode = false;
 	}
+	
+	$scope.closeCurrentlySelected = function() {
+		$scope.isCurrentlySelected = false;
+	}
 });
