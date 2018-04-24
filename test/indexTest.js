@@ -1,4 +1,5 @@
-require('../index_v2');
+//require('../index_v2');
+require('../index_noSim')
 var chai = require('chai')
   , chaiHttp = require('chai-http');
 
