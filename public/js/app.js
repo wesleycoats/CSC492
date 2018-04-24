@@ -672,7 +672,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 	
 	$scope.resetIcons = function() {
 		for(var i=0;i<$scope.vehicles.length;i++) {
-			if($scope.currentlySelectedId != $scope.vehicles[i]._id) {
+			if($scope.currentlySelectedId != $scope.vehicles[i]._id && $scope.markers[$scope.vehicles[i]["_id"]]) {
 				$scope.markers[$scope.vehicles[i]["_id"]].setIcon($scope.vehicleicon);
 			}
 		}
