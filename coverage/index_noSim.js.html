@@ -20,24 +20,24 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">73.3% </span>
+        <span class="strong">75.24% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>313/427</span>
+        <span class='fraction'>313/416</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">67.17% </span>
+        <span class="strong">70% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>133/198</span>
+        <span class='fraction'>133/190</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">75.19% </span>
+        <span class="strong">77.52% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>100/133</span>
+        <span class='fraction'>100/129</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">73.41% </span>
+        <span class="strong">75.36% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>312/425</span>
+        <span class='fraction'>312/414</span>
       </div>
     </div>
     <p class="quiet">
@@ -850,27 +850,7 @@
 <a name='L802'></a><a href='#L802'>802</a>
 <a name='L803'></a><a href='#L803'>803</a>
 <a name='L804'></a><a href='#L804'>804</a>
-<a name='L805'></a><a href='#L805'>805</a>
-<a name='L806'></a><a href='#L806'>806</a>
-<a name='L807'></a><a href='#L807'>807</a>
-<a name='L808'></a><a href='#L808'>808</a>
-<a name='L809'></a><a href='#L809'>809</a>
-<a name='L810'></a><a href='#L810'>810</a>
-<a name='L811'></a><a href='#L811'>811</a>
-<a name='L812'></a><a href='#L812'>812</a>
-<a name='L813'></a><a href='#L813'>813</a>
-<a name='L814'></a><a href='#L814'>814</a>
-<a name='L815'></a><a href='#L815'>815</a>
-<a name='L816'></a><a href='#L816'>816</a>
-<a name='L817'></a><a href='#L817'>817</a>
-<a name='L818'></a><a href='#L818'>818</a>
-<a name='L819'></a><a href='#L819'>819</a>
-<a name='L820'></a><a href='#L820'>820</a>
-<a name='L821'></a><a href='#L821'>821</a>
-<a name='L822'></a><a href='#L822'>822</a>
-<a name='L823'></a><a href='#L823'>823</a>
-<a name='L824'></a><a href='#L824'>824</a>
-<a name='L825'></a><a href='#L825'>825</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L805'></a><a href='#L805'>805</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -1423,26 +1403,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2251,26 +2211,6 @@ function deleteVehicle(form, res) {
 	})
 }
 &nbsp;
-function <span class="fstat-no" title="function not covered" >updateVehicle(</span>newVehicle) {
-	var newVehicleKeys = <span class="cstat-no" title="statement not covered" >Object.keys(newVehicle);</span>
-	var newVehicleObj = <span class="cstat-no" title="statement not covered" >{}</span>
-<span class="cstat-no" title="statement not covered" >	for(var i=0;i&lt;newVehicleKeys.length;i++) {</span>
-<span class="cstat-no" title="statement not covered" >		if(newVehicleKeys[i]!="_id" &amp;&amp; newVehicleKeys[i]!="name") {</span>
-<span class="cstat-no" title="statement not covered" >			newVehicleObj[newVehicleKeys[i]] = newVehicle[newVehicleKeys[i]]</span>
-		}
-	}
-<span class="cstat-no" title="statement not covered" >	updateDocument("Vehicles", {_id:newVehicle._id}, newVehicleObj, <span class="fstat-no" title="function not covered" >fu</span>nction(c){</span>
-<span class="cstat-no" title="statement not covered" >		newVehicleObj.vehicleID = newVehicle._id;</span>
-<span class="cstat-no" title="statement not covered" >		insertDocument("vehiclesHistory", newVehicleObj, <span class="fstat-no" title="function not covered" >fu</span>nction(nc){</span>
-<span class="cstat-no" title="statement not covered" >			if(nc &amp;&amp; c) {</span>
-<span class="cstat-no" title="statement not covered" >				getAllVehiclesInfo(<span class="fstat-no" title="function not covered" >fu</span>nction(vehiclesInfo){</span>
-<span class="cstat-no" title="statement not covered" >					io.to('allVehiclesInfo').emit('allVehiclesInfo',vehiclesInfo);</span>
-				})
-			}
-		})
-	})
-}
-&nbsp;
 function resError(res, message, code) {
 	<span class="missing-if-branch" title="else path not taken" >E</span>if(code) {
 		res.status(code);
@@ -2524,7 +2464,7 @@ updateVehicleLocation();
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Tue Apr 24 2018 16:14:33 GMT-0400 (EDT)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Tue Apr 24 2018 16:26:31 GMT-0400 (EDT)
 </div>
 </div>
 <script src="prettify.js"></script>

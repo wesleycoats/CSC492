@@ -555,26 +555,6 @@ function deleteVehicle(form, res) {
 	})
 }
 
-function updateVehicle(newVehicle) {
-	var newVehicleKeys = Object.keys(newVehicle);
-	var newVehicleObj = {}
-	for(var i=0;i<newVehicleKeys.length;i++) {
-		if(newVehicleKeys[i]!="_id" && newVehicleKeys[i]!="name") {
-			newVehicleObj[newVehicleKeys[i]] = newVehicle[newVehicleKeys[i]]
-		}
-	}
-	updateDocument("Vehicles", {_id:newVehicle._id}, newVehicleObj, function(c){
-		newVehicleObj.vehicleID = newVehicle._id;
-		insertDocument("vehiclesHistory", newVehicleObj, function(nc){
-			if(nc && c) {
-				getAllVehiclesInfo(function(vehiclesInfo){
-					io.to('allVehiclesInfo').emit('allVehiclesInfo',vehiclesInfo);
-				})
-			}
-		})
-	})
-}
-
 function resError(res, message, code) {
 	if(code) {
 		res.status(code);
