@@ -985,5 +985,6 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 	
 	$scope.closeCurrentlySelected = function() {
 		$scope.isCurrentlySelected = false;
+		$scope.currentlySelectedId = null;
 	}
 });
