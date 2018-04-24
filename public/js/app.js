@@ -645,6 +645,12 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
         anchor: new google.maps.Point(12.5,12.5) // move the origin to center of image
 	};
 	
+	$scope.selectedVehicleicon = {
+	    url: "images/vehicle2selected.png", // url
+	    scaledSize: new google.maps.Size(25, 25),
+        anchor: new google.maps.Point(12.5,12.5) // move the origin to center of image
+	};
+	
 	// Image for the nodes
 	$scope.stationicon = {
 	    url: "images/place2.png", // url
@@ -654,6 +660,28 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 //        origin: new google.maps.Point(0,0), // origin
 //        anchor: new google.maps.Point(0, 0) // anchor
 	};
+	
+	$scope.selectedStationicon = {
+	    url: "images/place2selected.png", // url
+	    scaledSize: new google.maps.Size(13, 13),
+        anchor: new google.maps.Point(6.5, 6.5), // moves origin to center of image
+
+//        origin: new google.maps.Point(0,0), // origin
+//        anchor: new google.maps.Point(0, 0) // anchor
+	};
+	
+	$scope.resetIcons = function() {
+		for(var i=0;i<$scope.vehicles.length;i++) {
+			if($scope.currentlySelectedId != $scope.vehicles[i]._id) {
+				$scope.markers[$scope.vehicles[i]["_id"]].setIcon($scope.vehicleicon);
+			}
+		}
+		for(var i=0;i<$scope.stations.length;i++) {
+			if($scope.currentlySelectedId != $scope.stations[i]._id && $scope.markers[$scope.stations[i]["_id"]]) {
+				$scope.markers[$scope.stations[i]["_id"]].setIcon($scope.stationicon);
+			}
+		}
+	}
 	
 	$scope.resetMap = function() {
 		$scope.markers = {};
@@ -708,6 +736,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 							infowindow.open($scope.map, marker);
 						});*/
 						marker.addListener('click', function(){
+							marker.setIcon($scope.selectedVehicleicon);
 							$scope.isCurrentlySelected = true;
 							$scope.currentlySelectedId = $scope.vehicles[i]._id;
 							$scope.currentlySelectedName = $scope.vehicles[i].name;
@@ -717,6 +746,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 								{icon:"fa-minus-circle", fn:function(){$scope.deleteVehicle($scope.vehicles[i]._id);$scope.currentlySelectedId = "";$scope.isCurrentlySelected = false;}},
 								{icon:"fa-edit", fn: function(){$scope.showEditVehiclesForm($scope.vehicles[i]._id)}}
 							];
+							$scope.resetIcons();
 							$scope.$apply();
 						});
 					})(i, marker)
@@ -736,29 +766,59 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 			for(var j=0;j<$scope.paths[i].waypoints.length;j++) {
 				path.push({lat:$scope.paths[i].waypoints[j].coordinates[0],lng:$scope.paths[i].waypoints[j].coordinates[1]})
 			}
-			var line = new google.maps.Polyline({
-	        	path: path,
-		        geodesic: true,
-				strokeColor: '#FF0000',
-				strokeOpacity: 1.0,
-				strokeWeight: 2,
-				map: $scope.map
-	        });
-	        $scope.lines.push(line);
-	        (function(i, line) {
-		        line.addListener('click', function(){
-					$scope.isCurrentlySelected = true;
-					$scope.currentlySelectedId = $scope.paths[i]._id;
-					$scope.currentlySelectedName = $scope.stations[$scope.stationsMap[$scope.paths[i].startingNode]].name + " -> " + $scope.stations[$scope.stationsMap[$scope.paths[i].endingNode]].name;
-					$scope.currentlySelectedDesc = "";
-					$scope.currentlySelectedLocation = $scope.paths[i].waypoints[Math.floor($scope.paths[i].waypoints.length/2)].coordinates;
-					$scope.currentlySelectedButtons = [
-						{icon:"fa-minus-circle", fn:function(){$scope.deleteEdge($scope.paths[i]._id);$scope.isCurrentlySelected = false;}},
-						{icon:"fa-edit", fn: function(){$scope.showEditPathsForm($scope.paths[i]._id)}}
-					];
-					$scope.$apply();
-				});
-			})(i, line);
+			if($scope.currentlySelectedId != $scope.paths[i]._id) {
+				var line = new google.maps.Polyline({
+		        	path: path,
+			        geodesic: true,
+					strokeColor: '#FF0000',
+					strokeOpacity: 1.0,
+					strokeWeight: 2,
+					map: $scope.map
+		        });
+		        $scope.lines.push(line);
+		        (function(i, line, path) {
+			        line.addListener('click', function(){
+				        line.setOptions({strokeColor: '#00FF00'})
+						$scope.isCurrentlySelected = true;
+						$scope.currentlySelectedId = $scope.paths[i]._id;
+						$scope.currentlySelectedName = $scope.stations[$scope.stationsMap[$scope.paths[i].startingNode]].name + " -> " + $scope.stations[$scope.stationsMap[$scope.paths[i].endingNode]].name;
+						$scope.currentlySelectedDesc = "";
+						$scope.currentlySelectedLocation = $scope.paths[i].waypoints[Math.floor($scope.paths[i].waypoints.length/2)].coordinates;
+						$scope.currentlySelectedButtons = [
+							{icon:"fa-minus-circle", fn:function(){$scope.deleteEdge($scope.paths[i]._id);$scope.isCurrentlySelected = false;}},
+							{icon:"fa-edit", fn: function(){$scope.showEditPathsForm($scope.paths[i]._id)}}
+						];
+						$scope.resetIcons();
+						$scope.$apply();
+						$scope.updateMap();
+					});
+				})(i, line, path);
+			} else {
+				var line = new google.maps.Polyline({
+		        	path: path,
+			        geodesic: true,
+					strokeColor: '#00FF00',
+					strokeOpacity: 1.0,
+					strokeWeight: 2,
+					map: $scope.map
+		        });
+		        $scope.lines.push(line);
+		        (function(i, line, path) {
+			        line.addListener('click', function(){
+						$scope.isCurrentlySelected = true;
+						$scope.currentlySelectedId = $scope.paths[i]._id;
+						$scope.currentlySelectedName = $scope.stations[$scope.stationsMap[$scope.paths[i].startingNode]].name + " -> " + $scope.stations[$scope.stationsMap[$scope.paths[i].endingNode]].name;
+						$scope.currentlySelectedDesc = "";
+						$scope.currentlySelectedLocation = $scope.paths[i].waypoints[Math.floor($scope.paths[i].waypoints.length/2)].coordinates;
+						$scope.currentlySelectedButtons = [
+							{icon:"fa-minus-circle", fn:function(){$scope.deleteEdge($scope.paths[i]._id);$scope.isCurrentlySelected = false;}},
+							{icon:"fa-edit", fn: function(){$scope.showEditPathsForm($scope.paths[i]._id)}}
+						];
+						$scope.resetIcons();
+						$scope.$apply();
+					});
+				})(i, line, path);
+			}
 		}
 		
 		for(var i=0;i<$scope.stations.length;i++) {
@@ -797,6 +857,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 				        	infowindow.open($scope.map, marker);
 				        });*/
 				        marker.addListener('click', function(){
+					        marker.setIcon($scope.selectedStationicon);
 							$scope.isCurrentlySelected = true;
 							$scope.currentlySelectedId = $scope.stations[i]._id;
 							$scope.currentlySelectedName = $scope.stations[i].name;
@@ -806,6 +867,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 								{icon:"fa-minus-circle", fn:function(){$scope.deleteNode($scope.stations[i]._id);$scope.isCurrentlySelected = false;}},
 								{icon:"fa-edit", fn: function(){$scope.showEditStationsForm($scope.stations[i]._id)}}
 							];
+							$scope.resetIcons();
 							$scope.$apply();
 						});
 			        })(i, marker)
