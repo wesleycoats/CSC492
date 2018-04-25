@@ -673,7 +673,22 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 	$scope.resetIcons = function() {
 		for(var i=0;i<$scope.vehicles.length;i++) {
 			if($scope.currentlySelectedId != $scope.vehicles[i]._id && $scope.markers[$scope.vehicles[i]["_id"]]) {
-				$scope.markers[$scope.vehicles[i]["_id"]].setIcon($scope.vehicleicon);
+				var newIcon = JSON.parse(JSON.stringify($scope.vehicleicon));
+				newIcon.url = RotateIcon
+		            .makeIcon(
+		                'images/vehicle2.png')
+		            .setRotation({deg: -Math.degrees($scope.vehicles[i].headingAngle)})
+		            .getUrl()
+				$scope.markers[$scope.vehicles[i]["_id"]].setIcon(newIcon);
+			} else if($scope.currentlySelectedId == $scope.vehicles[i]._id && $scope.markers[$scope.vehicles[i]["_id"]]) {
+				var newIcon = JSON.parse(JSON.stringify($scope.selectedVehicleicon));
+				newIcon.rotation = Math.degrees($scope.vehicles[i].headingAngle);
+				newIcon.url = RotateIcon
+		            .makeIcon(
+		                'images/Vehicle2selected.png')
+		            .setRotation({deg: -Math.degrees($scope.vehicles[i].headingAngle)})
+		            .getUrl()
+				$scope.markers[$scope.vehicles[i]["_id"]].setIcon(newIcon);
 			}
 		}
 		for(var i=0;i<$scope.stations.length;i++) {
@@ -958,6 +973,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 		}
 		$scope.$apply();
 		$scope.updateMap();
+		$scope.resetIcons();
 		if(!$scope.newRideSet && $scope.newPathSet) {
 			$scope.resetNewRide();
 		}
@@ -990,3 +1006,42 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 		$scope.resetIcons();
 	}
 });
+
+Math.degrees = function(radians) {
+	return radians * 180 / Math.PI;
+}
+
+var RotateIcon = function(options){
+    this.options = options || {};
+    this.rImg = options.img || new Image();
+    this.rImg.src = this.rImg.src || this.options.url || '';
+    this.options.width = this.options.width || this.rImg.width || 52;
+    this.options.height = this.options.height || this.rImg.height || 60;
+    var canvas = document.createElement("canvas");
+    canvas.width = this.options.width;
+    canvas.height = this.options.height;
+    this.context = canvas.getContext("2d");
+    this.canvas = canvas;
+};
+RotateIcon.makeIcon = function(url) {
+    return new RotateIcon({url: url});
+};
+RotateIcon.prototype.setRotation = function(options){
+    var canvas = this.context,
+        angle = options.deg ? options.deg * Math.PI / 180:
+            options.rad,
+        centerX = this.options.width/2,
+        centerY = this.options.height/2;
+
+    canvas.clearRect(0, 0, this.options.width, this.options.height);
+    canvas.save();
+    canvas.translate(centerX, centerY);
+    canvas.rotate(angle);
+    canvas.translate(-centerX, -centerY);
+    canvas.drawImage(this.rImg, 0, 0);
+    canvas.restore();
+    return this;
+};
+RotateIcon.prototype.getUrl = function(){
+    return this.canvas.toDataURL('image/png');
+};
