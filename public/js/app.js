@@ -685,7 +685,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 				newIcon.rotation = Math.degrees($scope.vehicles[i].headingAngle);
 				newIcon.url = RotateIcon
 		            .makeIcon(
-		                'images/Vehicle2selected.png')
+		                'images/vehicle2selected.png')
 		            .setRotation({deg: -Math.degrees($scope.vehicles[i].headingAngle)})
 		            .getUrl()
 				$scope.markers[$scope.vehicles[i]["_id"]].setIcon(newIcon);
