@@ -20,24 +20,24 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">75.24% </span>
+        <span class="strong">76.9% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>313/416</span>
+        <span class='fraction'>313/407</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">70% </span>
+        <span class="strong">73.08% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>133/190</span>
+        <span class='fraction'>133/182</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">77.52% </span>
+        <span class="strong">79.37% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>100/129</span>
+        <span class='fraction'>100/126</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">75.36% </span>
+        <span class="strong">77.04% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>312/414</span>
+        <span class='fraction'>312/405</span>
       </div>
     </div>
     <p class="quiet">
@@ -850,7 +850,9 @@
 <a name='L802'></a><a href='#L802'>802</a>
 <a name='L803'></a><a href='#L803'>803</a>
 <a name='L804'></a><a href='#L804'>804</a>
-<a name='L805'></a><a href='#L805'>805</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L805'></a><a href='#L805'>805</a>
+<a name='L806'></a><a href='#L806'>806</a>
+<a name='L807'></a><a href='#L807'>807</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -1422,22 +1424,24 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2225,25 +2229,27 @@ function resSuccess(res, message) {
 	res.send(message);
 }
 &nbsp;
-function <span class="fstat-no" title="function not covered" >findUser(</span>authToken, callback) {
-<span class="cstat-no" title="statement not covered" >	if(authToken &amp;&amp; typeof authToken == "string") {</span>
-<span class="cstat-no" title="statement not covered" >		findDocuments("AuthTokens", {authToken:authToken}, <span class="fstat-no" title="function not covered" >fu</span>nction(matchingAuthTokens){</span>
-<span class="cstat-no" title="statement not covered" >			if(matchingAuthTokens[0]) {</span>
-<span class="cstat-no" title="statement not covered" >				findDocuments("Users", {_id:matchingAuthTokens[0]["userID"]}, <span class="fstat-no" title="function not covered" >fu</span>nction(user){</span>
-<span class="cstat-no" title="statement not covered" >					if(user[0]) {</span>
-<span class="cstat-no" title="statement not covered" >						callback(user[0]);</span>
+/*
+function findUser(authToken, callback) {
+	if(authToken &amp;&amp; typeof authToken == "string") {
+		findDocuments("AuthTokens", {authToken:authToken}, function(matchingAuthTokens){
+			if(matchingAuthTokens[0]) {
+				findDocuments("Users", {_id:matchingAuthTokens[0]["userID"]}, function(user){
+					if(user[0]) {
+						callback(user[0]);
 					} else {
-<span class="cstat-no" title="statement not covered" >						callback(false);</span>
+						callback(false);
 					}
 				})
 			} else {
-<span class="cstat-no" title="statement not covered" >				callback(false);</span>
+				callback(false);
 			}
 		})
 	} else {
-<span class="cstat-no" title="statement not covered" >		callback(false);</span>
+		callback(false);
 	}
 }
+*/
 &nbsp;
 function findAdmin(authToken, callback) {
 	<span class="missing-if-branch" title="else path not taken" >E</span>if(authToken &amp;&amp; typeof authToken == "string") {
@@ -2464,7 +2470,7 @@ updateVehicleLocation();
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Tue Apr 24 2018 16:26:31 GMT-0400 (EDT)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Tue Apr 24 2018 23:18:43 GMT-0400 (EDT)
 </div>
 </div>
 <script src="prettify.js"></script>

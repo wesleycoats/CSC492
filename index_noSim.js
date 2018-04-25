@@ -569,6 +569,7 @@ function resSuccess(res, message) {
 	res.send(message);
 }
 
+/*
 function findUser(authToken, callback) {
 	if(authToken && typeof authToken == "string") {
 		findDocuments("AuthTokens", {authToken:authToken}, function(matchingAuthTokens){
@@ -588,6 +589,7 @@ function findUser(authToken, callback) {
 		callback(false);
 	}
 }
+*/
 
 function findAdmin(authToken, callback) {
 	if(authToken && typeof authToken == "string") {
