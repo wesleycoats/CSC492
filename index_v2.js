@@ -476,23 +476,28 @@ function editNode(form, res) {
 }
 
 function editEdge(form, res) {
-	var newPath = form;
-	if(form.waypoints) {
-		for(var i=0;i<form.waypoints.length;i++) {
+	
+	var newPath = {};
+	if(form.edits.startingNode) newPath.startingNode = new mongo.ObjectID(form.edits.startingNode);
+	if(form.edits.endingNode) newPath.endingNode = new mongo.ObjectID(form.edits.endingNode);
+	if(form.edits.distance>=0) newPath.distance = form.edits.distance
+	if(form.edits.waypoints) {
+		newPath.waypoints = [];
+		for(var i=0;i<form.edits.waypoints.length;i++) {
 			newPath.waypoints[i] = {
-				coordinates : [form.waypoints[i].coordinates[0], form.waypoints[i].coordinates[1]],
-				speed : form.waypoints[i].speed,
-				headingAngle : form.waypoints[i].headingAngle,
-				steeringAngle : form.waypoints[i].steeringAngle,
-				timeStamp : new Date(form.waypoints[i].timeStamp),
-				tick : form.waypoints[i].tick,
-				actuator : form.waypoints[i].actuator,
-				motorControlFlags : form.waypoints[i].motorControlFlags,
-				motorThrottle : form.waypoints[i].motorThrottle
+				coordinates : [form.edits.waypoints[i].coordinates[0], form.edits.waypoints[i].coordinates[1]],
+				speed : form.edits.waypoints[i].speed,
+				headingAngle : form.edits.waypoints[i].headingAngle,
+				steeringAngle : form.edits.waypoints[i].steeringAngle,
+				timeStamp : new Date(form.edits.waypoints[i].timeStamp),
+				tick : form.edits.waypoints[i].tick,
+				actuator : form.edits.waypoints[i].actuator,
+				motorControlFlags : form.edits.waypoints[i].motorControlFlags,
+				motorThrottle : form.edits.waypoints[i].motorThrottle
 			}
 		}
 	}
-	updateDocument("Edges", {_id: new mongo.ObjectID(form.id)}, form.edits, function(editedEdge){
+	updateDocument("Edges", {_id: new mongo.ObjectID(form.id)}, newPath, function(editedEdge){
 		if(editedEdge) {
 			resSuccess(res, "Edge Edited");
 			getallEdgesInfo(function(allPaths){
