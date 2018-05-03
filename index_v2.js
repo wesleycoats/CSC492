@@ -821,6 +821,12 @@ findDocuments("Users", {userType:0}, function(admins){
 	}
 })
 
+/////////////////////////
+// End of Mongo Funtions
+////////////////////////
+
+// Code to the run the simulation
+// Vehicles will choose the closest edge and have the vehicle move along it
 function simulation() {
 	setTimeout(simulation, 1000);
 	findDocuments("Vehicles", {}, function(vehicles){

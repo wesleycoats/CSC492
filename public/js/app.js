@@ -4,12 +4,14 @@ function initMap() {
 }
 var app = angular.module('ecoprtApp', ["ngRoute"]);
 
+// all the status that a ride can be in
 var rideTasks = [
 	"Waiting for Path",
 	"In Transit",
 	"Finished"
 ]
 
+// all the different types that a node can bee
 var stationTypes = [
 	"Pickup Station",
 	"Refuel Station",
@@ -53,6 +55,7 @@ app.config(function($routeProvider) {
     });
 });
 
+// Controller for the navigation bar that is present on all web pages
 app.controller('navbarCtrl', function($scope, $location) {
 	
 	$scope.signOut = function() {
@@ -75,6 +78,7 @@ app.controller('navbarCtrl', function($scope, $location) {
 	});
 });
 
+// Controller for the Home Page
 app.controller('homeCtrl', function($scope, $location) {
 
 	if(localStorage["authToken"]) {
@@ -90,6 +94,7 @@ app.controller('homeCtrl', function($scope, $location) {
 	}
 });
 
+// Controller for the Log In Page
 app.controller('signInCtrl', function($scope, $http, $location) {
 
 	if(localStorage["authToken"]) {
@@ -119,6 +124,7 @@ app.controller('signInCtrl', function($scope, $http, $location) {
 
 });
 
+// Controller for the Sign Up Page
 app.controller('signUpCtrl', function($scope, $http, $location) {
 	if(localStorage["authToken"]) {
 		$location.path('/userHome');
@@ -146,6 +152,7 @@ app.controller('signUpCtrl', function($scope, $http, $location) {
 
 });
 
+// Controller for the Rider (non admin) user page
 app.controller('userHomeCtrl', function($scope, $http, $location) {
 	$http.get('/userInfo', {headers:{authToken:localStorage["authToken"]}})
 	.then(function(result){
@@ -163,6 +170,7 @@ app.controller('userHomeCtrl', function($scope, $http, $location) {
 	}
 });
 
+// Controller for the Admin page
 app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compile) {
 	
 	$scope.currentView = 0;
@@ -170,6 +178,8 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 	$scope.addingStationsOnMap = false;
 	$scope.seletingStartNode = false;
 	$scope.seletingEndNode = false;
+
+	// What the add node page autofills the fields with
 	$scope.newStation = {
 		name : "",
 		type : '0',
@@ -277,8 +287,6 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 		};
 	}
 	
-	// TODO: create addRide function
-
 	$scope.addRide = function() {
 		if($scope.newRide) {
 			$http.post("/addRide", $scope.newRide, {headers:{authToken:localStorage["authToken"]}}).then(
@@ -616,7 +624,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 	});
 	google.maps.event.addListener($scope.map, "contextmenu",function(event){$scope.showContextMenu(event.latLng);});
 
-	// use Control Click to create a new node
+	// use Shift Click to create a new node
 	var selecting = false;
 
 	window.onkeydown = function(e) {
@@ -645,6 +653,7 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
         anchor: new google.maps.Point(12.5,12.5) // move the origin to center of image
 	};
 	
+	// Image for a selected vehicle
 	$scope.selectedVehicleicon = {
 	    url: "images/vehicle2selected.png", // url
 	    scaledSize: new google.maps.Size(25, 25),
@@ -729,6 +738,9 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 						disableAutoPan: true
 					});
 					(function(i, marker) {
+						// Code to add an info window when a icon is clicked on
+						// Got rid of this in favor for the info bar
+						// Code is here incase you need to add it later. 
 						/*var contentString = '<p><b>' + $scope.vehicles[i].name + '</b><br/>' 
 						+ 'Battery: ' + $scope.vehicles[i].batteryLife.toString() +'%' +'<br/>'
 						+ 'Speed: ' + $scope.vehicles[i].speed.toString() + '<br/>' 
@@ -1011,6 +1023,7 @@ Math.degrees = function(radians) {
 	return radians * 180 / Math.PI;
 }
 
+// Rotates the vehicle icon based on the heading angle
 var RotateIcon = function(options){
     this.options = options || {};
     this.rImg = options.img || new Image();
