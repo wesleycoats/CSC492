@@ -25,6 +25,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static('public'));
 
+/////////////////////////
+// REST Functions
+/////////////////////////
+
 app.get('/', function (req, res) {
 	res.sendFile('public/index.html')
 })
@@ -259,6 +263,15 @@ app.post('/deleteVehicle', function (req, res) {
 	}
 })
 
+/////////////////////////
+// End of REST functions
+/////////////////////////
+
+
+//////////////////////
+// Socket Functions
+/////////////////////
+
 var http = require('http').createServer(app);
 
 var io = require('socket.io')(http);
@@ -312,9 +325,17 @@ io.on('connection', function(socket){
   })
 });
 
+///////////////////////////
+// End of Socket Functions
+//////////////////////////
+
 http.listen(portToUse, function(){
 	console.log("listening on port " + portToUse);
 })
+
+/////////////////////////
+// Helper functions
+/////////////////////////
 
 function getAllRidesInfo(callback) {
 	findDocumentsWithFields("Rides", {currentTask: {$in : [0,1]}}, {}, {}, 0, function(rides){

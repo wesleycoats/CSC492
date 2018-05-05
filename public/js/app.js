@@ -170,7 +170,9 @@ app.controller('userHomeCtrl', function($scope, $http, $location) {
 	}
 });
 
+//////////////////////////////
 // Controller for the Admin page
+////////////////////////////
 app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compile) {
 	
 	$scope.currentView = 0;
@@ -1019,11 +1021,17 @@ app.controller('adminHomeCtrl', function($scope, $http, $location, $sce, $compil
 	}
 });
 
+//////////////////////////
+// End of Admin controller
+////////////////////////
+
 Math.degrees = function(radians) {
 	return radians * 180 / Math.PI;
 }
 
+//////////////////////////////////
 // Rotates the vehicle icon based on the heading angle
+///////////////////////////////////////
 var RotateIcon = function(options){
     this.options = options || {};
     this.rImg = options.img || new Image();
